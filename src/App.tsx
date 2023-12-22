@@ -1,5 +1,7 @@
+import Gallery from "./components/Gallery";
+
 const App = () => {
-  return <div></div>;
+  return <Gallery />;
 };
 
 export default App;

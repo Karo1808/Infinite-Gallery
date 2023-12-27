@@ -1,39 +1,41 @@
 import { useEffect, useState } from "react";
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
+import { useInfiniteQueryImages } from "../hooks";
+import { Basic } from "unsplash-js/dist/methods/photos/types";
+import InfiniteScroll from "react-infinite-scroll-component";
+import Image from "./Image";
 
 const Gallery = () => {
-  const [imageNames, setImageNames] = useState([]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch("http://localhost:3001/api/images");
-        if (!response.ok) {
-          throw new Error("Failed to fetch images");
-        }
-
-        const data = await response.json();
-        setImageNames(data);
-        console.log(imageNames);
-      } catch (error: unknown) {
-        if (error instanceof Error) {
-          throw new Error(`Failed to fetch images, ${error.message}`);
-        }
-      }
-    };
-
-    fetchData();
-  }, []);
-
+  const { data, fetchNextPage, hasNextPage } = useInfiniteQueryImages();
+  const photos = data?.pages.reduce((acc, page) => {
+    if (page?.photos) {
+      acc.push(...page.photos.results);
+    }
+    return acc;
+  }, [] as Basic[]);
+  console.log(photos);
   return (
     <div>
-      <ResponsiveMasonry>
-        <Masonry gutter="50px">
-          {imageNames.map((imageName) => (
-            <img src={imageName} alt="image" key={imageName} />
-          ))}
-        </Masonry>
-      </ResponsiveMasonry>
+      <InfiniteScroll
+        dataLength={photos ? photos?.length : 0}
+        next={fetchNextPage}
+        hasMore={hasNextPage}
+        loading={<div>loading...</div>}
+      >
+        <ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 750: 2, 900: 3 }}>
+          <Masonry gutter="20px">
+            {photos &&
+              photos.map((photo) => (
+                <Image
+                  src={photo.urls.regular}
+                  alt={photo.alt_description}
+                  key={photo.id}
+                  hash={photo.blur_hash}
+                />
+              ))}
+          </Masonry>
+        </ResponsiveMasonry>
+      </InfiniteScroll>
     </div>
   );
 };

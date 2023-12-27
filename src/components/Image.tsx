@@ -1,24 +1,34 @@
 import { useEffect, useState } from "react";
 import { Blurhash } from "react-blurhash";
+import { calculateImageHeight } from "../utils";
 
 const Image = ({
   src,
   alt,
   hash,
+  columnWidth,
+  imageWidth,
+  imageHeight,
 }: {
   src: string;
   alt: string;
   hash: string;
+  columnWidth: number;
+  imageWidth: number;
+  imageHeight: number;
 }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
+  const calculatedHeight = calculateImageHeight({
+    columnWidth,
+    imageHeight,
+    imageWidth,
+  });
 
   useEffect(() => {
     const img = new window.Image();
 
     img.onload = () => {
-      setTimeout(() => {
-        setImageLoaded(true);
-      }, 5000);
+      setImageLoaded(true);
     };
 
     img.src = src;
@@ -31,13 +41,13 @@ const Image = ({
         <Blurhash
           hash={hash ?? "LEHV6nWB2yk8pyo0adR*.7kCMdnj"}
           width={"100%"}
-          height={"100px"}
+          height={`${calculatedHeight}px`}
           resolutionX={32}
           resolutionY={32}
           punch={1}
         />
       )}
-      {imageLoaded && <img loading="lazy" src={src} alt={alt} />}
+      {imageLoaded && <img src={src} alt={alt} />}
     </>
   );
 };

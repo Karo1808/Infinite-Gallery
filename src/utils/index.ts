@@ -17,3 +17,16 @@ export const fetchImages = async ({ pageParam = 1 }: { pageParam: number }) => {
     }
   }
 };
+
+export const calculateImageHeight = ({
+  columnWidth,
+  imageWidth,
+  imageHeight,
+}: {
+  columnWidth: number;
+  imageWidth: number;
+  imageHeight: number;
+}) => {
+  const ratio = imageWidth / columnWidth;
+  return imageHeight / ratio;
+};

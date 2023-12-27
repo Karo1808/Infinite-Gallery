@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Blurhash } from "react-blurhash";
 
 const Image = ({
@@ -11,16 +11,9 @@ const Image = ({
   hash: string;
 }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
-  const [imageDimension, setImageDimension] = useState({
-    width: 1000,
-    height: 1000,
-  });
-  const imageRef = useRef();
 
   useEffect(() => {
     const img = new window.Image();
-    img.src = src;
-    img.alt = alt;
 
     img.onload = () => {
       setTimeout(() => {
@@ -28,34 +21,23 @@ const Image = ({
       }, 5000);
     };
 
-    if (imageRef.current) {
-      setImageDimension({
-        width: imageRef.current.width,
-        height: imageRef.current.height,
-      });
-      console.log(imageDimension, imageRef.current.clientHeight, imageRef);
-    }
-  }, [imageRef]);
+    img.src = src;
+    img.alt = alt;
+  }, []);
 
   return (
     <>
       {!imageLoaded && (
         <Blurhash
           hash={hash ?? "LEHV6nWB2yk8pyo0adR*.7kCMdnj"}
-          width={`${imageDimension.width}px`}
-          height={`${imageDimension.height}px`}
-          resolutionX={100}
-          resolutionY={100}
+          width={"100%"}
+          height={"100px"}
+          resolutionX={32}
+          resolutionY={32}
           punch={1}
         />
       )}
-      <img
-        loading="lazy"
-        src={src}
-        alt={alt}
-        style={{ display: imageLoaded ? "block" : "hidden" }}
-        ref={imageRef}
-      />
+      {imageLoaded && <img loading="lazy" src={src} alt={alt} />}
     </>
   );
 };

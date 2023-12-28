@@ -10,7 +10,6 @@ export const fetchImages = async ({ pageParam = 1 }: { pageParam: number }) => {
     return { photos, prevOffset: pageParam };
   } catch (error) {
     if (error instanceof Error) {
-      console.log(import.meta.env.VITE_UNSPLASH_ACCESS_KEY);
       throw new Error(
         `An error occurred while fetching images, ${error.message}`
       );
@@ -27,6 +26,6 @@ export const calculateImageHeight = ({
   imageWidth: number;
   imageHeight: number;
 }) => {
-  const ratio = imageWidth / columnWidth;
-  return imageHeight / ratio;
+  const aspectRatio = imageHeight / imageWidth;
+  return columnWidth * aspectRatio;
 };

@@ -1,6 +1,17 @@
 import { useEffect, useState } from "react";
 import { Blurhash } from "react-blurhash";
 import { calculateImageHeight } from "../utils";
+import ImageOverlay from "./Overlay";
+import { useMeasure } from "@uidotdev/usehooks";
+
+interface Props {
+  src: string;
+  alt: string;
+  hash: string;
+  columnWidth: number;
+  imageWidth: number;
+  imageHeight: number;
+}
 
 const Image = ({
   src,
@@ -9,15 +20,10 @@ const Image = ({
   columnWidth,
   imageWidth,
   imageHeight,
-}: {
-  src: string;
-  alt: string;
-  hash: string;
-  columnWidth: number;
-  imageWidth: number;
-  imageHeight: number;
-}) => {
-  const [imageLoaded, setImageLoaded] = useState(false);
+}: Props) => {
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+
   const calculatedHeight = calculateImageHeight({
     columnWidth,
     imageHeight,
@@ -28,7 +34,9 @@ const Image = ({
     const img = new window.Image();
 
     img.onload = () => {
-      setImageLoaded(true);
+      setTimeout(() => {
+        setIsImageLoaded(true);
+      });
     };
 
     img.src = src;
@@ -37,17 +45,27 @@ const Image = ({
 
   return (
     <>
-      {!imageLoaded && (
+      {!isImageLoaded && (
         <Blurhash
           hash={hash ?? "LEHV6nWB2yk8pyo0adR*.7kCMdnj"}
-          width={"100%"}
-          height={`${calculatedHeight}px`}
+          width="100%"
+          height={calculatedHeight}
           resolutionX={32}
           resolutionY={32}
           punch={1}
+          className="blurhash"
         />
       )}
-      {imageLoaded && <img src={src} alt={alt} />}
+      {isImageLoaded && (
+        <div
+          className="image-container"
+          onMouseOver={() => setIsHovered(true)}
+          onMouseOut={() => setIsHovered(false)}
+        >
+          <img loading="lazy" className="image" src={src} alt={alt} />
+          {isHovered && <ImageOverlay />}
+        </div>
+      )}
     </>
   );
 };

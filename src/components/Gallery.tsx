@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 
 import InfiniteScroll from "react-infinite-scroll-component";
-import { Basic } from "unsplash-js/dist/methods/photos/types";
 import Masonry from "react-masonry-css";
 
 import { useInfiniteQueryImages } from "../hooks";
@@ -14,7 +13,7 @@ import {
 } from "../constants";
 
 const Gallery = () => {
-  const { data, fetchNextPage, hasNextPage } = useInfiniteQueryImages();
+  const { photos, fetchNextPage, hasNextPage } = useInfiniteQueryImages();
   const [windowWidth, setWindowWidth] = useState(window.outerWidth);
   const columnWidth =
     windowWidth < TWO_COLUMNS_BREAKPOINT
@@ -22,7 +21,6 @@ const Gallery = () => {
       : windowWidth < THREE_COLUMNS_BREAKPOINT
       ? (windowWidth - GUTTER_SIZE) / 2
       : (windowWidth - GUTTER_SIZE * 2) / 3;
-  console.log(columnWidth, windowWidth);
 
   useEffect(() => {
     const updateWindowWidth = () => {
@@ -35,13 +33,6 @@ const Gallery = () => {
       window.removeEventListener("resize", updateWindowWidth);
     };
   }, []);
-
-  const photos = data?.pages.reduce((acc, page) => {
-    if (page?.photos) {
-      acc.push(...page.photos.results);
-    }
-    return acc;
-  }, [] as Basic[]);
 
   return (
     <div>
@@ -58,15 +49,7 @@ const Gallery = () => {
         >
           {photos &&
             photos.map((photo) => (
-              <Image
-                src={photo.urls.regular}
-                alt={photo.alt_description}
-                key={photo.id}
-                hash={photo.blur_hash}
-                columnWidth={columnWidth}
-                imageWidth={photo.width}
-                imageHeight={photo.height}
-              />
+              <Image key={photo.id} columnWidth={columnWidth} {...photo} />
             ))}
         </Masonry>
       </InfiniteScroll>

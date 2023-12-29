@@ -9,18 +9,30 @@ html {
   overflow-x: hidden;
   font-family: sans-serif;
   height: 100vh;
+  background-color: #f8f9fa;
 }
 body {
   margin: 0 0;
 }
 
 .header {
+  position: static;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 1rem;
-  margin-bottom: 10rem;
-  margin-top: 2rem;
+  margin-bottom: 5rem;
+  width: 100%;
+  height: 10vh;
+  background-color: #f8f9faf7;
+  z-index: 20;
+}
+
+.logo-container {
+  text-decoration: none;
+  color: black;
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
 }
 
 .title {
@@ -35,6 +47,10 @@ body {
   margin-bottom: 10px;
 }
 
+.image-container {
+  cursor: pointer;
+}
+
 .blurhash {
   margin-bottom: 10px;
 }
@@ -44,14 +60,12 @@ body {
 }
 
 .masonry {
-  display: -webkit-box; /* Not needed if autoprefixing */
-  display: -ms-flexbox; /* Not needed if autoprefixing */
   display: flex;
-  margin-left: -30px; /* gutter size offset */
+  margin-left: -30px;
   width: auto;
 }
 .masonry-column {
-  padding-left: 10px; /* gutter size */
+  padding-left: 10px;
   background-clip: padding-box;
 }
 
@@ -59,7 +73,7 @@ body {
   background-color: rgba(0, 0, 0, 0.1);
   width: 100%;
   height: 80%;
-  position: absolute; /* Change fixed to absolute */
+  position: absolute;
   top: 0;
   left: 0;
   z-index: 1;
@@ -69,24 +83,82 @@ body {
 }
 
 .overlay-user {
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.1));
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.1));
   width: 100%;
   height: 20%;
-  position: absolute; /* Change fixed to absolute */
+  position: absolute;
   bottom: 0;
   left: 0;
   z-index: 1;
   display: flex;
   justify-content: left;
   align-items: end;
-  padding: 20px 40px;
-  font-size: 2rem;
+  padding: 20px 30px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.overlay-userinfo-container {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+
+  justify-content: left;
+}
+
+.overlay-profile-photo {
+  border-radius: 100%;
+  height: 3.2rem;
+}
+
+.overlay-username:link,
+.overlay-username:active,
+.overlay-username:visited {
+  font-size: 1.6rem;
+  text-decoration: none;
+  color: #e9ecef;
+}
+
+.overlay-username:hover {
+  cursor: pointer;
   color: white;
+}
+
+.overlay-download-btn {
+  background-color: transparent;
+  border: none;
+}
+
+.overlay-download-btn:hover {
+  cursor: pointer;
+  color: white;
+  filter: brightness(120%);
+}
+
+.overlay-profile-photo:hover {
+  cursor: pointer;
+  filter: brightness(110%);
+}
+
+.overlay-username:hover,
+.overlay-profile-photo:hover {
+  transition: all 200ms;
+}
+
+@media (min-width: 0px) {
+  .header {
+    position: static;
+  }
 }
 
 @media (min-width: 600px) {
   body {
     margin: 0 10px;
+  }
+  .header {
+    position: sticky;
+    position: -webkit-sticky;
+    top: 0;
   }
 }
 
@@ -94,4 +166,14 @@ body {
   body {
     margin: 0 10vw;
   }
+}
+
+.test {
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
 }

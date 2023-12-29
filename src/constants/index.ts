@@ -8,3 +8,5 @@ export const BREAKPOINT_COLUMN_OBJECT = {
   1100: 2,
   600: 1,
 };
+export const BASE_URL = "https://unsplash.com";
+export const APP_NAME = "infinite-gallery";

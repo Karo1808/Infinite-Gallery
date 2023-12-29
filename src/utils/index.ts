@@ -1,3 +1,4 @@
+import { APP_NAME, BASE_URL } from "../constants";
 import { unpslashApi } from "../unsplash";
 
 export const fetchImages = async ({ pageParam = 1 }: { pageParam: number }) => {
@@ -28,4 +29,26 @@ export const calculateImageHeight = ({
 }) => {
   const aspectRatio = imageHeight / imageWidth;
   return columnWidth * aspectRatio;
+};
+
+export const createAttributionUrl = (username?: string): string =>
+  `${BASE_URL}/${
+    username && `@${username}`
+  }?utm_source=${APP_NAME}&utm_medium=referral`;
+
+export const handleDownload = ({
+  imageLink,
+  fileName,
+}: {
+  imageLink: string;
+  fileName: string;
+}) => {
+  const imageURL = imageLink;
+
+  const link = document.createElement("a");
+  link.href = imageURL;
+  link.download = fileName;
+  link.target = "_blank";
+
+  link.click();
 };

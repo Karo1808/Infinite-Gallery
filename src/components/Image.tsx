@@ -1,4 +1,4 @@
-import { RefObject, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Blurhash } from "react-blurhash";
 import { calculateImageHeight } from "../utils";
 import ImageOverlay from "./Overlay";

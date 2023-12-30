@@ -1,14 +1,5 @@
-import { Basic } from "unsplash-js/dist/methods/photos/types";
 import { APP_NAME, BASE_URL } from "../constants";
 import { unpslashApi } from "../unsplash";
-
-interface ReturnType {
-  photos: {
-    results: Basic[];
-    total: number;
-  };
-  prevOffSet: number;
-}
 
 export const fetchImages = async ({
   pageParam,

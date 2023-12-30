@@ -1,4 +1,3 @@
-import { useDownloadFile } from "react-downloadfile-hook";
 import { GoDownload } from "react-icons/go";
 import { handleDownload } from "../utils";
 import { APP_NAME } from "../constants";

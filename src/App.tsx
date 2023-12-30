@@ -19,6 +19,7 @@ const App = () => {
           <Route path="/image/:id" element={<ImageDetails />} />
         </Routes>
       )}
+      <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );
 };

@@ -43,7 +43,7 @@ export const useInfiniteQueryImages = () => {
     width: res.width,
     id: res.id,
     src: res.urls.regular,
-    srcFull: res.urls.full,
+    // srcFull: res.urls.full,
     username: res.user.name,
     userProfileImage: res.user.profile_image.medium,
     userProfileLink: createAttributionUrl(res.user.username),

@@ -11,7 +11,6 @@ interface Props {
   width: number;
   id: string;
   src: string;
-  srcFull: string;
   username: string;
   userProfileImage: string;
   userProfileLink: string;
@@ -26,7 +25,6 @@ const Image = ({
   width,
   id,
   src,
-  srcFull,
   username,
   userProfileImage,
   userProfileLink,

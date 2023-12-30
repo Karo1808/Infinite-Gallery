@@ -28,7 +28,6 @@ const Image = ({
   username,
   userProfileImage,
   userProfileLink,
-  downloadLink,
   columnWidth,
 }: Props) => {
   const [isImageLoaded, setIsImageLoaded] = useState(false);
@@ -82,7 +81,7 @@ const Image = ({
               profilePhoto={userProfileImage}
               profileLink={userProfileLink}
               id={id}
-              downloadLink={downloadLink}
+              downloadLink={src}
             />
           )}
         </div>

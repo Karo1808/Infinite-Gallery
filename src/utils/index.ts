@@ -1,5 +1,6 @@
 import { APP_NAME, BASE_URL } from "../constants";
 import { unpslashApi } from "../unsplash";
+import { saveAs } from "file-saver";
 
 export const fetchImages = async ({
   pageParam,
@@ -52,12 +53,5 @@ export const handleDownload = ({
   imageLink: string;
   fileName: string;
 }) => {
-  const imageURL = imageLink;
-
-  const link = document.createElement("a");
-  link.href = imageURL;
-  link.download = fileName;
-  link.target = "_blank";
-
-  link.click();
+  saveAs(imageLink, fileName);
 };

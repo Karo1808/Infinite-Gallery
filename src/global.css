@@ -11,32 +11,33 @@ html {
   height: 100vh;
   background-color: #f8f9fa;
 }
-body {
-  margin: 0 0;
-}
 
 .header {
   position: static;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 5rem;
-  width: 100%;
-  height: 10vh;
-  background-color: #f8f9faf7;
+  width: auto;
+  height: 8vh;
+  background-color: #1c1d1e;
   z-index: 20;
+}
+
+.main {
+  display: flex;
+  justify-content: center;
 }
 
 .logo-container {
   text-decoration: none;
-  color: black;
+  color: #f8f9fa;
   display: flex;
   align-items: center;
   gap: 0.2rem;
 }
 
 .title {
-  font-size: 2.6rem;
+  font-size: 2rem;
   font-weight: 600;
   font-family: "Montserrat";
 }
@@ -61,12 +62,15 @@ body {
 
 .masonry {
   display: flex;
-  margin-left: -30px;
-  width: auto;
+  width: 100vw;
 }
 .masonry-column {
   padding-left: 10px;
   background-clip: padding-box;
+}
+
+.masonry-column:first-child {
+  padding-left: 0;
 }
 
 .loading-spinner {
@@ -157,24 +161,27 @@ body {
 }
 
 @media (min-width: 600px) {
-  body {
-    margin: 0 10px;
-  }
   .header {
     position: sticky;
-    position: -webkit-sticky;
     top: 0;
+    left: 0;
+  }
+}
+
+@media (min-width: 1000px) {
+  .header {
+    margin-bottom: 20rem;
   }
 }
 
 @media (min-width: 1400px) {
-  body {
-    margin: 0 10vw;
+  .masonry {
+    width: 70vw;
   }
 }
 
 .test {
-  width: 100%;
+  width: 100vw;
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.5);
   position: fixed;

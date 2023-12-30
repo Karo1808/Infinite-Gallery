@@ -7,11 +7,11 @@ const Home = () => {
     <>
       <header className="header">
         <Link className="logo-container" to="/">
-          <RiInfinityLine size={50} />
+          <RiInfinityLine size={35} />
           <span className="title">Gallery</span>
         </Link>
       </header>
-      <main>
+      <main className="main">
         <Gallery />
       </main>
     </>

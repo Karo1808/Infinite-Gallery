@@ -1,9 +1,12 @@
-import { useEffect, useState } from "react";
+import { useRef } from "react";
 
-import InfiniteScroll from "react-infinite-scroll-component";
 import Masonry from "react-masonry-css";
 
-import { useInfiniteQueryImages } from "../hooks";
+import {
+  useInfiniteQueryImages,
+  useInfiniteScroll,
+  useUpdateWindowWidth,
+} from "../hooks";
 import Image from "./Image";
 import {
   BREAKPOINT_COLUMN_OBJECT,
@@ -11,10 +14,19 @@ import {
   THREE_COLUMNS_BREAKPOINT,
   TWO_COLUMNS_BREAKPOINT,
 } from "../constants";
+import { SpinnerCircular } from "spinners-react";
 
 const Gallery = () => {
-  const { photos, fetchNextPage, hasNextPage } = useInfiniteQueryImages();
-  const [windowWidth, setWindowWidth] = useState(window.outerWidth);
+  const { photos, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    useInfiniteQueryImages();
+  const { windowWidth } = useUpdateWindowWidth();
+
+  const { lastPhoto } = useInfiniteScroll({
+    fetchData: fetchNextPage,
+    hasMore: hasNextPage,
+    isLoading: isFetchingNextPage,
+  });
+
   const columnWidth =
     windowWidth < TWO_COLUMNS_BREAKPOINT
       ? windowWidth
@@ -22,37 +34,33 @@ const Gallery = () => {
       ? (windowWidth - GUTTER_SIZE) / 2
       : (windowWidth - GUTTER_SIZE * 2) / 3;
 
-  useEffect(() => {
-    const updateWindowWidth = () => {
-      setWindowWidth(window.innerWidth);
-    };
-
-    window.addEventListener("resize", updateWindowWidth);
-
-    return () => {
-      window.removeEventListener("resize", updateWindowWidth);
-    };
-  }, []);
-
   return (
     <div>
-      <InfiniteScroll
-        dataLength={photos ? photos?.length : 0}
-        next={fetchNextPage}
-        hasMore={hasNextPage}
-        loader={<div>loading...</div>}
+      <Masonry
+        className="masonry"
+        columnClassName="masonry-column"
+        breakpointCols={BREAKPOINT_COLUMN_OBJECT}
       >
-        <Masonry
-          className="masonry"
-          columnClassName="masonry-column"
-          breakpointCols={BREAKPOINT_COLUMN_OBJECT}
-        >
-          {photos &&
-            photos.map((photo) => (
-              <Image key={photo.id} columnWidth={columnWidth} {...photo} />
-            ))}
-        </Masonry>
-      </InfiniteScroll>
+        {photos &&
+          photos.map((photo, index) => (
+            <div
+              key={photo.id}
+              ref={index === photos.length - 2 ? lastPhoto : null}
+            >
+              <Image columnWidth={columnWidth} {...photo} />
+            </div>
+          ))}
+      </Masonry>
+      {isFetchingNextPage && (
+        <div className="loading-spinner">
+          <SpinnerCircular
+            color="#ced4da"
+            secondaryColor="#dee2e6"
+            speed={120}
+            size={70}
+          />
+        </div>
+      )}
     </div>
   );
 };

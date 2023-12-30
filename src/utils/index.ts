@@ -1,14 +1,32 @@
+import { Basic } from "unsplash-js/dist/methods/photos/types";
 import { APP_NAME, BASE_URL } from "../constants";
 import { unpslashApi } from "../unsplash";
 
-export const fetchImages = async ({ pageParam = 1 }: { pageParam: number }) => {
+interface ReturnType {
+  photos: {
+    results: Basic[];
+    total: number;
+  };
+  prevOffSet: number;
+}
+
+export const fetchImages = async ({
+  pageParam,
+}: {
+  pageParam?: number | false;
+}) => {
   try {
-    const res = await unpslashApi.photos.list({ page: pageParam, perPage: 15 });
-    if (res.errors) {
-      throw new Error(`${res.errors[0]}`);
+    if (pageParam) {
+      const res = await unpslashApi.photos.list({
+        page: pageParam,
+        perPage: 15,
+      });
+      if (res.errors) {
+        throw new Error(`${res.errors[0]}`);
+      }
+      const photos = res.response;
+      return { photos, prevOffSet: pageParam };
     }
-    const photos = res.response;
-    return { photos, prevOffset: pageParam };
   } catch (error) {
     if (error instanceof Error) {
       throw new Error(

@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Blurhash } from "react-blurhash";
 import { calculateImageHeight } from "../utils";
 import ImageOverlay from "./Overlay";
 import { Nullable } from "unsplash-js/dist/helpers/typescript";
+import { useUpdateColumnWidth, useUpdateWindowWidth } from "../hooks";
 
 interface Props {
   altDescription: Nullable<string>;
@@ -14,8 +15,7 @@ interface Props {
   username: string;
   userProfileImage: string;
   userProfileLink: string;
-  columnWidth: number;
-  downloadLink: string;
+  columnWidth: number | null;
 }
 
 const Image = ({
@@ -41,7 +41,6 @@ const Image = ({
 
   useEffect(() => {
     const img = new window.Image();
-
     img.onload = () => {
       setIsImageLoaded(true);
     };

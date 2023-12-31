@@ -3,7 +3,7 @@ import Masonry from "react-masonry-css";
 import {
   useInfiniteQueryImages,
   useInfiniteScroll,
-  useUpdateWindowWidth,
+  useUpdateColumnWidth,
 } from "../hooks";
 import Image from "./Image";
 import {
@@ -13,11 +13,15 @@ import {
   TWO_COLUMNS_BREAKPOINT,
 } from "../constants";
 import { SpinnerCircular } from "spinners-react";
+import { useRef } from "react";
+import MasonryWrapper from "./MasonryWrapper";
 
 const Gallery = () => {
+  const masonryRef = useRef<null | HTMLDivElement>(null);
   const { photos, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useInfiniteQueryImages();
-  const { windowWidth } = useUpdateWindowWidth();
+
+  const { columnWidth } = useUpdateColumnWidth(masonryRef);
 
   const { lastPhoto } = useInfiniteScroll({
     fetchData: fetchNextPage,
@@ -25,20 +29,9 @@ const Gallery = () => {
     isLoading: isFetchingNextPage,
   });
 
-  const columnWidth =
-    windowWidth < TWO_COLUMNS_BREAKPOINT
-      ? windowWidth
-      : windowWidth < THREE_COLUMNS_BREAKPOINT
-      ? (windowWidth - GUTTER_SIZE) / 2
-      : (windowWidth - GUTTER_SIZE * 2) / 3;
-
   return (
     <div>
-      <Masonry
-        className="masonry"
-        columnClassName="masonry-column"
-        breakpointCols={BREAKPOINT_COLUMN_OBJECT}
-      >
+      <MasonryWrapper reference={masonryRef}>
         {photos &&
           photos.map((photo, index) => (
             <div
@@ -48,7 +41,7 @@ const Gallery = () => {
               <Image columnWidth={columnWidth} {...photo} />
             </div>
           ))}
-      </Masonry>
+      </MasonryWrapper>
       {isFetchingNextPage && (
         <div className="loading-spinner">
           <SpinnerCircular

@@ -4,10 +4,15 @@ import {
   InfiniteQueryObserverResult,
   useInfiniteQuery,
 } from "@tanstack/react-query";
-import { createAttributionUrl, fetchImages } from "../utils";
-import { PHOTOS_PER_PAGE } from "../constants";
+import {
+  calculateColumnWidth,
+  convertImageToWebp,
+  createAttributionUrl,
+  fetchImages,
+} from "../utils";
+import { GUTTER_SIZE, PHOTOS_PER_PAGE } from "../constants";
 import { Basic } from "unsplash-js/dist/methods/photos/types";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { RefObject, useCallback, useEffect, useRef, useState } from "react";
 
 export const useInfiniteQueryImages = () => {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
@@ -53,21 +58,27 @@ export const useInfiniteQueryImages = () => {
   return { photos, fetchNextPage, hasNextPage, isFetchingNextPage };
 };
 
-export const useUpdateWindowWidth = () => {
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+export const useUpdateColumnWidth = (ref: RefObject<null | HTMLDivElement>) => {
+  const [columnWidth, setColumnWidth] = useState<null | number>(null);
+
+  console.log("Called");
 
   useEffect(() => {
-    const updateWindowWidth = () => {
-      setWindowWidth(window.innerWidth);
+    const updateColumnWidth = () => {
+      const calculatedColumnWidth = calculateColumnWidth(
+        ref.current?.clientWidth
+      );
+      if (calculatedColumnWidth) setColumnWidth(calculatedColumnWidth);
     };
+    updateColumnWidth();
 
-    window.addEventListener("resize", updateWindowWidth);
+    window.addEventListener("resize", updateColumnWidth);
 
     return () => {
-      window.removeEventListener("resize", updateWindowWidth);
+      window.removeEventListener("resize", updateColumnWidth);
     };
-  }, []);
-  return { windowWidth };
+  }, [ref]);
+  return { columnWidth };
 };
 
 interface Params {
@@ -95,13 +106,11 @@ export const useInfiniteScroll = ({
   const observer = useRef<null | IntersectionObserver>(null);
 
   const lastPhoto = useCallback((node: HTMLElement | null) => {
-    console.log(hasMore);
     if (!node) return;
     if (isLoading) return;
     if (observer.current) observer.current.disconnect();
     observer.current = new IntersectionObserver((entries) => {
       if (entries[0].isIntersecting) {
-        console.log(node);
         fetchData();
       }
     });

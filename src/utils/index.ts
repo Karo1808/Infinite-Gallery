@@ -1,4 +1,4 @@
-import { APP_NAME, BASE_URL } from "../constants";
+import { APP_NAME, BASE_URL, GUTTER_SIZE } from "../constants";
 import { unpslashApi } from "../unsplash";
 import { saveAs } from "file-saver";
 
@@ -33,12 +33,13 @@ export const calculateImageHeight = ({
   imageWidth,
   imageHeight,
 }: {
-  columnWidth: number;
+  columnWidth: number | null;
   imageWidth: number;
   imageHeight: number;
 }) => {
-  const aspectRatio = imageHeight / imageWidth;
-  return columnWidth * aspectRatio;
+  if (columnWidth) {
+    return imageHeight * (columnWidth / imageWidth);
+  }
 };
 
 export const createAttributionUrl = (username?: string): string =>
@@ -54,4 +55,15 @@ export const handleDownload = ({
   fileName: string;
 }) => {
   saveAs(imageLink, fileName);
+};
+
+export const convertImageToWebp = (src: string) =>
+  src.replace(["png", "jpg"], "webp");
+
+export const calculateColumnWidth = (masonryWidth: number | undefined) => {
+  if (masonryWidth) {
+    if (masonryWidth < 600) return masonryWidth;
+    if (masonryWidth < 1100) return masonryWidth / 2 - GUTTER_SIZE;
+    else return masonryWidth / 3 - GUTTER_SIZE * 2;
+  }
 };

@@ -6,11 +6,10 @@ import {
 } from "@tanstack/react-query";
 import {
   calculateColumnWidth,
-  convertImageToWebp,
   createAttributionUrl,
   fetchImages,
 } from "../utils";
-import { GUTTER_SIZE, PHOTOS_PER_PAGE } from "../constants";
+import { PHOTOS_PER_PAGE } from "../constants";
 import { Basic } from "unsplash-js/dist/methods/photos/types";
 import { RefObject, useCallback, useEffect, useRef, useState } from "react";
 
@@ -98,11 +97,7 @@ interface Params {
   isLoading: boolean;
 }
 
-export const useInfiniteScroll = ({
-  fetchData,
-  hasMore,
-  isLoading,
-}: Params) => {
+export const useInfiniteScroll = ({ fetchData, isLoading }: Params) => {
   const observer = useRef<null | IntersectionObserver>(null);
 
   const lastPhoto = useCallback((node: HTMLElement | null) => {

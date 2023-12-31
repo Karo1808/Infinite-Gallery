@@ -1,17 +1,10 @@
-import Masonry from "react-masonry-css";
-
 import {
   useInfiniteQueryImages,
   useInfiniteScroll,
   useUpdateColumnWidth,
 } from "../hooks";
 import Image from "./Image";
-import {
-  BREAKPOINT_COLUMN_OBJECT,
-  GUTTER_SIZE,
-  THREE_COLUMNS_BREAKPOINT,
-  TWO_COLUMNS_BREAKPOINT,
-} from "../constants";
+
 import { SpinnerCircular } from "spinners-react";
 import { useRef } from "react";
 import MasonryWrapper from "./MasonryWrapper";

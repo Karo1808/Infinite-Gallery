@@ -57,8 +57,8 @@ export const handleDownload = ({
   saveAs(imageLink, fileName);
 };
 
-export const convertImageToWebp = (src: string) =>
-  src.replace(["png", "jpg"], "webp");
+// export const convertImageToWebp = (src: string) =>
+//   src.replace(["png", "jpg"], "webp");
 
 export const calculateColumnWidth = (masonryWidth: number | undefined) => {
   if (masonryWidth) {

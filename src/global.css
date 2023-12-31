@@ -60,9 +60,13 @@ html {
   width: 100%;
 }
 
+.masonry-wrapper {
+  width: 100vw;
+}
+
 .masonry {
   display: flex;
-  width: 100vw;
+  width: 100%;
 }
 .masonry-column {
   padding-left: 10px;
@@ -175,7 +179,7 @@ html {
 }
 
 @media (min-width: 1400px) {
-  .masonry {
+  .masonry-wrapper {
     width: 70vw;
   }
 }

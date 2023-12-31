@@ -70,14 +70,14 @@ export const useUpdateColumnWidth = (ref: RefObject<null | HTMLDivElement>) => {
       );
       if (calculatedColumnWidth) setColumnWidth(calculatedColumnWidth);
     };
-    updateColumnWidth();
 
+    if (!columnWidth) updateColumnWidth();
     window.addEventListener("resize", updateColumnWidth);
 
     return () => {
       window.removeEventListener("resize", updateColumnWidth);
     };
-  }, [ref]);
+  }, []);
   return { columnWidth };
 };
 

@@ -36,7 +36,7 @@ const Gallery = () => {
           photos.map((photo, index) => (
             <div
               key={photo.id}
-              ref={index === photos.length - 2 ? lastPhoto : null}
+              ref={index === photos.length - 1 ? lastPhoto : null}
             >
               <Image columnWidth={columnWidth} {...photo} />
             </div>

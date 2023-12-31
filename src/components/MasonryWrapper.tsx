@@ -1,6 +1,7 @@
 import Masonry from "react-masonry-css";
 import { BREAKPOINT_COLUMN_OBJECT } from "../constants";
 import { RefObject } from "react";
+import { useUpdateColumnWidth } from "../hooks";
 
 const MasonryWrapper = ({
   children,
@@ -9,6 +10,7 @@ const MasonryWrapper = ({
   children: React.ReactNode;
   reference: RefObject<HTMLDivElement>;
 }) => {
+  const {} = useUpdateColumnWidth(reference);
   return (
     <div ref={reference}>
       <Masonry

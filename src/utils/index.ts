@@ -51,7 +51,7 @@ export const calculateImageHeight = ({
   }
 
   // If aspect ratios match, use the original calculation
-  return imageHeight * (columnWidth / imageWidth);
+  return imageHeight * (columnWidth / imageWidth) * 1.05;
 };
 
 export const createAttributionUrl = (username?: string): string =>

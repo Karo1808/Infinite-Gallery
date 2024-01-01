@@ -41,7 +41,9 @@ const Image = ({
   useEffect(() => {
     const img = new window.Image();
     img.onload = () => {
-      setIsImageLoaded(true);
+      setTimeout(() => {
+        setIsImageLoaded(true);
+      }, 2000);
     };
 
     img.src = src;

@@ -36,10 +36,22 @@ export const calculateImageHeight = ({
   columnWidth: number | null;
   imageWidth: number;
   imageHeight: number;
-}) => {
-  if (columnWidth) {
-    return imageHeight * (columnWidth / imageWidth);
+}): number | null => {
+  if (!columnWidth) {
+    return null;
   }
+
+  const targetAspectRatio = columnWidth / imageWidth;
+  const actualAspectRatio = imageHeight / imageWidth;
+
+  if (targetAspectRatio !== actualAspectRatio) {
+    // Calculate the height while maintaining aspect ratio
+    const adjustedHeight = Math.round(imageHeight * targetAspectRatio);
+    return adjustedHeight;
+  }
+
+  // If aspect ratios match, use the original calculation
+  return imageHeight * (columnWidth / imageWidth);
 };
 
 export const createAttributionUrl = (username?: string): string =>
@@ -58,7 +70,7 @@ export const handleDownload = ({
 };
 
 // export const convertImageToWebp = (src: string) =>
-//   src.replace(["png", "jpg"], "webp");
+//   src.replace("png", "webp");
 
 export const calculateColumnWidth = (masonryWidth: number | undefined) => {
   if (masonryWidth) {

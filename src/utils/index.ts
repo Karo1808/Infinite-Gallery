@@ -38,7 +38,7 @@ export const calculateImageHeight = ({
   imageHeight: number;
 }): number | null => {
   if (!columnWidth) {
-    return null;
+    return 0;
   }
 
   const targetAspectRatio = columnWidth / imageWidth;

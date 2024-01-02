@@ -55,9 +55,7 @@ const Image = ({
     console.log(params.id);
     const img = new window.Image();
     img.onload = () => {
-      setTimeout(() => {
-        setIsImageLoaded(true);
-      }, 2000);
+      setIsImageLoaded(true);
     };
 
     img.src = src;

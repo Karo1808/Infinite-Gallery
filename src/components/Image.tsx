@@ -4,7 +4,6 @@ import { calculateImageHeight } from "../utils";
 import ImageOverlay from "./Overlay";
 import { Nullable } from "unsplash-js/dist/helpers/typescript";
 import { useParams } from "react-router-dom";
-import { SRC_FULL_HEIGHT } from "../constants";
 
 interface Props {
   altDescription: Nullable<string>;

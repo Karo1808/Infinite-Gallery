@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { useInfiniteQueryImages, useUpdateColumnWidth } from "../hooks";
+import { useInfiniteQueryImages } from "../hooks";
 import Image from "../components/Image";
 import UserInfo from "../components/UserInfo";
 import BottomBar from "../components/BottomBar";
@@ -11,8 +11,7 @@ const ImageDetails = () => {
 
   const navigate = useNavigate();
   const modalRef = useRef<null | HTMLDivElement>(null);
-  const { photos, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    useInfiniteQueryImages();
+  const { photos } = useInfiniteQueryImages();
 
   const [currentPhoto] =
     photos?.filter((photo) => photo.id === currentId) || [];

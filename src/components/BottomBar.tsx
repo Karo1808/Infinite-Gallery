@@ -1,5 +1,3 @@
-import React from "react";
-
 const BottomBar = () => {
   return (
     <section className="modal-bottombar">

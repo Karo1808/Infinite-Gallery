@@ -44,11 +44,12 @@ html {
 
 .image-container {
   position: relative;
-  width: 100%;
+  max-width: 100%;
+  max-height: 100%;
   margin-bottom: 10px;
 }
 
-.image-container {
+.image-container:hover {
   cursor: pointer;
 }
 
@@ -57,7 +58,8 @@ html {
 }
 
 .image {
-  width: 100%;
+  max-width: 100%;
+  object-fit: cover;
 }
 
 .masonry-wrapper {
@@ -111,7 +113,7 @@ html {
   justify-content: space-between;
 }
 
-.overlay-userinfo-container {
+.userinfo-container {
   display: flex;
   gap: 1.5rem;
   align-items: center;
@@ -119,9 +121,21 @@ html {
   justify-content: left;
 }
 
-.overlay-profile-photo {
+.userinfo-profile-photo {
   border-radius: 100%;
+}
+
+.overlay-profile-photo {
   height: 3.2rem;
+}
+.topbar-profile-photo {
+  height: 4.2rem;
+}
+
+.userinfo-username:link,
+.userinfo-username:active,
+.userinfo-username:visited {
+  text-decoration: none;
 }
 
 .overlay-username:link,
@@ -132,9 +146,24 @@ html {
   color: #e9ecef;
 }
 
-.overlay-username:hover {
+.topbar-username:link,
+.topbar-username:active,
+.topbar-username:visited {
+  font-size: 1.6rem;
+  text-decoration: none;
+  color: #343a40;
+}
+
+.userinfo-username:hover {
   cursor: pointer;
+}
+
+.overlay-username:hover {
   color: white;
+}
+
+.topbar-username:hover {
+  color: black;
 }
 
 .overlay-download-btn {
@@ -148,7 +177,12 @@ html {
   filter: brightness(120%);
 }
 
-.overlay-profile-photo:hover {
+.userinfo-profile-photo:hover {
+  cursor: pointer;
+  filter: brightness(110%);
+}
+
+.topbar-profile-photo:hover {
   cursor: pointer;
   filter: brightness(110%);
 }
@@ -156,6 +190,51 @@ html {
 .overlay-username:hover,
 .overlay-profile-photo:hover {
   transition: all 200ms;
+}
+
+.modal {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  border-radius: 10px;
+  width: 70%;
+  height: 90%;
+  padding: 2rem 2rem;
+  background-color: #e9ecef;
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+}
+
+.modal-image {
+  align-self: center;
+}
+
+.modal-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.btn-modal-close {
+  border: none;
+  background-color: transparent;
+  margin-right: 2rem;
+}
+
+.modal-bottombar {
+  width: 100%;
+  height: 10vh;
 }
 
 @media (min-width: 0px) {
@@ -182,14 +261,4 @@ html {
   .masonry-wrapper {
     width: 70vw;
   }
-}
-
-.test {
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5);
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 100;
 }

@@ -3,6 +3,8 @@ import { Blurhash } from "react-blurhash";
 import { calculateImageHeight } from "../utils";
 import ImageOverlay from "./Overlay";
 import { Nullable } from "unsplash-js/dist/helpers/typescript";
+import { useParams } from "react-router-dom";
+import { SRC_FULL_HEIGHT } from "../constants";
 
 interface Props {
   altDescription: Nullable<string>;
@@ -14,7 +16,9 @@ interface Props {
   username: string;
   userProfileImage: string;
   userProfileLink: string;
-  columnWidth: number | null;
+  columnWidth?: number | null;
+  srcFull: string;
+  imageType: "thumbnail" | "full";
 }
 
 const Image = ({
@@ -24,13 +28,16 @@ const Image = ({
   width,
   id,
   src,
+  srcFull,
   username,
   userProfileImage,
   userProfileLink,
   columnWidth,
+  imageType,
 }: Props) => {
   const [isImageLoaded, setIsImageLoaded] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+  const params = useParams();
 
   const calculatedHeight = calculateImageHeight({
     columnWidth,
@@ -39,6 +46,7 @@ const Image = ({
   });
 
   useEffect(() => {
+    console.log(params.id);
     const img = new window.Image();
     img.onload = () => {
       setTimeout(() => {
@@ -55,8 +63,8 @@ const Image = ({
       {!isImageLoaded && (
         <Blurhash
           hash={blurHash ?? "LEHV6nWB2yk8pyo0adR*.7kCMdnj"}
-          width="100%"
-          height={calculatedHeight}
+          width={params.id ? 400 : "100%"}
+          height={params.id ? 600 : calculatedHeight}
           resolutionX={32}
           resolutionY={32}
           punch={1}
@@ -72,10 +80,10 @@ const Image = ({
           <img
             loading="lazy"
             className="image"
-            src={src}
+            src={imageType === "thumbnail" ? src : srcFull}
             alt={altDescription ?? "image"}
           />
-          {isHovered && (
+          {isHovered && imageType === "thumbnail" && (
             <ImageOverlay
               username={username}
               profilePhoto={userProfileImage}

@@ -9,7 +9,7 @@ import {
   createAttributionUrl,
   fetchImages,
 } from "../utils";
-import { PHOTOS_PER_PAGE } from "../constants";
+import { PHOTOS_PER_PAGE, SRC_FULL_HEIGHT } from "../constants";
 import { Basic } from "unsplash-js/dist/methods/photos/types";
 import { RefObject, useCallback, useEffect, useRef, useState } from "react";
 
@@ -47,20 +47,18 @@ export const useInfiniteQueryImages = () => {
       width: res.width,
       id: res.id,
       src: `${res.urls.raw}&w=0.2&fm=webp`,
+      srcFull: `${res.urls.raw}&h=${SRC_FULL_HEIGHT}&fm=webp`,
       // srcFull: res.urls.full,
       username: res.user.name,
       userProfileImage: res.user.profile_image.medium,
       userProfileLink: createAttributionUrl(res.user.username),
       downloadLink: res.links.download,
     }));
-  console.log(photos && photos[0].src);
   return { photos, fetchNextPage, hasNextPage, isFetchingNextPage };
 };
 
 export const useUpdateColumnWidth = (ref: RefObject<null | HTMLDivElement>) => {
   const [columnWidth, setColumnWidth] = useState<null | number>(null);
-
-  console.log("Called");
 
   useEffect(() => {
     const updateColumnWidth = () => {

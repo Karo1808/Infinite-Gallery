@@ -3,6 +3,7 @@ import { handleDownload } from "../utils";
 import { APP_NAME } from "../constants";
 import { RefObject, SyntheticEvent, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import UserInfo from "./UserInfo";
 
 interface Props {
   username: string;
@@ -46,22 +47,12 @@ const ImageOverlay = ({
           handleClickImage(e, userRef);
         }}
       >
-        <div className="overlay-userinfo-container">
-          <a href={`${profileLink}`} target="_blank">
-            <img
-              className="overlay-profile-photo"
-              src={profilePhoto}
-              alt="profile photo"
-            />
-          </a>
-          <a
-            className="overlay-username"
-            href={`${profileLink}`}
-            target="_blank"
-          >
-            {username}
-          </a>
-        </div>
+        <UserInfo
+          username={username}
+          profileLink={profileLink}
+          profilePhoto={profilePhoto}
+          type="overlay"
+        />
         <button
           onClick={() => {
             handleDownload({

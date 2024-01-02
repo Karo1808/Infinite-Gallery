@@ -33,7 +33,7 @@ export const calculateImageHeight = ({
   imageWidth,
   imageHeight,
 }: {
-  columnWidth: number | null;
+  columnWidth?: number | null;
   imageWidth: number;
   imageHeight: number;
 }): number => {

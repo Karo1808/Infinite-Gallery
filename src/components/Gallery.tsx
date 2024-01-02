@@ -36,7 +36,11 @@ const Gallery = () => {
               key={photo.id}
               ref={index === photos.length - 5 ? lastPhoto : null}
             >
-              <Image columnWidth={columnWidth} {...photo} />
+              <Image
+                imageType="thumbnail"
+                columnWidth={columnWidth}
+                {...photo}
+              />
             </div>
           ))}
       </Masonry>

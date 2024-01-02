@@ -54,6 +54,32 @@ export const calculateImageHeight = ({
   return imageHeight * (columnWidth / imageWidth) * 1.05;
 };
 
+export const calculateImageWidth = ({
+  height,
+  imageWidth,
+  imageHeight,
+}: {
+  height?: number;
+  imageWidth: number;
+  imageHeight: number;
+}): number => {
+  if (!height) {
+    return 0;
+  }
+
+  const targetAspectRatio = height / imageHeight;
+  const actualAspectRatio = imageHeight / imageWidth;
+
+  if (targetAspectRatio !== actualAspectRatio) {
+    // Calculate the height while maintaining aspect ratio
+    const adjustedWidth = Math.round(imageWidth * targetAspectRatio);
+    return adjustedWidth;
+  }
+
+  // If aspect ratios match, use the original calculation
+  return imageWidth * (height / imageHeight) * 1.05;
+};
+
 export const createAttributionUrl = (username?: string): string =>
   `${BASE_URL}/${
     username && `@${username}`

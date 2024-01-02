@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { Blurhash } from "react-blurhash";
-import { calculateImageHeight } from "../utils";
+import { calculateImageHeight, calculateImageWidth } from "../utils";
 import ImageOverlay from "./Overlay";
 import { Nullable } from "unsplash-js/dist/helpers/typescript";
 import { useParams } from "react-router-dom";
+import { SRC_FULL_HEIGHT } from "../constants";
 
 interface Props {
   altDescription: Nullable<string>;
@@ -44,6 +45,12 @@ const Image = ({
     imageHeight: height,
   });
 
+  const calculatedWidth = calculateImageWidth({
+    height: SRC_FULL_HEIGHT,
+    imageWidth: width,
+    imageHeight: height,
+  });
+
   useEffect(() => {
     console.log(params.id);
     const img = new window.Image();
@@ -62,7 +69,7 @@ const Image = ({
       {!isImageLoaded && (
         <Blurhash
           hash={blurHash ?? "LEHV6nWB2yk8pyo0adR*.7kCMdnj"}
-          width={params.id ? 400 : "100%"}
+          width={params.id ? 400 : calculatedWidth}
           height={params.id ? 600 : calculatedHeight}
           resolutionX={32}
           resolutionY={32}

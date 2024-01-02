@@ -69,7 +69,7 @@ const Image = ({
       {!isImageLoaded && (
         <Blurhash
           hash={blurHash ?? "LEHV6nWB2yk8pyo0adR*.7kCMdnj"}
-          width={params.id ? 400 : calculatedWidth}
+          width={params.id ? calculatedWidth : "100%"}
           height={params.id ? 600 : calculatedHeight}
           resolutionX={32}
           resolutionY={32}

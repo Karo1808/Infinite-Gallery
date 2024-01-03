@@ -10,6 +10,7 @@ const queryClient = new QueryClient();
 const App = () => {
   const location = useLocation();
   const background = location.state && location.state.background;
+
   return (
     <QueryClientProvider client={queryClient}>
       <RootLocationContextProvider>

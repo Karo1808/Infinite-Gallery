@@ -21,13 +21,13 @@ const ImageDetails = () => {
   const currentPhoto = photos?.find((photo) => photo.id === currentId);
   const currentIndex = photos?.findIndex((photo) => photo.id === currentId);
 
-  useEffect(() => {
-    console.log("Component has been mounted");
-    // You can return a cleanup function here if needed
-    return () => {
-      console.log("Component will unmount"); // Optional cleanup logic
-    };
-  }, []);
+  // useEffect(() => {
+  //   console.log("Component has been mounted");
+  //   // You can return a cleanup function here if needed
+  //   return () => {
+  //     console.log("Component will unmount"); // Optional cleanup logic
+  //   };
+  // }, []);
 
   useEffect(() => {
     if (photos) {
@@ -80,7 +80,11 @@ const ImageDetails = () => {
           </button>
         </section>
         <div className="modal-image">
-          <Image {...currentPhoto} imageType="full" />
+          <Image
+            key={`${currentPhoto.id}2`}
+            {...currentPhoto}
+            imageType="full"
+          />
         </div>
         <BottomBar />
       </main>

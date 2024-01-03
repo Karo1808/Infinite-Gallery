@@ -37,9 +37,7 @@ const Image = ({
 }: Props) => {
   const [isImageLoaded, setIsImageLoaded] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
-  const [calculatedWidth, setCalculatedWidth] = useState<number | undefined>(
-    undefined
-  );
+
   const params = useParams();
 
   const calculatedHeight = calculateImageHeight({
@@ -48,29 +46,30 @@ const Image = ({
     imageHeight: height,
   });
 
-  useEffect(() => {
-    console.log(calculatedWidth);
-    setIsImageLoaded(false);
-    setCalculatedWidth(
-      calculateImageWidth({
-        height: SRC_FULL_HEIGHT,
-        imageWidth: width,
-        imageHeight: height,
-      })
-    );
-    const img = new window.Image();
-    img.onload = () => {
-      setCalculatedWidth(undefined);
-      setIsImageLoaded(true);
-    };
+  const calculatedWidth = calculateImageWidth({
+    height: SRC_FULL_HEIGHT,
+    imageWidth: width,
+    imageHeight: height,
+  });
 
+  useEffect(() => {
+    const img = new window.Image();
+    console.log("triggered");
+    img.onload = () => {
+      console.log("started loading");
+      setTimeout(() => {
+        console.log("loaded");
+        setIsImageLoaded(true);
+      }, 2000);
+      console.log("loading");
+    };
     img.src = src;
     img.alt = altDescription ?? "image";
   }, [src]);
 
   return (
     <>
-      {!isImageLoaded && calculatedWidth && (
+      {!isImageLoaded && (
         <Blurhash
           hash={blurHash ?? "LEHV6nWB2yk8pyo0adR*.7kCMdnj"}
           width={params.id ? calculatedWidth : "100%"}

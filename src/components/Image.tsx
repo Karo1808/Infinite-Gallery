@@ -69,7 +69,7 @@ const Image = ({
 
   return (
     <>
-      {!isImageLoaded && (
+      <div style={{ display: isImageLoaded ? "none" : "block" }}>
         <Blurhash
           hash={blurHash ?? "LEHV6nWB2yk8pyo0adR*.7kCMdnj"}
           width={params.id ? calculatedWidth : "100%"}
@@ -79,30 +79,30 @@ const Image = ({
           punch={1}
           className="blurhash"
         />
-      )}
-      {isImageLoaded && (
-        <div
-          className="image-container"
-          onMouseOver={() => setIsHovered(true)}
-          onMouseOut={() => setIsHovered(false)}
-        >
-          <img
-            loading="lazy"
-            className="image"
-            src={imageType === "thumbnail" ? src : srcFull}
-            alt={altDescription ?? "image"}
+      </div>
+
+      <div
+        className="image-container"
+        onMouseOver={() => setIsHovered(true)}
+        onMouseOut={() => setIsHovered(false)}
+        style={{ display: isImageLoaded ? "block" : "none" }}
+      >
+        <img
+          loading="lazy"
+          className="image"
+          src={imageType === "thumbnail" ? src : srcFull}
+          alt={altDescription ?? "image"}
+        />
+        {isHovered && imageType === "thumbnail" && (
+          <ImageOverlay
+            username={username}
+            profilePhoto={userProfileImage}
+            profileLink={userProfileLink}
+            id={id}
+            downloadLink={src}
           />
-          {isHovered && imageType === "thumbnail" && (
-            <ImageOverlay
-              username={username}
-              profilePhoto={userProfileImage}
-              profileLink={userProfileLink}
-              id={id}
-              downloadLink={src}
-            />
-          )}
-        </div>
-      )}
+        )}
+      </div>
     </>
   );
 };

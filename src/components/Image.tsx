@@ -49,6 +49,8 @@ const Image = ({
   });
 
   useEffect(() => {
+    console.log(calculatedWidth);
+    setIsImageLoaded(false);
     setCalculatedWidth(
       calculateImageWidth({
         height: SRC_FULL_HEIGHT,
@@ -56,9 +58,9 @@ const Image = ({
         imageHeight: height,
       })
     );
-    setIsImageLoaded(false);
     const img = new window.Image();
     img.onload = () => {
+      setCalculatedWidth(undefined);
       setIsImageLoaded(true);
     };
 
@@ -68,7 +70,7 @@ const Image = ({
 
   return (
     <>
-      {!isImageLoaded && (
+      {!isImageLoaded && calculatedWidth && (
         <Blurhash
           hash={blurHash ?? "LEHV6nWB2yk8pyo0adR*.7kCMdnj"}
           width={params.id ? calculatedWidth : "100%"}

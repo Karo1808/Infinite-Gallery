@@ -37,6 +37,9 @@ const Image = ({
 }: Props) => {
   const [isImageLoaded, setIsImageLoaded] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+  const [calculatedWidth, setCalculatedWidth] = useState<number | undefined>(
+    undefined
+  );
   const params = useParams();
 
   const calculatedHeight = calculateImageHeight({
@@ -45,14 +48,15 @@ const Image = ({
     imageHeight: height,
   });
 
-  const calculatedWidth = calculateImageWidth({
-    height: SRC_FULL_HEIGHT,
-    imageWidth: width,
-    imageHeight: height,
-  });
-
   useEffect(() => {
-    console.log(params.id);
+    setCalculatedWidth(
+      calculateImageWidth({
+        height: SRC_FULL_HEIGHT,
+        imageWidth: width,
+        imageHeight: height,
+      })
+    );
+    setIsImageLoaded(false);
     const img = new window.Image();
     img.onload = () => {
       setIsImageLoaded(true);
@@ -60,7 +64,7 @@ const Image = ({
 
     img.src = src;
     img.alt = altDescription ?? "image";
-  }, []);
+  }, [src]);
 
   return (
     <>

@@ -22,6 +22,14 @@ const ImageDetails = () => {
   const currentIndex = photos?.findIndex((photo) => photo.id === currentId);
 
   useEffect(() => {
+    console.log("Component has been mounted");
+    // You can return a cleanup function here if needed
+    return () => {
+      console.log("Component will unmount"); // Optional cleanup logic
+    };
+  }, []);
+
+  useEffect(() => {
     if (photos) {
       if (currentIndex === photos?.length - 1) fetchNextPage();
       if (currentIndex === 0) fetchPreviousPage();
@@ -35,6 +43,7 @@ const ImageDetails = () => {
       2;
       navigate(`/image/${photos[nextIndex].id}`, {
         state: { background: rootLocation },
+        replace: true,
       });
     } else {
       console.error("Invalid currentIndex or no photos available");

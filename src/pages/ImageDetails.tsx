@@ -1,44 +1,60 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { useInfiniteQueryImages } from "../hooks";
+import { useInfiniteQueryImages, useModalClose } from "../hooks";
 import Image from "../components/Image";
 import UserInfo from "../components/UserInfo";
 import BottomBar from "../components/BottomBar";
-import { IoMdClose } from "react-icons/io";
-import { useEffect, useRef } from "react";
+import { IoMdClose, IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import { useRootLocationContext } from "../context/root-location-context";
+import { useEffect } from "react";
 
 const ImageDetails = () => {
   const { id: currentId } = useParams();
-
   const navigate = useNavigate();
-  const modalRef = useRef<null | HTMLDivElement>(null);
-  const { photos } = useInfiniteQueryImages();
+  const { rootLocation } = useRootLocationContext();
 
-  const [currentPhoto] =
-    photos?.filter((photo) => photo.id === currentId) || [];
-
-  useEffect(() => {
-    const handleClick = (e: MouseEvent) => {
-      if (modalRef.current && modalRef.current === e.target) {
-        handleClose();
-      }
-    };
-
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === "Escape") handleClose();
-    };
-
-    document.addEventListener("mousedown", handleClick);
-    document.addEventListener("keydown", handleEscape);
-
-    return () => {
-      document.removeEventListener("click", handleClick);
-      document.removeEventListener("keydown", handleEscape);
-    };
-  }, [modalRef]);
-
+  const { photos, fetchNextPage, fetchPreviousPage } = useInfiniteQueryImages();
   const handleClose = () => {
     navigate("/");
   };
+  const modalRef = useModalClose({ handler: handleClose });
+
+  const currentPhoto = photos?.find((photo) => photo.id === currentId);
+  const currentIndex = photos?.findIndex((photo) => photo.id === currentId);
+
+  useEffect(() => {
+    if (photos) {
+      if (currentIndex === photos?.length - 1) fetchNextPage();
+      if (currentIndex === 0) fetchPreviousPage();
+    }
+  }, [currentIndex]);
+
+  const handleNextPhoto = () => {
+    const nextIndex = currentIndex !== undefined ? currentIndex + 1 : 0;
+
+    if (photos && photos.length > nextIndex) {
+      2;
+      navigate(`/image/${photos[nextIndex].id}`, {
+        state: { background: rootLocation },
+      });
+    } else {
+      console.error("Invalid currentIndex or no photos available");
+    }
+  };
+
+  const handlePreviousPhoto = () => {
+    const previousIndex = currentIndex !== undefined ? currentIndex - 1 : 0;
+
+    if (photos && photos.length > previousIndex) {
+      2;
+      navigate(`/image/${photos[previousIndex].id}`, {
+        state: { background: rootLocation },
+      });
+    } else {
+      console.error("Invalid currentIndex or no photos available");
+    }
+  };
+
+  if (!currentPhoto) return;
 
   return (
     <div className="modal" ref={modalRef}>
@@ -59,6 +75,18 @@ const ImageDetails = () => {
         </div>
         <BottomBar />
       </main>
+      <button
+        onClick={handlePreviousPhoto}
+        className="modal-btn-direction modal-btn-left"
+      >
+        <IoIosArrowBack />
+      </button>
+      <button
+        onClick={handleNextPhoto}
+        className="modal-btn-direction modal-btn-right"
+      >
+        <IoIosArrowForward />
+      </button>
     </div>
   );
 };

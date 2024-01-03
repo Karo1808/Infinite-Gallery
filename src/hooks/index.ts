@@ -14,24 +14,27 @@ import { Basic } from "unsplash-js/dist/methods/photos/types";
 import { RefObject, useCallback, useEffect, useRef, useState } from "react";
 
 export const useInfiniteQueryImages = () => {
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    useInfiniteQuery({
-      queryKey: ["images"],
-      queryFn: fetchImages,
-      initialPageParam: 1,
-      getNextPageParam: (lastPage) => {
-        if (
-          lastPage?.prevOffSet !== undefined &&
-          lastPage?.photos?.total !== undefined &&
-          lastPage.prevOffSet + PHOTOS_PER_PAGE > lastPage.photos.total
-        ) {
-          return false;
-        }
-        return lastPage?.prevOffSet
-          ? lastPage?.prevOffSet + PHOTOS_PER_PAGE
-          : 0;
-      },
-    });
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    fetchPreviousPage,
+  } = useInfiniteQuery({
+    queryKey: ["images"],
+    queryFn: fetchImages,
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) => {
+      if (
+        lastPage?.prevOffSet !== undefined &&
+        lastPage?.photos?.total !== undefined &&
+        lastPage.prevOffSet + PHOTOS_PER_PAGE > lastPage.photos.total
+      ) {
+        return false;
+      }
+      return lastPage?.prevOffSet ? lastPage?.prevOffSet + PHOTOS_PER_PAGE : 0;
+    },
+  });
 
   const photos = data?.pages
     .reduce((acc, page) => {
@@ -54,7 +57,13 @@ export const useInfiniteQueryImages = () => {
       userProfileLink: createAttributionUrl(res.user.username),
       downloadLink: res.links.download,
     }));
-  return { photos, fetchNextPage, hasNextPage, isFetchingNextPage };
+  return {
+    photos,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    fetchPreviousPage,
+  };
 };
 
 export const useUpdateColumnWidth = (ref: RefObject<null | HTMLDivElement>) => {
@@ -110,4 +119,29 @@ export const useInfiniteScroll = ({ fetchData, isLoading }: Params) => {
     observer.current.observe(node);
   }, []);
   return { lastPhoto };
+};
+
+export const useModalClose = ({ handler }: { handler: () => void }) => {
+  const modalRef = useRef<null | HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClick = (e: MouseEvent) => {
+      if (modalRef.current && modalRef.current === e.target) {
+        handler();
+      }
+    };
+
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape") handler();
+    };
+
+    document.addEventListener("mousedown", handleClick);
+    document.addEventListener("keydown", handleEscape);
+
+    return () => {
+      document.removeEventListener("click", handleClick);
+      document.removeEventListener("keydown", handleEscape);
+    };
+  }, [modalRef]);
+  return modalRef;
 };

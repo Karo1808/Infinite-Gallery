@@ -4,6 +4,7 @@ import { APP_NAME } from "../constants";
 import { RefObject, SyntheticEvent, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import UserInfo from "./UserInfo";
+import { useRootLocationContext } from "../context/root-location-context";
 
 interface Props {
   username: string;
@@ -24,10 +25,12 @@ const ImageOverlay = ({
   const userRef = useRef(null);
   const navigate = useNavigate();
   const location = useLocation();
+  const { setRootLocation } = useRootLocationContext();
 
   const handleClickImage = (e: SyntheticEvent, ref: RefObject<HTMLElement>) => {
     if (ref.current && e.target === ref.current) {
-      navigate(`image/${id}`, { state: { previousLocation: location } });
+      setRootLocation(location);
+      navigate(`/image/${id}`, { state: { background: location } });
     }
   };
 

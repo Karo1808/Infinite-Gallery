@@ -237,6 +237,27 @@ html {
   height: 10vh;
 }
 
+.modal-btn-direction {
+  background-color: transparent;
+  color: #adb5bd;
+  border: none;
+  font-size: 60px;
+  position: fixed;
+}
+
+.modal-btn-direction:hover {
+  cursor: pointer;
+  color: #e9ecef;
+}
+
+.modal-btn-left {
+  left: 8%;
+}
+
+.modal-btn-right {
+  right: 8%;
+}
+
 @media (min-width: 0px) {
   .header {
     position: static;

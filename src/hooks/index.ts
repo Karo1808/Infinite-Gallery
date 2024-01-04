@@ -12,6 +12,7 @@ import {
 import { PHOTOS_PER_PAGE, SRC_FULL_HEIGHT } from "../constants";
 import { Basic } from "unsplash-js/dist/methods/photos/types";
 import { RefObject, useCallback, useEffect, useRef, useState } from "react";
+import { useParams } from "react-router-dom";
 
 export const useInfiniteQueryImages = () => {
   const {
@@ -49,13 +50,12 @@ export const useInfiniteQueryImages = () => {
       height: res.height,
       width: res.width,
       id: res.id,
-      src: `${res.urls.raw}&w=0.2&fm=webp`,
+      src: `${res.urls.raw}&w=0.2&format=auto&fm=webp`,
       srcFull: `${res.urls.raw}&h=${SRC_FULL_HEIGHT}&fm=webp`,
-      // srcFull: res.urls.full,
       username: res.user.name,
       userProfileImage: res.user.profile_image.medium,
       userProfileLink: createAttributionUrl(res.user.username),
-      downloadLink: res.links.download,
+      downloadLink: res.urls.full,
     }));
   return {
     photos,
@@ -144,4 +144,32 @@ export const useModalClose = ({ handler }: { handler: () => void }) => {
     };
   }, [modalRef]);
   return modalRef;
+};
+
+export const useArrowKeys = ({
+  handleNextPage,
+  handlePreviousPage,
+}: {
+  currentIndex?: number;
+  photosLength?: number;
+  handleNextPage: () => void;
+  handlePreviousPage: () => void;
+}) => {
+  const params = useParams();
+  useEffect(() => {
+    const handleLeftArrow = (e: KeyboardEvent) => {
+      if (e.key === "ArrowLeft") handlePreviousPage();
+    };
+    const handleRightArrow = (e: KeyboardEvent) => {
+      if (e.key === "ArrowRight") handleNextPage();
+    };
+
+    document.addEventListener("keydown", handleLeftArrow);
+    document.addEventListener("keydown", handleRightArrow);
+
+    return () => {
+      document.removeEventListener("keydown", handleLeftArrow);
+      document.removeEventListener("keydown", handleRightArrow);
+    };
+  }, [params]);
 };

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { Blurhash } from "react-blurhash";
 import { calculateImageHeight, calculateImageWidth } from "../utils";
 import ImageOverlay from "./Overlay";
@@ -19,6 +19,7 @@ interface Props {
   columnWidth?: number | null;
   srcFull: string;
   imageType: "thumbnail" | "full";
+  downloadLink: string;
 }
 
 const Image = ({
@@ -34,6 +35,7 @@ const Image = ({
   userProfileLink,
   columnWidth,
   imageType,
+  downloadLink,
 }: Props) => {
   const [isImageLoaded, setIsImageLoaded] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
@@ -54,15 +56,11 @@ const Image = ({
 
   useEffect(() => {
     const img = new window.Image();
-    console.log("triggered");
-    img.onload = () => {
-      console.log("started loading");
-      setTimeout(() => {
-        console.log("loaded");
+    if (!params.id) {
+      img.onload = () => {
         setIsImageLoaded(true);
-      }, 2000);
-      console.log("loading");
-    };
+      };
+    }
     img.src = src;
     img.alt = altDescription ?? "image";
   }, [src]);
@@ -73,7 +71,7 @@ const Image = ({
         <Blurhash
           hash={blurHash ?? "LEHV6nWB2yk8pyo0adR*.7kCMdnj"}
           width={params.id ? calculatedWidth : "100%"}
-          height={params.id ? 600 : calculatedHeight}
+          height={params.id ? SRC_FULL_HEIGHT : calculatedHeight}
           resolutionX={32}
           resolutionY={32}
           punch={1}
@@ -87,19 +85,34 @@ const Image = ({
         onMouseOut={() => setIsHovered(false)}
         style={{ display: isImageLoaded ? "block" : "none" }}
       >
-        <img
-          loading="lazy"
-          className="image"
-          src={imageType === "thumbnail" ? src : srcFull}
-          alt={altDescription ?? "image"}
-        />
+        {!params.id && (
+          <Suspense>
+            <img
+              loading={params.id ? "eager" : "lazy"}
+              className="image"
+              src={imageType === "thumbnail" ? src : srcFull}
+              alt={altDescription ?? "image"}
+            />
+          </Suspense>
+        )}
+
+        {params.id && (
+          <img
+            loading={params.id ? "eager" : "lazy"}
+            className="image"
+            src={imageType === "thumbnail" ? src : srcFull}
+            alt={altDescription ?? "image"}
+            onLoad={() => setIsImageLoaded(true)}
+          />
+        )}
+
         {isHovered && imageType === "thumbnail" && (
           <ImageOverlay
             username={username}
             profilePhoto={userProfileImage}
             profileLink={userProfileLink}
             id={id}
-            downloadLink={src}
+            downloadLink={downloadLink}
           />
         )}
       </div>

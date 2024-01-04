@@ -1,7 +1,7 @@
-const BottomBar = () => {
+const BottomBar = ({ children }: { children: React.ReactNode }) => {
   return (
     <section className="modal-bottombar">
-      <div className="bottombar-container"></div>
+      <div className="bottombar-container">{children}</div>
     </section>
   );
 };

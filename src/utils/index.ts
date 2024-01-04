@@ -1,6 +1,5 @@
 import { APP_NAME, BASE_URL, GUTTER_SIZE } from "../constants";
 import { unpslashApi } from "../unsplash";
-import { saveAs } from "file-saver";
 
 export const fetchImages = async ({
   pageParam,
@@ -41,17 +40,8 @@ export const calculateImageHeight = ({
     return 0;
   }
 
-  const targetAspectRatio = columnWidth / imageWidth;
-  const actualAspectRatio = imageHeight / imageWidth;
-
-  if (targetAspectRatio !== actualAspectRatio) {
-    // Calculate the height while maintaining aspect ratio
-    const adjustedHeight = Math.round(imageHeight * targetAspectRatio);
-    return adjustedHeight;
-  }
-
-  // If aspect ratios match, use the original calculation
-  return imageHeight * (columnWidth / imageWidth) * 1.05;
+  // Maintain the original aspect ratio
+  return Math.round((columnWidth / imageWidth) * imageHeight) * 1.02;
 };
 
 export const calculateImageWidth = ({
@@ -84,16 +74,6 @@ export const createAttributionUrl = (username?: string): string =>
   `${BASE_URL}/${
     username && `@${username}`
   }?utm_source=${APP_NAME}&utm_medium=referral`;
-
-export const handleDownload = ({
-  imageLink,
-  fileName,
-}: {
-  imageLink: string;
-  fileName: string;
-}) => {
-  saveAs(imageLink, fileName);
-};
 
 // export const convertImageToWebp = (src: string) =>
 //   src.replace("png", "webp");

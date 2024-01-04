@@ -1,11 +1,12 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { useInfiniteQueryImages, useModalClose } from "../hooks";
+import { useArrowKeys, useInfiniteQueryImages, useModalClose } from "../hooks";
 import Image from "../components/Image";
 import UserInfo from "../components/UserInfo";
 import BottomBar from "../components/BottomBar";
 import { IoMdClose, IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { useRootLocationContext } from "../context/root-location-context";
 import { useEffect } from "react";
+import DownloadButton from "../components/DownloadButton";
 
 const ImageDetails = () => {
   const { id: currentId } = useParams();
@@ -21,17 +22,9 @@ const ImageDetails = () => {
   const currentPhoto = photos?.find((photo) => photo.id === currentId);
   const currentIndex = photos?.findIndex((photo) => photo.id === currentId);
 
-  // useEffect(() => {
-  //   console.log("Component has been mounted");
-  //   // You can return a cleanup function here if needed
-  //   return () => {
-  //     console.log("Component will unmount"); // Optional cleanup logic
-  //   };
-  // }, []);
-
   useEffect(() => {
     if (photos) {
-      if (currentIndex === photos?.length - 1) fetchNextPage();
+      if (currentIndex === photos.length - 1) fetchNextPage();
       if (currentIndex === 0) fetchPreviousPage();
     }
   }, [currentIndex]);
@@ -63,6 +56,11 @@ const ImageDetails = () => {
     }
   };
 
+  useArrowKeys({
+    handleNextPage: handleNextPhoto,
+    handlePreviousPage: handlePreviousPhoto,
+  });
+
   if (!currentPhoto) return;
 
   return (
@@ -74,6 +72,7 @@ const ImageDetails = () => {
             profileLink={currentPhoto.userProfileLink}
             profilePhoto={currentPhoto.userProfileImage}
             type="topbar"
+            key={`${currentPhoto.id}2`}
           />
           <button onClick={handleClose} className="btn-modal-close">
             <IoMdClose size={30} />
@@ -86,7 +85,13 @@ const ImageDetails = () => {
             imageType="full"
           />
         </div>
-        <BottomBar />
+        <BottomBar>
+          <DownloadButton
+            downloadLink={currentPhoto.downloadLink}
+            type="full"
+            id={currentPhoto.id}
+          />
+        </BottomBar>
       </main>
       <button
         onClick={handlePreviousPhoto}

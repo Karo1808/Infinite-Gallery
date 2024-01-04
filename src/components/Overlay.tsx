@@ -1,10 +1,8 @@
-import { GoDownload } from "react-icons/go";
-import { handleDownload } from "../utils";
-import { APP_NAME } from "../constants";
 import { RefObject, SyntheticEvent, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import UserInfo from "./UserInfo";
 import { useRootLocationContext } from "../context/root-location-context";
+import DownloadButton from "./DownloadButton";
 
 interface Props {
   username: string;
@@ -56,17 +54,7 @@ const ImageOverlay = ({
           profilePhoto={profilePhoto}
           type="overlay"
         />
-        <button
-          onClick={() => {
-            handleDownload({
-              imageLink: downloadLink,
-              fileName: `${APP_NAME}.${id}.png`,
-            });
-          }}
-          className="overlay-download-btn"
-        >
-          <GoDownload color={"#e9ecef"} size={25} />
-        </button>
+        <DownloadButton id={id} downloadLink={downloadLink} type="overlay" />
       </div>
     </>
   );

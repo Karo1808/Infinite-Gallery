@@ -53,10 +53,6 @@ html {
   cursor: pointer;
 }
 
-.blurhash {
-  margin-bottom: 10px;
-}
-
 .image {
   max-width: 100%;
 }
@@ -76,6 +72,10 @@ html {
 
 .masonry-column:first-child {
   padding-left: 0;
+}
+
+.blurhash {
+  margin-bottom: 10px;
 }
 
 .loading-spinner {
@@ -127,8 +127,21 @@ html {
 .overlay-profile-photo {
   height: 3.2rem;
 }
+
 .topbar-profile-photo {
   height: 4.2rem;
+}
+
+.skeleton-profile-photo {
+  border-radius: 100%;
+  outline: 1px solid #adb5bd;
+}
+
+.overlay-skeleton-profile-photo {
+  padding: 1.6rem;
+}
+.topbar-skeleton-profile-photo {
+  padding: 2.1rem;
 }
 
 .userinfo-username:link,
@@ -165,15 +178,39 @@ html {
   color: black;
 }
 
-.overlay-download-btn {
+.full-download-button {
+  background-color: #f1f3f5;
+  border: 0;
+  padding: 1rem 1.5rem;
+  border-radius: 5px;
+  color: #333333;
+  border: 1px solid #adb5bd;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 1.6rem;
+  font-family: "Montserrat, sans-serif";
+  transition: all 0.2s;
+}
+
+.download-icon {
+  margin-top: -4px;
+}
+
+.overlay-download-button {
   background-color: transparent;
   border: none;
 }
 
-.overlay-download-btn:hover {
+.overlay-download-button:hover {
   cursor: pointer;
   color: white;
   filter: brightness(120%);
+}
+
+.full-download-button:hover {
+  cursor: pointer;
+  filter: brightness(98%);
 }
 
 .userinfo-profile-photo:hover {
@@ -208,7 +245,7 @@ html {
   border-radius: 10px;
   width: 70%;
   height: 90%;
-  padding: 2rem 2rem;
+  padding: 2rem 2rem 4rem 2rem;
   background-color: #e9ecef;
   display: flex;
   flex-direction: column;
@@ -234,6 +271,10 @@ html {
 .modal-bottombar {
   width: 100%;
   height: 10vh;
+  display: flex;
+  justify-content: end;
+  align-items: end;
+  padding-right: 5rem;
 }
 
 .modal-btn-direction {

@@ -1,3 +1,6 @@
+import { useState } from "react";
+import ProfilePhotoSkeleton from "./ProfilePhotoSkeleton";
+
 interface Props {
   username: string;
   profilePhoto: string;
@@ -6,18 +9,18 @@ interface Props {
 }
 
 const UserInfo = ({ username, profilePhoto, profileLink, type }: Props) => {
+  const [isPhotoLoading, setIsPhotoLoading] = useState<boolean>(true);
+
   return (
     <div className="userinfo-container">
       <a href={`${profileLink}`} target="_blank">
+        {isPhotoLoading && <ProfilePhotoSkeleton type={type} />}
         <img
-          className={`userinfo-profile-photo ${
-            type === "overlay"
-              ? "overlay-profile-photo"
-              : "topbar-profile-photo"
-          }
-            `}
+          style={{ display: isPhotoLoading ? "none" : "block" }}
+          className={`userinfo-profile-photo ${type}-profile-photo`}
           src={profilePhoto}
           alt="profile photo"
+          onLoad={() => setIsPhotoLoading(false)}
         />
       </a>
       <a

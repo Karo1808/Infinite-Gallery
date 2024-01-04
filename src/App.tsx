@@ -5,7 +5,7 @@ import Home from "./pages/Home";
 import ImageDetails from "./pages/ImageDetails";
 import RootLocationContextProvider from "./context/root-location-context";
 
-const queryClient = new QueryClient();
+export const queryClient = new QueryClient();
 
 const App = () => {
   const location = useLocation();

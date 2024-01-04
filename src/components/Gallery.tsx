@@ -5,13 +5,13 @@ import {
 } from "../hooks";
 
 import { SpinnerCircular } from "spinners-react";
-import { useRef, lazy, Suspense } from "react";
+import { useRef, lazy, Suspense, memo } from "react";
 import Masonry from "react-masonry-css";
 import { BREAKPOINT_COLUMN_OBJECT } from "../constants";
 
 const Image = lazy(() => import("./Image.tsx"));
 
-const Gallery = () => {
+const Gallery = memo(() => {
   const masonryWrapperRef = useRef<null | HTMLDivElement>(null);
   const { photos, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useInfiniteQueryImages();
@@ -63,6 +63,6 @@ const Gallery = () => {
       )}
     </div>
   );
-};
+});
 
 export default Gallery;

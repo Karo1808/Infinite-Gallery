@@ -298,10 +298,9 @@ html {
   right: 8%;
 }
 
-.masonry-wrapper {
+.mobile-view-wrapper {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
 }
 
 .mobile-view-topbar {

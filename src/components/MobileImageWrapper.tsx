@@ -1,4 +1,3 @@
-import DownloadButton from "./DownloadButton";
 import UserInfo from "./UserInfo";
 
 interface Props {
@@ -28,7 +27,7 @@ const MobileImageWrapper = ({
       </section>
       <section>{children}</section>
       <section className="mobile-view-bottombar">
-        <DownloadButton downloadLink={profileLink} type="full" id={username} />
+        {/* <DownloadButton downloadLink={profileLink} type="full" id={username} /> */}
       </section>
     </figure>
   );

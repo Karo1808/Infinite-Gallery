@@ -5,6 +5,7 @@ import ImageOverlay from "./Overlay";
 import { Nullable } from "unsplash-js/dist/helpers/typescript";
 import { useParams } from "react-router-dom";
 import { MOBILE_CONDITION, SRC_FULL_HEIGHT } from "../constants";
+import { useViewportInitalSizeAndResize } from "../hooks";
 
 interface Props {
   altDescription: Nullable<string>;
@@ -39,6 +40,7 @@ const Image = ({
 }: Props) => {
   const [isImageLoaded, setIsImageLoaded] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+  const { viewportWidth } = useViewportInitalSizeAndResize();
 
   const params = useParams();
 
@@ -64,6 +66,8 @@ const Image = ({
     img.src = src;
     img.alt = altDescription ?? "image";
   }, [src]);
+
+  console.log(viewportWidth);
 
   return (
     <>
@@ -107,7 +111,8 @@ const Image = ({
         {isHovered &&
           imageType === "thumbnail" &&
           columnWidth &&
-          columnWidth < MOBILE_CONDITION && (
+          viewportWidth &&
+          viewportWidth > MOBILE_CONDITION && (
             <ImageOverlay
               username={username}
               profilePhoto={userProfileImage}

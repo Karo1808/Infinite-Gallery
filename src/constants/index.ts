@@ -11,3 +11,4 @@ export const BREAKPOINT_COLUMN_OBJECT = {
 export const BASE_URL = "https://unsplash.com";
 export const APP_NAME = "infinite-gallery";
 export const SRC_FULL_HEIGHT = 600;
+export const MOBILE_CONDITION = 500;

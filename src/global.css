@@ -298,6 +298,29 @@ html {
   right: 8%;
 }
 
+.masonry-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.mobile-view-topbar {
+  padding: 1rem 2rem;
+  justify-self: center;
+  margin-bottom: 10px;
+}
+
+.mobile-view-topbar:first-child {
+  margin-top: 15px;
+}
+
+.mobile-view-bottombar {
+  display: flex;
+  padding: 1rem 4rem 2rem 4rem;
+  justify-content: end;
+  align-items: start;
+}
+
 @media (min-width: 0px) {
   .header {
     position: static;

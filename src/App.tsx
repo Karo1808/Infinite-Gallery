@@ -17,6 +17,7 @@ const App = () => {
     <QueryClientProvider client={queryClient}>
       <RootLocationContextProvider>
         <Suspense fallback={<div>Loading...</div>}>
+          {/* todo Improve suspense loading state */}
           <Routes location={background || location}>
             <Route path="/" element={<Home />} />
           </Routes>

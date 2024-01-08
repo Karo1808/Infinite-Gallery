@@ -1,10 +1,10 @@
-import { useEffect, useState, Suspense } from "react";
+import { useEffect, useState } from "react";
 import { Blurhash } from "react-blurhash";
 import { calculateImageHeight, calculateImageWidth } from "../utils";
 import ImageOverlay from "./Overlay";
 import { Nullable } from "unsplash-js/dist/helpers/typescript";
 import { useParams } from "react-router-dom";
-import { SRC_FULL_HEIGHT } from "../constants";
+import { MOBILE_CONDITION, SRC_FULL_HEIGHT } from "../constants";
 
 interface Props {
   altDescription: Nullable<string>;
@@ -86,14 +86,12 @@ const Image = ({
         style={{ display: isImageLoaded ? "block" : "none" }}
       >
         {!params.id && (
-          <Suspense>
-            <img
-              loading={params.id ? "eager" : "lazy"}
-              className="image"
-              src={imageType === "thumbnail" ? src : srcFull}
-              alt={altDescription ?? "image"}
-            />
-          </Suspense>
+          <img
+            loading={params.id ? "eager" : "lazy"}
+            className="image"
+            src={imageType === "thumbnail" ? src : srcFull}
+            alt={altDescription ?? "image"}
+          />
         )}
 
         {params.id && (
@@ -106,15 +104,18 @@ const Image = ({
           />
         )}
 
-        {isHovered && imageType === "thumbnail" && (
-          <ImageOverlay
-            username={username}
-            profilePhoto={userProfileImage}
-            profileLink={userProfileLink}
-            id={id}
-            downloadLink={downloadLink}
-          />
-        )}
+        {isHovered &&
+          imageType === "thumbnail" &&
+          columnWidth &&
+          columnWidth < MOBILE_CONDITION && (
+            <ImageOverlay
+              username={username}
+              profilePhoto={userProfileImage}
+              profileLink={userProfileLink}
+              id={id}
+              downloadLink={downloadLink}
+            />
+          )}
       </div>
     </>
   );

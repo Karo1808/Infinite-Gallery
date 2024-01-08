@@ -50,7 +50,7 @@ export const useInfiniteQueryImages = () => {
       height: res.height,
       width: res.width,
       id: res.id,
-      src: `${res.urls.raw}&w=0.2&format=auto&fm=webp`,
+      src: `${res.urls.raw}&w=0.25&format=auto&fm=webp`,
       srcFull: `${res.urls.raw}&h=${SRC_FULL_HEIGHT}&fm=webp`,
       username: res.user.name,
       userProfileImage: res.user.profile_image.medium,
@@ -172,4 +172,22 @@ export const useArrowKeys = ({
       document.removeEventListener("keydown", handleRightArrow);
     };
   }, [params]);
+};
+
+export const useViewportInitalSizeAndResize = () => {
+  const [viewportWidth, setViewportWidth] = useState(0);
+  useEffect(() => {
+    const updateViewportWidth = () => {
+      setViewportWidth(window.innerWidth);
+    };
+
+    updateViewportWidth();
+
+    window.addEventListener("resize", updateViewportWidth);
+
+    return () => {
+      window.removeEventListener("resize", updateViewportWidth);
+    };
+  }, []);
+  return { viewportWidth };
 };

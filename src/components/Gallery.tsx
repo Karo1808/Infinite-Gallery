@@ -2,13 +2,15 @@ import {
   useInfiniteQueryImages,
   useInfiniteScroll,
   useUpdateColumnWidth,
-  useViewportInitalSizeAndResize,
+  // useViewportInitalSizeAndResize,
 } from "../hooks";
 
 import { SpinnerCircular } from "spinners-react";
 import { useRef } from "react";
 import Masonry from "react-masonry-css";
-import { BREAKPOINT_COLUMN_OBJECT, TWO_COLUMNS_BREAKPOINT } from "../constants";
+import {
+  BREAKPOINT_COLUMN_OBJECT /*, TWO_COLUMNS_BREAKPOINT*/,
+} from "../constants";
 import Image from "./Image.tsx";
 import MobileImageWrapper from "./MobileImageWrapper.tsx";
 
@@ -18,7 +20,7 @@ const Gallery = () => {
     useInfiniteQueryImages();
 
   const { columnWidth } = useUpdateColumnWidth(masonryWrapperRef);
-  const { viewportWidth } = useViewportInitalSizeAndResize();
+  // const { viewportWidth } = useViewportInitalSizeAndResize();
   // Use for cache clearing
   // useEffect(() => {
   //   queryClient.resetQueries();

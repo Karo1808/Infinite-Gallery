@@ -43,27 +43,24 @@ const Gallery = () => {
               key={photo.id}
               ref={index > photos.length - 5 ? lastPhoto : null}
             >
-              {viewportWidth > TWO_COLUMNS_BREAKPOINT ? (
+              {/* <Image
+                imageType="thumbnail"
+                columnWidth={columnWidth}
+                {...photo}
+              /> */}
+              <MobileImageWrapper
+                username={photo.username}
+                profilePhoto={photo.userProfileImage}
+                profileLink={photo.userProfileLink}
+                id={photo.id}
+                downloadLink={photo.downloadLink}
+              >
                 <Image
                   imageType="thumbnail"
                   columnWidth={columnWidth}
                   {...photo}
                 />
-              ) : (
-                <MobileImageWrapper
-                  username={photo.username}
-                  profilePhoto={photo.userProfileImage}
-                  profileLink={photo.userProfileLink}
-                  id={photo.id}
-                  downloadLink={photo.downloadLink}
-                >
-                  <Image
-                    imageType="thumbnail"
-                    columnWidth={columnWidth}
-                    {...photo}
-                  />
-                </MobileImageWrapper>
-              )}
+              </MobileImageWrapper>
             </div>
           ))}
       </Masonry>

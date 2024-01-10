@@ -1,6 +1,7 @@
 import Gallery from "../components/Gallery";
 import { RiInfinityLine } from "react-icons/ri";
 import { Link } from "react-router-dom";
+import Search from "../components/Search";
 
 const Home = () => {
   return (
@@ -12,6 +13,7 @@ const Home = () => {
         </Link>
       </header>
       <main className="main">
+        <Search />
         <Gallery />
       </main>
     </>

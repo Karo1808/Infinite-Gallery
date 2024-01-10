@@ -8,6 +8,9 @@ html {
   font-size: 62.5%;
   overflow-x: hidden;
   font-family: sans-serif;
+}
+
+body {
   height: 100vh;
   background-color: #f8f9fa;
 }
@@ -17,15 +20,20 @@ html {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: auto;
-  height: 8vh;
+  width: 100vw;
+  height: 10vh;
   background-color: #1c1d1e;
   z-index: 20;
 }
 
 .main {
+  margin: 0 auto;
   display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
+  gap: 6vh;
+  width: 100vw;
 }
 
 .logo-container {
@@ -58,7 +66,7 @@ html {
 }
 
 .masonry-wrapper {
-  width: 100vw;
+  width: 100%;
 }
 
 .masonry {
@@ -273,7 +281,7 @@ html {
   height: 10vh;
   display: flex;
   justify-content: end;
-  align-items: end;
+  align-items: start;
   padding-right: 5rem;
 }
 
@@ -306,7 +314,7 @@ html {
 .mobile-view-topbar {
   padding: 1rem 2rem;
   justify-self: center;
-  margin-bottom: 10px;
+  margin-bottom: 5rem;
 }
 
 .mobile-view-topbar:first-child {
@@ -318,6 +326,49 @@ html {
   padding: 1rem 4rem 2rem 4rem;
   justify-content: end;
   align-items: start;
+}
+
+.searchbar {
+  padding: 1rem 1rem;
+  border: none;
+  outline-offset: 2px;
+  border-radius: 10px;
+  background-color: #e9ecef;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  align-self: center;
+  margin-top: 5vh;
+  width: 80%;
+}
+
+.search-input {
+  width: 90%;
+  border: none;
+  background-color: transparent;
+  font-size: 1.8rem;
+  padding: 1rem 1rem;
+  color: #495057;
+}
+
+.search-input:focus {
+  outline: none;
+}
+
+.search-button {
+  color: #868e96;
+  border: none;
+  background-color: transparent;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 0.5rem;
+  transition: all 200ms;
+}
+
+.search-button:hover {
+  cursor: pointer;
+  color: #495057;
 }
 
 @media (min-width: 0px) {
@@ -338,10 +389,22 @@ html {
   .header {
     margin-bottom: 20rem;
   }
+
+  .searchbar {
+    width: 60%;
+    margin-left: 10px;
+    margin-top: 0;
+  }
 }
 
 @media (min-width: 1400px) {
-  .masonry-wrapper {
+  .main {
     width: 70vw;
+  }
+  .searchbar {
+    width: 60%;
+    margin-left: 0;
+    align-self: start;
+    margin-top: 0;
   }
 }

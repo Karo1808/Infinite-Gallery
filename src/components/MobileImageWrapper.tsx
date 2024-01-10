@@ -1,3 +1,4 @@
+import DownloadButton from "./DownloadButton";
 import UserInfo from "./UserInfo";
 
 interface Props {
@@ -14,6 +15,8 @@ const MobileImageWrapper = ({
   username,
   profilePhoto,
   profileLink,
+  downloadLink,
+  id,
 }: Props) => {
   return (
     <figure className="mobile-image-container">
@@ -27,7 +30,7 @@ const MobileImageWrapper = ({
       </section>
       <section>{children}</section>
       <section className="mobile-view-bottombar">
-        {/* <DownloadButton downloadLink={profileLink} type="full" id={username} /> */}
+        <DownloadButton downloadLink={downloadLink} type="full" id={id} />
       </section>
     </figure>
   );

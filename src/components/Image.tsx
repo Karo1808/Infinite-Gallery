@@ -67,8 +67,6 @@ const Image = ({
     img.alt = altDescription ?? "image";
   }, [src]);
 
-  console.log(viewportWidth);
-
   return (
     <>
       <div style={{ display: isImageLoaded ? "none" : "block" }}>

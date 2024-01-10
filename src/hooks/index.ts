@@ -8,13 +8,16 @@ import {
   calculateColumnWidth,
   createAttributionUrl,
   fetchImages,
+  fetchImagesWithQuery,
 } from "../utils";
 import { PHOTOS_PER_PAGE, SRC_FULL_HEIGHT } from "../constants";
 import { Basic } from "unsplash-js/dist/methods/photos/types";
 import { RefObject, useCallback, useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 
 export const useInfiniteQueryImages = () => {
+  const [searchParams] = useSearchParams();
+  const searchParam = searchParams.get("query") ?? "";
   const {
     data,
     fetchNextPage,
@@ -22,8 +25,12 @@ export const useInfiniteQueryImages = () => {
     isFetchingNextPage,
     fetchPreviousPage,
   } = useInfiniteQuery({
-    queryKey: ["images"],
-    queryFn: fetchImages,
+    queryKey: ["images", searchParam],
+    queryFn: searchParam
+      ? ({ pageParam }: { pageParam: number | false }) =>
+          fetchImagesWithQuery({ query: searchParam, pageParam })
+      : fetchImages,
+
     initialPageParam: 1,
     getNextPageParam: (lastPage) => {
       if (

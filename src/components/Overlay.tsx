@@ -1,5 +1,5 @@
 import { RefObject, SyntheticEvent, useRef } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import UserInfo from "./UserInfo";
 import { useRootLocationContext } from "../context/root-location-context";
 import DownloadButton from "./DownloadButton";
@@ -24,11 +24,17 @@ const ImageOverlay = ({
   const navigate = useNavigate();
   const location = useLocation();
   const { setRootLocation } = useRootLocationContext();
+  const [searchParams, _] = useSearchParams();
 
   const handleClickImage = (e: SyntheticEvent, ref: RefObject<HTMLElement>) => {
     if (ref.current && e.target === ref.current) {
       setRootLocation(location);
-      navigate(`/image/${id}`, { state: { background: location } });
+      navigate(
+        { pathname: `image/${id}`, search: searchParams.toString() },
+        {
+          state: { background: location },
+        }
+      );
     }
   };
 

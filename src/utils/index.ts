@@ -26,6 +26,39 @@ export const fetchImages = async ({
     }
   }
 };
+export const fetchImagesWithQuery = async ({
+  pageParam,
+  query,
+}: {
+  pageParam?: number | false;
+  query: string;
+}) => {
+  try {
+    if (!query) {
+      throw new Error("No search query was provided");
+    }
+    console.log("triggered", pageParam);
+    if (pageParam) {
+      const res = await unpslashApi.search.getPhotos({
+        query,
+        page: pageParam,
+        perPage: 15,
+      });
+      if (res.errors) {
+        throw new Error(`${res.errors[0]}`);
+      }
+      const photos = res.response;
+      console.log(res.response);
+      return { photos, prevOffSet: pageParam };
+    }
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(
+        `An error occurred while fetching images by query: ${query}, ${error.message}`
+      );
+    }
+  }
+};
 
 export const calculateImageHeight = ({
   columnWidth,

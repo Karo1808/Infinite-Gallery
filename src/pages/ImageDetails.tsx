@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useArrowKeys, useInfiniteQueryImages, useModalClose } from "../hooks";
 import Image from "../components/Image";
 import UserInfo from "../components/UserInfo";
@@ -12,10 +12,14 @@ const ImageDetails = () => {
   const { id: currentId } = useParams();
   const navigate = useNavigate();
   const { rootLocation } = useRootLocationContext();
+  const [searchParams, _] = useSearchParams();
 
   const { photos, fetchNextPage, fetchPreviousPage } = useInfiniteQueryImages();
   const handleClose = () => {
-    navigate("/");
+    navigate(
+      { pathname: "/", search: searchParams.toString() },
+      { replace: true }
+    );
   };
   const modalRef = useModalClose({ handler: handleClose });
 
@@ -34,10 +38,16 @@ const ImageDetails = () => {
 
     if (photos && photos.length > nextIndex) {
       2;
-      navigate(`/image/${photos[nextIndex].id}`, {
-        state: { background: rootLocation },
-        replace: true,
-      });
+      navigate(
+        {
+          pathname: `/image/${photos[nextIndex].id}`,
+          search: searchParams.toString(),
+        },
+        {
+          state: { background: rootLocation },
+          replace: true,
+        }
+      );
     } else {
       console.error("Invalid currentIndex or no photos available");
     }
@@ -48,9 +58,16 @@ const ImageDetails = () => {
 
     if (photos && photos.length > previousIndex) {
       2;
-      navigate(`/image/${photos[previousIndex].id}`, {
-        state: { background: rootLocation },
-      });
+      navigate(
+        {
+          pathname: `/image/${photos[previousIndex].id}`,
+          search: searchParams.toString(),
+        },
+        {
+          state: { background: rootLocation },
+          replace: true,
+        }
+      );
     } else {
       console.error("Invalid currentIndex or no photos available");
     }

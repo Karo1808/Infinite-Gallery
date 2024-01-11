@@ -14,15 +14,11 @@ import MobileImageWrapper from "./MobileImageWrapper.tsx";
 
 const Gallery = () => {
   const masonryWrapperRef = useRef<null | HTMLDivElement>(null);
-  const { photos, fetchNextPage, hasNextPage, isFetchingNextPage } =
+  const { photos, fetchNextPage, hasNextPage, isFetching, isFetchingNextPage } =
     useInfiniteQueryImages();
 
   const { columnWidth } = useUpdateColumnWidth(masonryWrapperRef);
   const { viewportWidth } = useViewportInitalSizeAndResize();
-  // Use for cache clearing
-  // useEffect(() => {
-  //   queryClient.resetQueries();
-  // }, []);
 
   const { lastPhoto } = useInfiniteScroll({
     fetchData: fetchNextPage,
@@ -67,7 +63,7 @@ const Gallery = () => {
             </div>
           ))}
       </Masonry>
-      {isFetchingNextPage && (
+      {isFetching && (
         <div className="loading-spinner">
           <SpinnerCircular
             color="#ced4da"
@@ -75,6 +71,11 @@ const Gallery = () => {
             speed={120}
             size={70}
           />
+        </div>
+      )}
+      {!isFetchingNextPage && hasNextPage && (
+        <div className="no-more-images-wrapper">
+          <h2 className="no-more-images">No more images found</h2>
         </div>
       )}
     </div>

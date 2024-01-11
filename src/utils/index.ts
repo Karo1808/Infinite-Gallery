@@ -37,7 +37,6 @@ export const fetchImagesWithQuery = async ({
     if (!query) {
       throw new Error("No search query was provided");
     }
-    console.log("triggered", pageParam);
     if (pageParam) {
       const res = await unpslashApi.search.getPhotos({
         query,
@@ -48,13 +47,33 @@ export const fetchImagesWithQuery = async ({
         throw new Error(`${res.errors[0]}`);
       }
       const photos = res.response;
-      console.log(res.response);
       return { photos, prevOffSet: pageParam };
     }
   } catch (error) {
     if (error instanceof Error) {
       throw new Error(
         `An error occurred while fetching images by query: ${query}, ${error.message}`
+      );
+    }
+  }
+};
+
+export const fetchImageById = async ({ id }: { id: string }) => {
+  try {
+    if (id) {
+      const res = await unpslashApi.photos.get({
+        photoId: id,
+      });
+      if (res.errors) {
+        throw new Error(`${res.errors[0]}`);
+      }
+      const photo = res.response;
+      return { photo };
+    }
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(
+        `An error occurred while fetching image by ID, ${error.message}`
       );
     }
   }

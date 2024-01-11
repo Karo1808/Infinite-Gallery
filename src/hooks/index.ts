@@ -3,10 +3,12 @@ import {
   InfiniteData,
   InfiniteQueryObserverResult,
   useInfiniteQuery,
+  useQuery,
 } from "@tanstack/react-query";
 import {
   calculateColumnWidth,
   createAttributionUrl,
+  fetchImageById,
   fetchImages,
   fetchImagesWithQuery,
 } from "../utils";
@@ -22,8 +24,9 @@ export const useInfiniteQueryImages = () => {
     data,
     fetchNextPage,
     hasNextPage,
-    isFetchingNextPage,
     fetchPreviousPage,
+    isFetching,
+    isFetchingNextPage,
   } = useInfiniteQuery({
     queryKey: ["images", searchParam],
     queryFn: searchParam
@@ -68,8 +71,39 @@ export const useInfiniteQueryImages = () => {
     photos,
     fetchNextPage,
     hasNextPage,
-    isFetchingNextPage,
+    isFetching,
     fetchPreviousPage,
+    isFetchingNextPage,
+  };
+};
+
+export const usePhotoById = ({ id }: { id: string }) => {
+  const { data, isFetching, isError } = useQuery({
+    queryKey: ["image", id],
+    queryFn: async () => await fetchImageById({ id }),
+  });
+
+  const res = data?.photo;
+
+  if (!res) return { photo: undefined };
+  const photo = {
+    altDescription: res.alt_description,
+    blurHash: res.blur_hash,
+    height: res.height,
+    width: res.width,
+    id: res.id,
+    src: `${res.urls.raw}&w=0.25&format=auto&fm=webp`,
+    srcFull: `${res.urls.raw}&h=${SRC_FULL_HEIGHT}&fm=webp`,
+    username: res.user.name,
+    userProfileImage: res.user.profile_image.medium,
+    userProfileLink: createAttributionUrl(res.user.username),
+    downloadLink: res.urls.full,
+  };
+
+  return {
+    photo,
+    isFetching,
+    isError,
   };
 };
 

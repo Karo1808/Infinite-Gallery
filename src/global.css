@@ -371,6 +371,19 @@ body {
   color: #495057;
 }
 
+.no-more-images {
+  align-self: center;
+  font-size: 3.2rem;
+  color: #343a4068;
+  font-family: "Montserrat, sans-serif";
+}
+
+.no-more-images-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 12rem;
+}
+
 @media (min-width: 0px) {
   .header {
     position: static;
@@ -402,9 +415,9 @@ body {
     width: 70vw;
   }
   .searchbar {
-    width: 60%;
+    width: 50%;
     margin-left: 0;
-    align-self: start;
+    align-self: center;
     margin-top: 0;
   }
 }

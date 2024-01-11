@@ -8,6 +8,7 @@ export const fetchImages = async ({
 }) => {
   try {
     if (pageParam) {
+      console.log("fetch images");
       const res = await unpslashApi.photos.list({
         page: pageParam,
         perPage: 15,
@@ -38,6 +39,8 @@ export const fetchImagesWithQuery = async ({
       throw new Error("No search query was provided");
     }
     if (pageParam) {
+      console.log("fetch images with query");
+
       const res = await unpslashApi.search.getPhotos({
         query,
         page: pageParam,
@@ -60,7 +63,10 @@ export const fetchImagesWithQuery = async ({
 
 export const fetchImageById = async ({ id }: { id: string }) => {
   try {
-    if (id) {
+    console.log("fetch image by id");
+
+    if (!id) return null;
+    {
       const res = await unpslashApi.photos.get({
         photoId: id,
       });

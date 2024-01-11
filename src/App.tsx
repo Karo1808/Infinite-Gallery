@@ -8,7 +8,13 @@ const ImageDetailsModal = lazy(() => import("./pages/ImageDetailsModal"));
 const ImageDetails = lazy(() => import("./pages/ImageDetails"));
 import RootLocationContextProvider from "./context/root-location-context";
 
-export const queryClient = new QueryClient();
+export const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 60 * 1000,
+    },
+  },
+});
 
 const App = () => {
   const location = useLocation();

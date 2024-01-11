@@ -43,7 +43,7 @@ const Gallery = () => {
                 <Image
                   imageType="thumbnail"
                   columnWidth={columnWidth}
-                  {...photo}
+                  currentId={photo.id}
                 />
               ) : (
                 <MobileImageWrapper
@@ -56,7 +56,7 @@ const Gallery = () => {
                   <Image
                     imageType="thumbnail"
                     columnWidth={columnWidth}
-                    {...photo}
+                    currentId={photo.id}
                   />
                 </MobileImageWrapper>
               )}

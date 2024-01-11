@@ -85,7 +85,8 @@ export const usePhotoById = ({ id }: { id: string }) => {
 
   const res = data?.photo;
 
-  if (!res) return { photo: undefined };
+  if (!res) return {};
+
   const photo = {
     altDescription: res.alt_description,
     blurHash: res.blur_hash,

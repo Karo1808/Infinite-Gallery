@@ -2,47 +2,48 @@ import { useEffect, useState } from "react";
 import { Blurhash } from "react-blurhash";
 import { calculateImageHeight, calculateImageWidth } from "../utils";
 import ImageOverlay from "./Overlay";
-import { Nullable } from "unsplash-js/dist/helpers/typescript";
 import { useParams } from "react-router-dom";
 import { MOBILE_CONDITION, SRC_FULL_HEIGHT } from "../constants";
-import { useViewportInitalSizeAndResize } from "../hooks";
+import {
+  useInfiniteQueryImages,
+  usePhotoById,
+  useViewportInitalSizeAndResize,
+} from "../hooks";
 
 interface Props {
-  altDescription: Nullable<string>;
-  blurHash: Nullable<string>;
-  height: number;
-  width: number;
-  id: string;
-  src: string;
-  username: string;
-  userProfileImage: string;
-  userProfileLink: string;
+  byId?: boolean;
   columnWidth?: number | null;
-  srcFull: string;
   imageType: "thumbnail" | "full";
-  downloadLink: string;
+  currentId: string;
 }
 
-const Image = ({
-  altDescription,
-  blurHash,
-  height,
-  width,
-  id,
-  src,
-  srcFull,
-  username,
-  userProfileImage,
-  userProfileLink,
-  columnWidth,
-  imageType,
-  downloadLink,
-}: Props) => {
+const Image = ({ byId, columnWidth, imageType, currentId }: Props) => {
   const [isImageLoaded, setIsImageLoaded] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const { viewportWidth } = useViewportInitalSizeAndResize();
-
   const params = useParams();
+
+  const { photo } = usePhotoById({ id: params.id || "" });
+  const { photos } = useInfiniteQueryImages();
+
+  const currentPhoto = byId
+    ? photo
+    : photos?.find((photo) => photo.id === currentId);
+
+  if (!currentPhoto) return;
+  const {
+    altDescription,
+    blurHash,
+    height,
+    width,
+    src,
+    username,
+    userProfileImage,
+    downloadLink,
+    userProfileLink,
+    srcFull,
+    id,
+  } = currentPhoto;
 
   const calculatedHeight = calculateImageHeight({
     columnWidth,

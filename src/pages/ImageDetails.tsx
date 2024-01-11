@@ -17,7 +17,7 @@ const ImageDetails = () => {
         profileLink={photo.userProfileLink}
         downloadLink={photo.downloadLink}
       >
-        {<Image imageType="full" {...photo} />}
+        {<Image currentId={photo.id} imageType="full" byId />}
       </MobileImageWrapper>
     </div>
   );

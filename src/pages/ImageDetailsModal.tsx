@@ -99,7 +99,7 @@ const ImageDetailsModal = () => {
           <Image
             key={`${currentPhoto.id}2`}
             imageType="full"
-            {...currentPhoto}
+            currentId={currentPhoto.id}
           />
         </div>
         <BottomBar>

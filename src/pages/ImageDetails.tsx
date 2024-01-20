@@ -1,7 +1,9 @@
 import { useParams } from "react-router-dom";
 import { usePhotoById } from "../hooks";
-import MobileImageWrapper from "../components/MobileImageWrapper";
 import Image from "../components/Image";
+import UserInfo from "../components/UserInfo";
+import BottomBar from "../components/BottomBar";
+import DownloadButton from "../components/DownloadButton";
 
 const ImageDetails = () => {
   const { id: currentId } = useParams();
@@ -9,17 +11,24 @@ const ImageDetails = () => {
   console.log(currentId, photo);
   if (!photo) return null;
   return (
-    <div>
-      <MobileImageWrapper
-        username={photo.username}
-        profilePhoto={photo.userProfileImage}
-        id={photo.id}
-        profileLink={photo.userProfileLink}
-        downloadLink={photo.downloadLink}
-      >
-        {<Image currentId={photo.id} imageType="full" byId />}
-      </MobileImageWrapper>
-    </div>
+    <>
+      <div className="image-details-page">
+        <UserInfo
+          username={photo.username}
+          profilePhoto={photo.userProfileImage}
+          profileLink={photo.userProfileLink}
+          type="image-details"
+        />
+        <Image byId={true} imageType="full" currentId={currentId || ""} />
+        <BottomBar>
+          <DownloadButton
+            downloadLink={photo.downloadLink}
+            type="full"
+            id={photo.id}
+          />
+        </BottomBar>
+      </div>
+    </>
   );
 };
 

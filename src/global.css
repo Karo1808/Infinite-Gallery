@@ -384,6 +384,23 @@ body {
   padding: 12rem;
 }
 
+.image-details-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 2rem 1rem;
+  gap: 5rem;
+}
+
+.details-userinfo-container {
+  align-self: start;
+}
+
+.image-details-profile-photo {
+  height: 3.8rem;
+}
+
 @media (min-width: 0px) {
   .header {
     position: static;
@@ -407,6 +424,11 @@ body {
     width: 60%;
     margin-left: 10px;
     margin-top: 0;
+  }
+
+  .image-details-page {
+    margin: 0 2rem;
+    margin-top: -10rem;
   }
 }
 

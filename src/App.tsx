@@ -3,6 +3,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { lazy, Suspense } from "react";
 
+const Layout = lazy(() => import("./pages/Layout"));
 const Home = lazy(() => import("./pages/Home"));
 const ImageDetailsModal = lazy(() => import("./pages/ImageDetailsModal"));
 const ImageDetails = lazy(() => import("./pages/ImageDetails"));
@@ -26,8 +27,10 @@ const App = () => {
         <Suspense fallback={<div>Loading...</div>}>
           {/* todo Improve suspense loading state */}
           <Routes location={background || location}>
-            <Route path="/" element={<Home />} />
-            <Route path="/image/:id" element={<ImageDetails />} />
+            <Route element={<Layout />}>
+              <Route path="/" element={<Home />} />
+              <Route path="/image/:id" element={<ImageDetails />} />
+            </Route>
           </Routes>
           {background && (
             <Routes>

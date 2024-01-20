@@ -5,16 +5,26 @@ interface Props {
   username: string;
   profilePhoto: string;
   profileLink: string;
-  type: "overlay" | "topbar";
+  type: "overlay" | "topbar" | "image-details";
 }
 
 const UserInfo = ({ username, profilePhoto, profileLink, type }: Props) => {
   const [isPhotoLoading, setIsPhotoLoading] = useState<boolean>(true);
 
   return (
-    <div className="userinfo-container">
+    <div
+      className={
+        type === "image-details"
+          ? "details-userinfo-container userinfo-container"
+          : "userinfo-container"
+      }
+    >
       <a href={`${profileLink}`} target="_blank">
-        {isPhotoLoading && <ProfilePhotoSkeleton type={type} />}
+        {isPhotoLoading && (
+          <ProfilePhotoSkeleton
+            type={type === "image-details" ? "topbar" : type}
+          />
+        )}
         <img
           style={{ display: isPhotoLoading ? "none" : "block" }}
           className={`userinfo-profile-photo ${type}-profile-photo`}

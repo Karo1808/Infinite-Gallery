@@ -1,0 +1,34 @@
+.full_download_button {
+  background-color: #f1f3f5;
+  border: 0;
+  padding: 1rem 1.5rem;
+  border-radius: 5px;
+  color: #333333;
+  border: 1px solid #adb5bd;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 1.6rem;
+  font-family: "Montserrat, sans-serif";
+  transition: all 0.2s;
+
+  &:hover {
+    cursor: pointer;
+    filter: brightness(98%);
+  }
+}
+
+.overlay_download_button {
+  background-color: transparent;
+  border: none;
+
+  &:hover {
+    cursor: pointer;
+    color: white;
+    filter: brightness(120%);
+  }
+}
+
+.download_icon {
+  margin-top: -4px;
+}

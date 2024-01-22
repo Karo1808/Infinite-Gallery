@@ -1,0 +1,71 @@
+.details_userinfo_container {
+  align-self: start;
+}
+
+.userinfo_container {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  justify-content: left;
+}
+
+.userinfo_profile_photo {
+  border-radius: 100%;
+
+  &:hover {
+    cursor: pointer;
+    filter: brightness(110%);
+  }
+}
+
+.overlay_username:link,
+.overlay_username:active,
+.overlay_username:visited {
+  font-size: 1.6rem;
+  text-decoration: none;
+  color: #e9ecef;
+}
+
+.topbar_username:link,
+.topbar_username:active,
+.topbar_username:visited {
+  font-size: 1.6rem;
+  text-decoration: none;
+  color: #343a40;
+}
+
+.userinfo_username:hover {
+  cursor: pointer;
+
+  &:link,
+  &:active,
+  &:visited {
+    text-decoration: none;
+  }
+}
+
+.overlay_profile_photo {
+  height: 3.2rem;
+}
+
+.topbar_profile_photo {
+  height: 4.2rem;
+
+  &:hover {
+    cursor: pointer;
+    filter: brightness(110%);
+  }
+}
+
+.overlay_username:hover {
+  color: white;
+}
+
+.topbar_username:hover {
+  color: black;
+}
+
+.overlay_username:hover,
+.overlay_profile_photo:hover {
+  transition: all 200ms;
+}

@@ -11,6 +11,7 @@ import Masonry from "react-masonry-css";
 import { BREAKPOINT_COLUMN_OBJECT, TWO_COLUMNS_BREAKPOINT } from "../constants";
 import Image from "./Image.tsx";
 import MobileImageWrapper from "./MobileImageWrapper.tsx";
+import styles from "../styles/gallery.module.css";
 
 const Gallery = () => {
   const masonryWrapperRef = useRef<null | HTMLDivElement>(null);
@@ -27,10 +28,10 @@ const Gallery = () => {
   });
 
   return (
-    <div className="masonry-wrapper" ref={masonryWrapperRef}>
+    <div className={styles.masonry_wrapper} ref={masonryWrapperRef}>
       <Masonry
-        className="masonry"
-        columnClassName="masonry-column"
+        className={styles.masonry}
+        columnClassName={styles.masonry_column}
         breakpointCols={BREAKPOINT_COLUMN_OBJECT}
       >
         {photos &&
@@ -64,7 +65,7 @@ const Gallery = () => {
           ))}
       </Masonry>
       {isFetching && (
-        <div className="loading-spinner">
+        <div className={styles.loading_spinner}>
           <SpinnerCircular
             color="#ced4da"
             secondaryColor="#dee2e6"
@@ -74,8 +75,8 @@ const Gallery = () => {
         </div>
       )}
       {!isFetchingNextPage && hasNextPage && (
-        <div className="no-more-images-wrapper">
-          <h2 className="no-more-images">No more images found</h2>
+        <div className={styles.no_more_images_wrapper}>
+          <h2 className={styles.no_more_images}>No more images found</h2>
         </div>
       )}
     </div>

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import ProfilePhotoSkeleton from "./ProfilePhotoSkeleton";
+import styles from "../styles/user-info.module.css";
 
 interface Props {
   username: string;
@@ -15,8 +16,8 @@ const UserInfo = ({ username, profilePhoto, profileLink, type }: Props) => {
     <div
       className={
         type === "image-details"
-          ? "details-userinfo-container userinfo-container"
-          : "userinfo-container"
+          ? `${styles.details_userinfo_container} ${styles.userinfo_container}`
+          : styles.userinfo_container
       }
     >
       <a href={`${profileLink}`} target="_blank">
@@ -27,15 +28,21 @@ const UserInfo = ({ username, profilePhoto, profileLink, type }: Props) => {
         )}
         <img
           style={{ display: isPhotoLoading ? "none" : "block" }}
-          className={`userinfo-profile-photo ${type}-profile-photo`}
+          className={`${styles.userinfo_profile_photo} ${
+            type === "image-details"
+              ? styles.details_profile_photo
+              : type === "overlay"
+              ? styles.overlay_profile_photo
+              : styles.topbar_profile_photo
+          }`}
           src={profilePhoto}
           alt="profile photo"
           onLoad={() => setIsPhotoLoading(false)}
         />
       </a>
       <a
-        className={`userinfo-username ${
-          type === "overlay" ? "overlay-username" : "topbar-username"
+        className={`${styles.userinfo_username} ${
+          type === "overlay" ? styles.overlay_username : styles.topbar_username
         }`}
         href={`${profileLink}`}
         target="_blank"

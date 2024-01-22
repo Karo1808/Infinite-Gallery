@@ -7,6 +7,7 @@ import { IoMdClose, IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { useRootLocationContext } from "../context/root-location-context";
 import { useEffect } from "react";
 import DownloadButton from "../components/DownloadButton";
+import styles from "../styles/image-details-modal.module.css";
 
 const ImageDetailsModal = () => {
   const { id: currentId } = useParams();
@@ -81,9 +82,9 @@ const ImageDetailsModal = () => {
   if (!currentPhoto) return;
 
   return (
-    <div className="modal" ref={modalRef}>
-      <main className="modal-content">
-        <section className="modal-topbar">
+    <div className={styles.modal} ref={modalRef}>
+      <main className={styles.modal_content}>
+        <section className={styles.modal_topbar}>
           <UserInfo
             username={currentPhoto.username}
             profileLink={currentPhoto.userProfileLink}
@@ -91,11 +92,11 @@ const ImageDetailsModal = () => {
             type="topbar"
             key={`${currentPhoto.id}2`}
           />
-          <button onClick={handleClose} className="btn-modal-close">
+          <button onClick={handleClose} className={styles.modal_close}>
             <IoMdClose size={30} />
           </button>
         </section>
-        <div className="modal-image">
+        <div className={styles.modal_image}>
           <Image
             key={`${currentPhoto.id}2`}
             imageType="full"
@@ -112,13 +113,13 @@ const ImageDetailsModal = () => {
       </main>
       <button
         onClick={handlePreviousPhoto}
-        className="modal-btn-direction modal-btn-left"
+        className={`${styles.modal_btn_direction} ${styles.modal_btn_left}`}
       >
         <IoIosArrowBack />
       </button>
       <button
         onClick={handleNextPhoto}
-        className="modal-btn-direction modal-btn-right"
+        className={`${styles.modal_btn_direction} ${styles.modal_btn_right}`}
       >
         <IoIosArrowForward />
       </button>

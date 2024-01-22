@@ -3,6 +3,7 @@ import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import UserInfo from "./UserInfo";
 import { useRootLocationContext } from "../context/root-location-context";
 import DownloadButton from "./DownloadButton";
+import styles from "../styles/overlay.module.css";
 
 interface Props {
   username: string;
@@ -41,14 +42,14 @@ const ImageOverlay = ({
   return (
     <>
       <div
-        className="overlay-background"
+        className={styles.overlay_background}
         ref={imageRef}
         onClick={(e) => {
           handleClickImage(e, imageRef);
         }}
       />
       <div
-        className="overlay-user"
+        className={styles.overlay_user}
         ref={userRef}
         onClick={(e) => {
           handleClickImage(e, userRef);

@@ -1,7 +1,9 @@
+import styles from "../styles/bottom-bar.module.css";
+
 const BottomBar = ({ children }: { children: React.ReactNode }) => {
   return (
-    <section className="modal-bottombar">
-      <div className="bottombar-container">{children}</div>
+    <section className={styles.modal_bottombar}>
+      <div>{children}</div>
     </section>
   );
 };

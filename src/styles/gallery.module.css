@@ -1,0 +1,34 @@
+.masonry_wrapper {
+  width: 100%;
+}
+
+.masonry {
+  display: flex;
+  width: 100%;
+}
+.masonry_column {
+  padding-left: 10px;
+  background-clip: padding-box;
+}
+
+.masonry_column:first-child {
+  padding-left: 0;
+}
+
+.loading_spinner {
+  display: flex;
+  justify-content: center;
+}
+
+.no_more_images {
+  align-self: center;
+  font-size: 3.2rem;
+  color: #343a4068;
+  font-family: "Montserrat, sans-serif";
+}
+
+.no_more_images_wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 12rem;
+}

@@ -1,0 +1,10 @@
+.overlay_skeleton_profile_photo {
+  padding: 1.6rem;
+  border-radius: 100%;
+  outline: 1px solid #adb5bd;
+}
+.topbar_skeleton_profile_photo {
+  padding: 2.1rem;
+  border-radius: 100%;
+  outline: 1px solid #adb5bd;
+}

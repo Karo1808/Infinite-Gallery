@@ -10,6 +10,8 @@ import {
   useViewportInitalSizeAndResize,
 } from "../hooks";
 
+import styles from "../styles/image.module.css";
+
 interface Props {
   byId?: boolean;
   columnWidth?: number | null;
@@ -78,12 +80,12 @@ const Image = ({ byId, columnWidth, imageType, currentId }: Props) => {
           resolutionX={32}
           resolutionY={32}
           punch={1}
-          className="blurhash"
+          className={styles.blurhash}
         />
       </div>
 
       <div
-        className="image-container"
+        className={styles.image_container}
         onMouseOver={() => setIsHovered(true)}
         onMouseOut={() => setIsHovered(false)}
         style={{ display: isImageLoaded ? "block" : "none" }}
@@ -91,7 +93,7 @@ const Image = ({ byId, columnWidth, imageType, currentId }: Props) => {
         {!params.id && (
           <img
             loading={params.id ? "eager" : "lazy"}
-            className="image"
+            className={styles.image}
             src={imageType === "thumbnail" ? src : srcFull}
             alt={altDescription ?? "image"}
           />
@@ -100,7 +102,7 @@ const Image = ({ byId, columnWidth, imageType, currentId }: Props) => {
         {params.id && (
           <img
             loading={params.id ? "eager" : "lazy"}
-            className="image"
+            className={styles.image}
             src={imageType === "thumbnail" ? src : srcFull}
             alt={altDescription ?? "image"}
             onLoad={() => setIsImageLoaded(true)}

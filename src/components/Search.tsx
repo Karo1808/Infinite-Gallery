@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { MdSearch } from "react-icons/md";
 import { useSearchParams } from "react-router-dom";
+import styles from "../styles/search.module.css";
 
 const Search = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -12,15 +13,15 @@ const Search = () => {
   };
 
   return (
-    <form className="searchbar" onSubmit={handleSubmit}>
+    <form className={styles.searchbar} onSubmit={handleSubmit}>
       <input
-        className="search-input"
+        className={styles.search_input}
         type="text"
         placeholder="Search for photos"
         value={searchTerm}
         onChange={({ target }) => setSearchTerm(target.value)}
       />
-      <button className="search-button" type="submit">
+      <button className={styles.search_button} type="submit">
         <MdSearch size={27} />
       </button>
     </form>

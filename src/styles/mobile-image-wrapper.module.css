@@ -1,0 +1,21 @@
+.mobile_view_wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.mobile_view_topbar {
+  padding: 1rem 1rem 1rem 0.5rem;
+  justify-self: center;
+  margin-bottom: 1rem;
+
+  &:first-child {
+    margin-top: 15px;
+  }
+}
+
+.mobile_view_bottombar {
+  display: flex;
+  padding: 1rem 4rem 2rem 4rem;
+  justify-content: end;
+  align-items: start;
+}

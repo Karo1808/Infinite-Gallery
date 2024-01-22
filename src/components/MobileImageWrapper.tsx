@@ -1,5 +1,6 @@
 import DownloadButton from "./DownloadButton";
 import UserInfo from "./UserInfo";
+import styles from "../styles/mobile-image-wrapper.module.css";
 
 interface Props {
   children: React.ReactNode;
@@ -19,8 +20,8 @@ const MobileImageWrapper = ({
   id,
 }: Props) => {
   return (
-    <figure className="mobile-image-container">
-      <section className="mobile-view-topbar">
+    <figure className={styles.mobile_view_wrapper}>
+      <section className={styles.mobile_view_topbar}>
         <UserInfo
           username={username}
           profilePhoto={profilePhoto}
@@ -29,7 +30,7 @@ const MobileImageWrapper = ({
         />
       </section>
       <section>{children}</section>
-      <section className="mobile-view-bottombar">
+      <section className={styles.mobile_view_bottombar}>
         <DownloadButton downloadLink={downloadLink} type="full" id={id} />
       </section>
     </figure>

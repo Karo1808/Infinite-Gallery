@@ -118,7 +118,7 @@ const Image = ({ byId, columnWidth, imageType, currentId, user }: Props) => {
 
   useEffect(() => {
     const img = new window.Image();
-    if (!params.id) {
+    if (imageType === "thumbnail") {
       img.onload = () => {
         setIsImageLoaded(true);
       };

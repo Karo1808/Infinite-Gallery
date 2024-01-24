@@ -60,9 +60,16 @@ export const fetchImagesWithQuery = async ({
   }
 };
 
-export const fetchImageById = async ({ id }: { id: string }) => {
+export const fetchImageById = async ({
+  id,
+  username,
+}: {
+  id: string;
+  username: string;
+}) => {
   try {
     if (!id) return null;
+    if (username) return null;
     {
       const res = await unpslashApi.photos.get({
         photoId: id,

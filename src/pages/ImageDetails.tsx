@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { useInfinityQueryByUser, usePhotoById } from "../hooks";
 import Image from "../components/Image";
 import UserInfo from "../components/UserInfo";
@@ -7,17 +7,23 @@ import DownloadButton from "../components/DownloadButton";
 import styles from "../styles/image-details-page.module.css";
 import PhotoInfo from "../components/PhotoInfo";
 import MiniGallery from "../components/MiniGallery";
-import { useIsUserContext } from "../context/is-user-context";
+import { useEffect } from "react";
 
 const ImageDetails = () => {
   const { id: currentId } = useParams();
-  const { isUser } = useIsUserContext();
+  const [searchParams] = useSearchParams();
   const { photo } = usePhotoById({ id: currentId || "" });
   const { photos: photosByUsername } = useInfinityQueryByUser();
 
-  const currentPhoto = isUser
+  const usernameParam = searchParams.get("username");
+
+  const currentPhoto = usernameParam
     ? photosByUsername?.find((photo) => photo.id === currentId)
     : photo;
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [currentId]);
 
   if (!currentPhoto) return null;
   return (
@@ -25,11 +31,11 @@ const ImageDetails = () => {
       <main className={styles.image_details_page}>
         <section className={styles.image_details}>
           <Image
-            byId={true}
+            byId={!usernameParam}
             key={`${currentPhoto.id}3`}
-            imageType="thumbnail"
+            imageType="details"
             currentId={currentId || ""}
-            user={isUser ? currentPhoto.usernameId : ""}
+            user={usernameParam ? currentPhoto.usernameId : ""}
           />
           <BottomBar>
             <UserInfo

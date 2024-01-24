@@ -27,7 +27,7 @@ import { useIsUserContext } from "../context/is-user-context";
 interface Props {
   byId?: boolean;
   columnWidth?: number | null;
-  imageType: "thumbnail" | "full";
+  imageType: "thumbnail" | "full" | "details";
   currentId: string;
   user?: string;
 }
@@ -105,7 +105,7 @@ const Image = ({ byId, columnWidth, imageType, currentId, user }: Props) => {
   } = currentPhoto;
 
   const calculatedHeight = calculateImageHeight({
-    columnWidth,
+    columnWidth: imageType === "details" ? viewportWidth : columnWidth,
     imageWidth: width,
     imageHeight: height,
   });
@@ -118,22 +118,26 @@ const Image = ({ byId, columnWidth, imageType, currentId, user }: Props) => {
 
   useEffect(() => {
     const img = new window.Image();
-    if (imageType === "thumbnail") {
+    if (imageType === "thumbnail" || imageType === "details") {
       img.onload = () => {
         setIsImageLoaded(true);
       };
     }
     img.src = src;
     img.alt = altDescription ?? "image";
-  }, [location]);
+  }, [location.pathname]);
 
   return (
     <>
       <div style={{ display: isImageLoaded ? "none" : "block" }}>
         <Blurhash
           hash={blurHash ?? "LEHV6nWB2yk8pyo0adR*.7kCMdnj"}
-          width={imageType === "full" ? calculatedWidth : "100%"}
-          height={imageType === "full" ? 600 : calculatedHeight}
+          width={
+            imageType === "full" || imageType === "details"
+              ? calculatedWidth
+              : "100%"
+          }
+          height={imageType === "full" ? SRC_FULL_HEIGHT : calculatedHeight}
           resolutionX={32}
           resolutionY={32}
           punch={1}
@@ -159,7 +163,7 @@ const Image = ({ byId, columnWidth, imageType, currentId, user }: Props) => {
           <img
             loading={params.id ? "eager" : "lazy"}
             className={styles.image}
-            src={imageType === "thumbnail" ? src : srcFull}
+            src={imageType === "full" ? srcFull : src}
             alt={altDescription ?? "image"}
             onClick={
               viewportWidth > MOBILE_CONDITION

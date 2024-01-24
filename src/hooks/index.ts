@@ -61,6 +61,7 @@ export const useInfiniteQueryImages = () => {
       downloadLink: res.urls.full,
       location: res.user.location,
       date: res.created_at,
+      srcMobile: `${res.urls.raw}&h=${1000}&fm=webp`,
     }));
   return {
     photos,
@@ -73,9 +74,11 @@ export const useInfiniteQueryImages = () => {
 };
 
 export const usePhotoById = ({ id }: { id: string }) => {
+  const [searchParams] = useSearchParams();
+  const username = searchParams.get("username") ?? "";
   const { data, isFetching, isError } = useQuery({
     queryKey: ["image", id],
-    queryFn: async () => await fetchImageById({ id }),
+    queryFn: async () => await fetchImageById({ id, username }),
   });
 
   const res = data?.photo;
@@ -94,6 +97,8 @@ export const usePhotoById = ({ id }: { id: string }) => {
     userProfileImage: res.user.profile_image.medium,
     userProfileLink: createAttributionUrl(res.user.username),
     usernameId: res.user.username,
+    srcMobile: `${res.urls.raw}&h=${1000}&fm=webp`,
+
     downloadLink: res.urls.full,
     location: res.user.location,
     date: res.created_at,
@@ -122,16 +127,7 @@ export const useInfinityQueryByUser = () => {
       fetchImageByUsername({ username, pageParam }),
 
     initialPageParam: 1,
-    getNextPageParam: (lastPage) => {
-      if (
-        lastPage?.prevOffSet !== undefined &&
-        lastPage?.photos?.total !== undefined &&
-        lastPage.prevOffSet + PHOTOS_PER_PAGE > lastPage.photos.total
-      ) {
-        return false;
-      }
-      return lastPage?.prevOffSet ? lastPage?.prevOffSet + PHOTOS_PER_PAGE : 0;
-    },
+    getNextPageParam: (lastPage) => lastPage && lastPage?.prevOffSet + 1,
   });
 
   const photos = data?.pages

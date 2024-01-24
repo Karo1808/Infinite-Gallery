@@ -1,9 +1,4 @@
-import {
-  useLocation,
-  useNavigate,
-  useParams,
-  useSearchParams,
-} from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import {
   useArrowKeys,
   useInfiniteQueryImages,

@@ -1,7 +1,5 @@
 import { RefObject, SyntheticEvent, useRef } from "react";
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import UserInfo from "./UserInfo";
-import { useRootLocationContext } from "../context/root-location-context";
 import DownloadButton from "./DownloadButton";
 import styles from "../styles/overlay.module.css";
 
@@ -11,6 +9,7 @@ interface Props {
   profileLink: string;
   id: string;
   downloadLink: string;
+  handleClick: (e: SyntheticEvent, ref: RefObject<HTMLElement>) => void;
 }
 
 const ImageOverlay = ({
@@ -19,41 +18,22 @@ const ImageOverlay = ({
   profileLink,
   id,
   downloadLink,
+  handleClick,
 }: Props) => {
-  const imageRef = useRef(null);
   const userRef = useRef(null);
-  const navigate = useNavigate();
-  const location = useLocation();
-  const { setRootLocation } = useRootLocationContext();
-  const [searchParams, _] = useSearchParams();
-
-  const handleClickImage = (e: SyntheticEvent, ref: RefObject<HTMLElement>) => {
-    if (ref.current && e.target === ref.current) {
-      setRootLocation(location);
-      navigate(
-        { pathname: `image/${id}`, search: searchParams.toString() },
-        {
-          state: { background: location },
-        }
-      );
-    }
-  };
-
+  const imageRef = useRef(null);
   return (
     <>
       <div
+        onClick={(e) => handleClick(e, imageRef)}
         className={styles.overlay_background}
         ref={imageRef}
-        onClick={(e) => {
-          handleClickImage(e, imageRef);
-        }}
       />
+
       <div
+        onClick={(e) => handleClick(e, userRef)}
         className={styles.overlay_user}
         ref={userRef}
-        onClick={(e) => {
-          handleClickImage(e, userRef);
-        }}
       >
         <UserInfo
           username={username}

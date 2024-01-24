@@ -8,6 +8,7 @@ const Home = lazy(() => import("./pages/Home"));
 const ImageDetailsModal = lazy(() => import("./pages/ImageDetailsModal"));
 const ImageDetails = lazy(() => import("./pages/ImageDetails"));
 import RootLocationContextProvider from "./context/root-location-context";
+import IsUserContextProvider from "./context/is-user-context";
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -24,20 +25,22 @@ const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <RootLocationContextProvider>
-        <Suspense fallback={<div>Loading...</div>}>
-          {/* todo Improve suspense loading state */}
-          <Routes location={background || location}>
-            <Route element={<Layout />}>
-              <Route path="/" element={<Home />} />
-              <Route path="/image/:id" element={<ImageDetails />} />
-            </Route>
-          </Routes>
-          {background && (
-            <Routes>
-              <Route path="/image/:id" element={<ImageDetailsModal />} />
+        <IsUserContextProvider>
+          <Suspense fallback={<div>Loading...</div>}>
+            {/* todo Improve suspense loading state */}
+            <Routes location={background || location}>
+              <Route element={<Layout />}>
+                <Route path="/" element={<Home />} />
+                <Route path="/image/:id" element={<ImageDetails />} />
+              </Route>
             </Routes>
-          )}
-        </Suspense>
+            {background && (
+              <Routes>
+                <Route path="/image/:id" element={<ImageDetailsModal />} />
+              </Routes>
+            )}
+          </Suspense>
+        </IsUserContextProvider>
       </RootLocationContextProvider>
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>

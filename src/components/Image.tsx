@@ -1,36 +1,92 @@
-import { useEffect, useState } from "react";
+import { RefObject, SyntheticEvent, useEffect, useRef, useState } from "react";
 import { Blurhash } from "react-blurhash";
-import { calculateImageHeight, calculateImageWidth } from "../utils";
+import {
+  calculateImageHeight,
+  calculateImageWidth,
+  formatSearchParams,
+} from "../utils";
 import ImageOverlay from "./Overlay";
-import { useParams } from "react-router-dom";
+import {
+  useLocation,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
 import { MOBILE_CONDITION, SRC_FULL_HEIGHT } from "../constants";
 import {
   useInfiniteQueryImages,
+  useInfinityQueryByUser,
   usePhotoById,
   useViewportInitalSizeAndResize,
 } from "../hooks";
 
 import styles from "../styles/image.module.css";
+import { useRootLocationContext } from "../context/root-location-context";
+import { useIsUserContext } from "../context/is-user-context";
 
 interface Props {
   byId?: boolean;
   columnWidth?: number | null;
   imageType: "thumbnail" | "full";
   currentId: string;
+  user?: string;
 }
 
-const Image = ({ byId, columnWidth, imageType, currentId }: Props) => {
+const Image = ({ byId, columnWidth, imageType, currentId, user }: Props) => {
   const [isImageLoaded, setIsImageLoaded] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
-  const { viewportWidth } = useViewportInitalSizeAndResize();
   const params = useParams();
-
+  const imageRef = useRef(null);
+  const linkRef = useRef(null);
+  const navigate = useNavigate();
+  const { rootLocation, setRootLocation } = useRootLocationContext();
+  const location = useLocation();
+  const [searchParams] = useSearchParams();
+  const { setIsUser } = useIsUserContext();
   const { photo } = usePhotoById({ id: params.id || "" });
   const { photos } = useInfiniteQueryImages();
+  const { photos: photosByUsername } = useInfinityQueryByUser();
 
   const currentPhoto = byId
     ? photo
+    : user
+    ? photosByUsername?.find((photo) => photo.id === currentId)
     : photos?.find((photo) => photo.id === currentId);
+  const { viewportWidth } = useViewportInitalSizeAndResize();
+  const query = searchParams.get("query");
+
+  const handleClickImage = (e: SyntheticEvent, ref: RefObject<HTMLElement>) => {
+    if (user) {
+      setIsUser(true);
+    }
+    if (!user) {
+      setRootLocation(location);
+    }
+
+    if (ref.current && e.target === ref.current) {
+      navigate(
+        {
+          pathname: `/image/${id}`,
+          search: formatSearchParams({ query, username: usernameId }),
+        },
+        {
+          state: { background: user ? rootLocation : location },
+        }
+      );
+    }
+  };
+
+  const handleClickImageMobile = (
+    e: SyntheticEvent,
+    ref: RefObject<HTMLElement>
+  ) => {
+    if (ref.current && e.target === ref.current) {
+      navigate({
+        pathname: `/image/${id}`,
+        search: formatSearchParams({ query, username: usernameId }),
+      });
+    }
+  };
 
   if (!currentPhoto) return;
   const {
@@ -45,6 +101,7 @@ const Image = ({ byId, columnWidth, imageType, currentId }: Props) => {
     userProfileLink,
     srcFull,
     id,
+    usernameId,
   } = currentPhoto;
 
   const calculatedHeight = calculateImageHeight({
@@ -63,20 +120,22 @@ const Image = ({ byId, columnWidth, imageType, currentId }: Props) => {
     const img = new window.Image();
     if (!params.id) {
       img.onload = () => {
-        setIsImageLoaded(true);
+        setTimeout(() => {
+          setIsImageLoaded(true);
+        }, 5000);
       };
     }
     img.src = src;
     img.alt = altDescription ?? "image";
-  }, [src]);
+  }, [location]);
 
   return (
     <>
       <div style={{ display: isImageLoaded ? "none" : "block" }}>
         <Blurhash
           hash={blurHash ?? "LEHV6nWB2yk8pyo0adR*.7kCMdnj"}
-          width={params.id ? calculatedWidth : "100%"}
-          height={params.id ? SRC_FULL_HEIGHT : calculatedHeight}
+          width={imageType === "full" ? calculatedWidth : "100%"}
+          height={imageType === "full" ? 600 : calculatedHeight}
           resolutionX={32}
           resolutionY={32}
           punch={1}
@@ -90,24 +149,29 @@ const Image = ({ byId, columnWidth, imageType, currentId }: Props) => {
         onMouseOut={() => setIsHovered(false)}
         style={{ display: isImageLoaded ? "block" : "none" }}
       >
-        {!params.id && (
+        <a
+          className={styles.image_link}
+          onClick={
+            viewportWidth > MOBILE_CONDITION
+              ? (e) => handleClickImage(e, linkRef)
+              : (e) => handleClickImageMobile(e, linkRef)
+          }
+          ref={linkRef}
+        >
           <img
             loading={params.id ? "eager" : "lazy"}
             className={styles.image}
             src={imageType === "thumbnail" ? src : srcFull}
             alt={altDescription ?? "image"}
+            onClick={
+              viewportWidth > MOBILE_CONDITION
+                ? (e) => handleClickImage(e, imageRef)
+                : (e) => handleClickImageMobile(e, imageRef)
+            }
+            onLoad={params.id ? () => setIsImageLoaded(true) : () => {}}
+            ref={imageRef}
           />
-        )}
-
-        {params.id && (
-          <img
-            loading={params.id ? "eager" : "lazy"}
-            className={styles.image}
-            src={imageType === "thumbnail" ? src : srcFull}
-            alt={altDescription ?? "image"}
-            onLoad={() => setIsImageLoaded(true)}
-          />
-        )}
+        </a>
 
         {isHovered &&
           imageType === "thumbnail" &&
@@ -120,6 +184,7 @@ const Image = ({ byId, columnWidth, imageType, currentId }: Props) => {
               profileLink={userProfileLink}
               id={id}
               downloadLink={downloadLink}
+              handleClick={handleClickImage}
             />
           )}
       </div>

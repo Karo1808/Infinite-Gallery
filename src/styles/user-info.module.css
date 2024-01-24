@@ -69,3 +69,8 @@
 .overlay_profile_photo:hover {
   transition: all 200ms;
 }
+
+.image_details_profile_photo {
+  height: 4rem;
+  margin-left: 0.5rem;
+}

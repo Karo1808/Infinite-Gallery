@@ -10,6 +10,14 @@
   align-self: center;
   margin-top: 5vh;
   width: 80%;
+
+  @media (min-width: 1440px) {
+    & {
+      width: 50%;
+      margin-left: 0;
+      margin-top: 0;
+    }
+  }
 }
 
 .search_input {

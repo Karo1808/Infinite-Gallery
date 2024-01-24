@@ -50,19 +50,6 @@ body {
   font-family: "Montserrat";
 }
 
-.image-details-page {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin: 2rem 1rem;
-  gap: 5rem;
-}
-
-.image-details-profile-photo {
-  height: 3.8rem;
-}
-
 @media (min-width: 0px) {
   .header {
     position: static;
@@ -78,8 +65,8 @@ body {
 }
 
 @media (min-width: 1000px) {
-  .header {
-    margin-bottom: 12rem;
+  .main {
+    margin-top: 12rem;
   }
 
   .searchbar {

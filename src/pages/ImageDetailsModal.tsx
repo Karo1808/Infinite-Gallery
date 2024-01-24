@@ -1,31 +1,59 @@
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
-import { useArrowKeys, useInfiniteQueryImages, useModalClose } from "../hooks";
+import {
+  useLocation,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
+import {
+  useArrowKeys,
+  useInfiniteQueryImages,
+  useInfinityQueryByUser,
+  useModalClose,
+} from "../hooks";
 import Image from "../components/Image";
 import UserInfo from "../components/UserInfo";
 import BottomBar from "../components/BottomBar";
 import { IoMdClose, IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { useRootLocationContext } from "../context/root-location-context";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import DownloadButton from "../components/DownloadButton";
 import styles from "../styles/image-details-modal.module.css";
+import PhotoInfo from "../components/PhotoInfo";
+import MiniGallery from "../components/MiniGallery";
+import { formatSearchParams } from "../utils";
+import { useIsUserContext } from "../context/is-user-context";
 
 const ImageDetailsModal = () => {
   const { id: currentId } = useParams();
   const navigate = useNavigate();
   const { rootLocation } = useRootLocationContext();
-  const [searchParams, _] = useSearchParams();
+  const [searchParams] = useSearchParams();
+  const { isUser, setIsUser } = useIsUserContext();
+  const scrollRef = useRef<HTMLElement | null>(null);
 
-  const { photos, fetchNextPage, fetchPreviousPage } = useInfiniteQueryImages();
+  const {
+    photos: allPhotos,
+    fetchNextPage,
+    fetchPreviousPage,
+  } = useInfiniteQueryImages();
+
+  const { photos: photosByUsername } = useInfinityQueryByUser();
+
+  const photos = isUser ? photosByUsername : allPhotos;
+
   const handleClose = () => {
-    navigate(
-      { pathname: "/", search: searchParams.toString() },
-      { replace: true }
-    );
+    setIsUser(false);
+    navigate({
+      pathname: rootLocation?.pathname,
+      search: searchParams.toString(),
+    });
   };
   const modalRef = useModalClose({ handler: handleClose });
 
   const currentPhoto = photos?.find((photo) => photo.id === currentId);
   const currentIndex = photos?.findIndex((photo) => photo.id === currentId);
+
+  const query = searchParams.get("query");
 
   useEffect(() => {
     if (photos) {
@@ -42,11 +70,13 @@ const ImageDetailsModal = () => {
       navigate(
         {
           pathname: `/image/${photos[nextIndex].id}`,
-          search: searchParams.toString(),
+          search: formatSearchParams({
+            query,
+            username: photos[nextIndex].usernameId,
+          }),
         },
         {
           state: { background: rootLocation },
-          replace: true,
         }
       );
     } else {
@@ -62,11 +92,13 @@ const ImageDetailsModal = () => {
       navigate(
         {
           pathname: `/image/${photos[previousIndex].id}`,
-          search: searchParams.toString(),
+          search: formatSearchParams({
+            query,
+            username: photos[previousIndex].usernameId,
+          }),
         },
         {
           state: { background: rootLocation },
-          replace: true,
         }
       );
     } else {
@@ -79,11 +111,18 @@ const ImageDetailsModal = () => {
     handlePreviousPage: handlePreviousPhoto,
   });
 
+  useEffect(() => {
+    console.log("fired");
+    if (scrollRef?.current) {
+      scrollRef.current.scrollTop = 0;
+    }
+  }, [currentId]);
+
   if (!currentPhoto) return;
 
   return (
     <div className={styles.modal} ref={modalRef}>
-      <main className={styles.modal_content}>
+      <main className={styles.modal_content} ref={scrollRef}>
         <section className={styles.modal_topbar}>
           <UserInfo
             username={currentPhoto.username}
@@ -101,15 +140,29 @@ const ImageDetailsModal = () => {
             key={`${currentPhoto.id}2`}
             imageType="full"
             currentId={currentPhoto.id}
+            user={isUser ? currentPhoto.usernameId : ""}
           />
         </div>
-        <BottomBar>
-          <DownloadButton
-            downloadLink={currentPhoto.downloadLink}
-            type="full"
-            id={currentPhoto.id}
-          />
-        </BottomBar>
+        <section className={styles.bottom_bar}>
+          <BottomBar>
+            <PhotoInfo
+              description={currentPhoto.altDescription}
+              location={currentPhoto.location}
+              date={currentPhoto.date}
+            />
+            <DownloadButton
+              downloadLink={currentPhoto.downloadLink}
+              type="full"
+              id={currentPhoto.id}
+            />
+          </BottomBar>
+        </section>
+        <footer className={styles.footer}>
+          <p className={styles.more_images}>
+            More images by {currentPhoto.username}
+          </p>
+          <MiniGallery />
+        </footer>
       </main>
       <button
         onClick={handlePreviousPhoto}

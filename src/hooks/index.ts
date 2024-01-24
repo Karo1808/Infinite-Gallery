@@ -9,6 +9,7 @@ import {
   calculateColumnWidth,
   createAttributionUrl,
   fetchImageById,
+  fetchImageByUsername,
   fetchImages,
   fetchImagesWithQuery,
 } from "../utils";
@@ -35,16 +36,7 @@ export const useInfiniteQueryImages = () => {
       : fetchImages,
 
     initialPageParam: 1,
-    getNextPageParam: (lastPage) => {
-      if (
-        lastPage?.prevOffSet !== undefined &&
-        lastPage?.photos?.total !== undefined &&
-        lastPage.prevOffSet + PHOTOS_PER_PAGE > lastPage.photos.total
-      ) {
-        return false;
-      }
-      return lastPage?.prevOffSet ? lastPage?.prevOffSet + PHOTOS_PER_PAGE : 0;
-    },
+    getNextPageParam: (lastPage) => lastPage && lastPage?.prevOffSet + 1,
   });
 
   const photos = data?.pages
@@ -63,9 +55,12 @@ export const useInfiniteQueryImages = () => {
       src: `${res.urls.raw}&w=0.25&format=auto&fm=webp`,
       srcFull: `${res.urls.raw}&h=${SRC_FULL_HEIGHT}&fm=webp`,
       username: res.user.name,
+      usernameId: res.user.username,
       userProfileImage: res.user.profile_image.medium,
       userProfileLink: createAttributionUrl(res.user.username),
       downloadLink: res.urls.full,
+      location: res.user.location,
+      date: res.created_at,
     }));
   return {
     photos,
@@ -98,7 +93,10 @@ export const usePhotoById = ({ id }: { id: string }) => {
     username: res.user.name,
     userProfileImage: res.user.profile_image.medium,
     userProfileLink: createAttributionUrl(res.user.username),
+    usernameId: res.user.username,
     downloadLink: res.urls.full,
+    location: res.user.location,
+    date: res.created_at,
   };
 
   return {
@@ -108,15 +106,81 @@ export const usePhotoById = ({ id }: { id: string }) => {
   };
 };
 
-export const useUpdateColumnWidth = (ref: RefObject<null | HTMLDivElement>) => {
+export const useInfinityQueryByUser = () => {
+  const [searchParams] = useSearchParams();
+  const username = searchParams.get("username") || "";
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    fetchPreviousPage,
+    isFetching,
+    isFetchingNextPage,
+  } = useInfiniteQuery({
+    queryKey: ["images", username],
+    queryFn: ({ pageParam }: { pageParam: number | false }) =>
+      fetchImageByUsername({ username, pageParam }),
+
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) => {
+      if (
+        lastPage?.prevOffSet !== undefined &&
+        lastPage?.photos?.total !== undefined &&
+        lastPage.prevOffSet + PHOTOS_PER_PAGE > lastPage.photos.total
+      ) {
+        return false;
+      }
+      return lastPage?.prevOffSet ? lastPage?.prevOffSet + PHOTOS_PER_PAGE : 0;
+    },
+  });
+
+  const photos = data?.pages
+    .reduce((acc, page) => {
+      if (page?.photos) {
+        acc.push(...page.photos.results);
+      }
+      return acc;
+    }, [] as Basic[])
+    .map((res) => ({
+      altDescription: res.alt_description,
+      blurHash: res.blur_hash,
+      height: res.height,
+      width: res.width,
+      id: res.id,
+      src: `${res.urls.raw}&w=0.25&format=auto&fm=webp`,
+      srcFull: `${res.urls.raw}&h=${SRC_FULL_HEIGHT}&fm=webp`,
+      username: res.user.name,
+      usernameId: res.user.username,
+      userProfileImage: res.user.profile_image.medium,
+      userProfileLink: createAttributionUrl(res.user.username),
+      downloadLink: res.urls.full,
+      location: res.user.location,
+      date: res.created_at,
+    }));
+  return {
+    photos,
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+    fetchPreviousPage,
+    isFetchingNextPage,
+  };
+};
+
+export const useUpdateColumnWidth = (
+  ref: RefObject<null | HTMLDivElement>,
+  isMini?: boolean
+) => {
   const [columnWidth, setColumnWidth] = useState<null | number>(null);
 
   useEffect(() => {
     const updateColumnWidth = () => {
       const calculatedColumnWidth = calculateColumnWidth(
-        ref.current?.clientWidth
+        ref.current?.clientWidth,
+        isMini
       );
       if (calculatedColumnWidth) setColumnWidth(calculatedColumnWidth);
+      console.log(isMini, calculatedColumnWidth);
     };
 
     if (!columnWidth) updateColumnWidth();
@@ -181,7 +245,7 @@ export const useModalClose = ({ handler }: { handler: () => void }) => {
     document.addEventListener("keydown", handleEscape);
 
     return () => {
-      document.removeEventListener("click", handleClick);
+      document.removeEventListener("mousedown", handleClick);
       document.removeEventListener("keydown", handleEscape);
     };
   }, [modalRef]);

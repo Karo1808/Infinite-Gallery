@@ -19,7 +19,9 @@
   background-color: #e9ecef;
   display: flex;
   flex-direction: column;
-  gap: 4rem;
+  gap: 2rem;
+  overflow-y: scroll;
+  scroll-behavior: smooth;
 }
 
 .modal_image {
@@ -57,4 +59,28 @@
 
 .modal_btn_right {
   right: 8%;
+}
+
+.bottom_bar {
+  margin: 0 8rem;
+}
+
+.more_images {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  margin-left: 1rem;
+  color: #343a40;
+}
+
+.footer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  margin: 5rem auto;
+  @media screen and (min-width: 1440px) {
+    & {
+      width: 80%;
+    }
+  }
 }

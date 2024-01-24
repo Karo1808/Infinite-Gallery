@@ -30,7 +30,7 @@ const UserInfo = ({ username, profilePhoto, profileLink, type }: Props) => {
           style={{ display: isPhotoLoading ? "none" : "block" }}
           className={`${styles.userinfo_profile_photo} ${
             type === "image-details"
-              ? styles.details_profile_photo
+              ? styles.image_details_profile_photo
               : type === "overlay"
               ? styles.overlay_profile_photo
               : styles.topbar_profile_photo

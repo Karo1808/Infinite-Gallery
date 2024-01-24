@@ -13,7 +13,7 @@ import {
   fetchImages,
   fetchImagesWithQuery,
 } from "../utils";
-import { PHOTOS_PER_PAGE, SRC_FULL_HEIGHT } from "../constants";
+import { SRC_FULL_HEIGHT } from "../constants";
 import { Basic } from "unsplash-js/dist/methods/photos/types";
 import { RefObject, useCallback, useEffect, useRef, useState } from "react";
 import { useParams, useSearchParams } from "react-router-dom";

@@ -120,9 +120,7 @@ const Image = ({ byId, columnWidth, imageType, currentId, user }: Props) => {
     const img = new window.Image();
     if (!params.id) {
       img.onload = () => {
-        setTimeout(() => {
-          setIsImageLoaded(true);
-        }, 5000);
+        setIsImageLoaded(true);
       };
     }
     img.src = src;
@@ -168,7 +166,9 @@ const Image = ({ byId, columnWidth, imageType, currentId, user }: Props) => {
                 ? (e) => handleClickImage(e, imageRef)
                 : (e) => handleClickImageMobile(e, imageRef)
             }
-            onLoad={params.id ? () => setIsImageLoaded(true) : () => {}}
+            onLoad={
+              imageType == "full" ? () => setIsImageLoaded(true) : () => {}
+            }
             ref={imageRef}
           />
         </a>

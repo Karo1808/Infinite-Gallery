@@ -15,7 +15,6 @@ const ShareDropdown = ({ imageLink }: Props) => {
       display: "popup",
       href: imageLink,
       hashtag: "infinite-gallery",
-      redirectUri: "https://infinite-gallery-nqv7.vercel.app/",
     });
   };
 

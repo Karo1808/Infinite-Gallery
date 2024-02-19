@@ -5,7 +5,7 @@
   position: absolute;
   padding: 1rem 1rem;
   background-color: #f1f3f5;
-  top: -280%;
+
   left: 0;
   border: 1px solid #adb5bd;
 }
@@ -28,7 +28,6 @@ a {
   border-bottom: 1px solid #adb5bd;
   border-right: 1px solid #adb5bd;
   position: absolute;
-  top: -44%;
   transform: rotate(45deg);
   display: block;
 }

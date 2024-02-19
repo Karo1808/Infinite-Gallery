@@ -59,6 +59,9 @@ const ShareDropdown = ({ imageLink }: Props) => {
         initial={{ opacity: 0, scale: 0.5 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.25 }}
+        style={{
+          top: typeof navigator.share === "function" ? "-370%" : "-280%",
+        }}
       >
         <a
           href={`https://twitter.com/intent/tweet?text=Check%20out%20this%20image!&url=${encodedURL}`}
@@ -88,7 +91,10 @@ const ShareDropdown = ({ imageLink }: Props) => {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.25 }}
         className={styles.triangle}
-      ></motion.div>
+        style={{
+          top: typeof navigator.share === "function" ? "-56%" : "-44%",
+        }}
+      />
     </>
   );
 };

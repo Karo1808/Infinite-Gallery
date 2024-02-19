@@ -7,13 +7,12 @@ interface Props {
 }
 
 const ShareDropdown = ({ imageLink }: Props) => {
-  const { share, isLoading, error } = useShare();
+  const { share } = useShare();
   const encodedURL = encodeURIComponent(imageLink);
   console.log(imageLink);
   const handleFbShare = async () => {
     console.log("facebook");
     await share({ display: "popup", href: "http://www.facebook.com" });
-    console.log(error);
   };
 
   return (

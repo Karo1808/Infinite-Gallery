@@ -2,7 +2,6 @@ import { FaFacebook, FaLink, FaShare } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 import styles from "../styles/share-dropdown.module.css";
 import { useShare } from "react-facebook";
-import { useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useState } from "react";
 
@@ -12,7 +11,7 @@ interface Props {
 
 const ShareDropdown = ({ imageLink }: Props) => {
   const [isCopied, setIsCopied] = useState<boolean>(false);
-  const location = useLocation();
+  const url = window.location.href;
   const { share } = useShare();
   const encodedURL = encodeURIComponent(imageLink);
   const handleFbShare = async () => {
@@ -28,7 +27,7 @@ const ShareDropdown = ({ imageLink }: Props) => {
       await navigator.share({
         title: "Look at this amazing photo",
         text: "More photos like this on our website\n",
-        url: location.pathname,
+        url: url,
       });
       console.log("Successfully shared");
     } catch (error) {
@@ -39,7 +38,7 @@ const ShareDropdown = ({ imageLink }: Props) => {
   const handleCopy = async () => {
     const copyToClipboard = async () => {
       try {
-        await navigator.clipboard.writeText(location.pathname);
+        await navigator.clipboard.writeText(url);
         setIsCopied(true);
 
         setTimeout(() => {

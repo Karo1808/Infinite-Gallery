@@ -16,7 +16,7 @@ const ShareButton = ({ imageLink }: Props) => {
   };
 
   return (
-    <FacebookProvider appId="770580218276427">
+    <FacebookProvider appId={import.meta.env.VITE_UNSPLASH_ACCESS_KEY}>
       <button onClick={handleClick} className={styles.share_button}>
         <>
           <IoMdShare className={styles.icon} size={18} />

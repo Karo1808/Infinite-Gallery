@@ -11,9 +11,12 @@ const ShareDropdown = ({ imageLink }: Props) => {
   const encodedURL = encodeURIComponent(imageLink);
   console.log(imageLink);
   const handleFbShare = async () => {
-    console.log("facebook");
-    await share({ display: "popup", href: imageLink });
-    console.log(error);
+    await share({
+      display: "popup",
+      href: imageLink,
+      hashtag: "infinite-gallery",
+      redirectUri: "https://infinite-gallery-nqv7.vercel.app/",
+    });
   };
 
   return (

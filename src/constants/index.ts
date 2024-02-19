@@ -1,3 +1,5 @@
+import { FaFacebook, FaInstagram, FaTwitter } from "react-icons/fa";
+
 export const PHOTOS_PER_PAGE = 15;
 export const TWO_COLUMNS_BREAKPOINT = 600;
 export const THREE_COLUMNS_BREAKPOINT = 1100;

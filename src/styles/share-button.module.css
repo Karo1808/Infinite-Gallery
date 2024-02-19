@@ -1,0 +1,24 @@
+.share_button {
+  background-color: #f1f3f5;
+  border: 0;
+  padding: 1rem 1.5rem;
+  border-radius: 5px;
+  color: #333333;
+  border: 1px solid #adb5bd;
+  display: flex;
+  align-items: center;
+  align-self: flex-start;
+  gap: 1rem;
+  font-size: 1.6rem;
+  font-family: "Montserrat, sans-serif";
+  transition: all 0.2s;
+  position: relative;
+  &:hover {
+    cursor: pointer;
+    filter: brightness(98%);
+  }
+}
+
+.icon {
+  margin-bottom: 6px;
+}

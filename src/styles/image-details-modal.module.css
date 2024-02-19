@@ -62,7 +62,7 @@
 }
 
 .bottom_bar {
-  margin: 0 8rem;
+  margin: 0 1rem;
 }
 
 .more_images {
@@ -83,4 +83,9 @@
       width: 80%;
     }
   }
+}
+
+.button_container {
+  display: flex;
+  gap: 2rem;
 }

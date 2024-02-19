@@ -62,6 +62,7 @@ export const useInfiniteQueryImages = () => {
       location: res.user.location,
       date: res.created_at,
       srcMobile: `${res.urls.raw}&h=${1000}&fm=webp`,
+      rawLink: res.urls.raw,
     }));
   return {
     photos,
@@ -102,6 +103,7 @@ export const usePhotoById = ({ id }: { id: string }) => {
     downloadLink: res.urls.full,
     location: res.user.location,
     date: res.created_at,
+    rawLink: res.urls.raw,
   };
 
   return {
@@ -152,6 +154,7 @@ export const useInfinityQueryByUser = () => {
       downloadLink: res.urls.full,
       location: res.user.location,
       date: res.created_at,
+      rawLink: res.urls.raw,
     }));
   return {
     photos,

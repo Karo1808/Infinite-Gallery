@@ -1,0 +1,19 @@
+.dropdown {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  padding: 2rem 2rem;
+  background-color: #f1f3f5;
+  top: -150%;
+  border: 1px solid #adb5bd;
+}
+
+a {
+  color: #333333;
+  text-decoration: none;
+}
+
+.entry {
+  display: flex;
+  gap: 1rem;
+}

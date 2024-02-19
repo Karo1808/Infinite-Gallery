@@ -239,3 +239,7 @@ export const formatSearchParams = ({
 }) => {
   return `?${query ? `query=${query}&` : ""}username=${username}`;
 };
+
+export function shortenUrl(url: string) {
+  return url.split("?")[0];
+}

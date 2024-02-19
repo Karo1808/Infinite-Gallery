@@ -17,6 +17,7 @@ import PhotoInfo from "../components/PhotoInfo";
 import MiniGallery from "../components/MiniGallery";
 import { formatSearchParams } from "../utils";
 import { useIsUserContext } from "../context/is-user-context";
+import ShareButton from "../components/ShareButton";
 
 const ImageDetailsModal = () => {
   const { id: currentId } = useParams();
@@ -145,11 +146,14 @@ const ImageDetailsModal = () => {
               location={currentPhoto.location}
               date={currentPhoto.date}
             />
-            <DownloadButton
-              downloadLink={currentPhoto.downloadLink}
-              type="full"
-              id={currentPhoto.id}
-            />
+            <div className={styles.button_container}>
+              <ShareButton imageLink={currentPhoto.rawLink} />
+              <DownloadButton
+                downloadLink={currentPhoto.downloadLink}
+                type="full"
+                id={currentPhoto.id}
+              />
+            </div>
           </BottomBar>
         </section>
         <footer className={styles.footer}>

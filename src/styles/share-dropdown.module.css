@@ -1,11 +1,12 @@
 .dropdown {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1.5rem;
   position: absolute;
-  padding: 2rem 2rem;
+  padding: 1rem 1rem;
   background-color: #f1f3f5;
-  top: -150%;
+  top: -280%;
+  left: 0;
   border: 1px solid #adb5bd;
 }
 
@@ -17,4 +18,17 @@ a {
 .entry {
   display: flex;
   gap: 1rem;
+}
+
+.triangle {
+  content: "";
+  padding: 0.5rem 0.5rem;
+  /* background-color: black; */
+  background-color: #f1f3f5;
+  border-bottom: 1px solid #adb5bd;
+  border-right: 1px solid #adb5bd;
+  position: absolute;
+  top: -44%;
+  transform: rotate(45deg);
+  display: block;
 }

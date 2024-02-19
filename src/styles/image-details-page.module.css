@@ -42,3 +42,8 @@
   margin-left: 1rem;
   color: #343a40;
 }
+
+.button_container {
+  display: flex;
+  gap: 2rem;
+}

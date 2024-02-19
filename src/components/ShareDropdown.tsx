@@ -34,7 +34,7 @@ const ShareDropdown = ({ imageLink }: Props) => {
         <FaFacebook />
         <p onClick={handleFbShare}>Facebook</p>
       </div>
-      {navigator.share && <div>test</div>}
+      {typeof navigator.share === "function" && <div>test</div>}
     </div>
   );
 };

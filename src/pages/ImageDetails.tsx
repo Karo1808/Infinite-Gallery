@@ -8,6 +8,7 @@ import styles from "../styles/image-details-page.module.css";
 import PhotoInfo from "../components/PhotoInfo";
 import MiniGallery from "../components/MiniGallery";
 import { useEffect } from "react";
+import ShareButton from "../components/ShareButton";
 
 const ImageDetails = () => {
   const { id: currentId } = useParams();
@@ -44,11 +45,15 @@ const ImageDetails = () => {
               profileLink={currentPhoto.userProfileLink}
               type="image-details"
             />
-            <DownloadButton
-              downloadLink={currentPhoto.downloadLink}
-              type="full"
-              id={currentPhoto.id}
-            />
+            d
+            <div className={styles.button_container}>
+              <ShareButton imageLink={currentPhoto.rawLink} />
+              <DownloadButton
+                downloadLink={currentPhoto.downloadLink}
+                type="full"
+                id={currentPhoto.id}
+              />
+            </div>
           </BottomBar>
           <section className={styles.details}>
             <PhotoInfo

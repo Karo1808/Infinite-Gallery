@@ -4,7 +4,6 @@ import {
   useInfiniteQueryImages,
   useInfinityQueryByUser,
   useModalClose,
-  useUpdateColumnWidth,
 } from "../hooks";
 import Image from "../components/Image";
 import UserInfo from "../components/UserInfo";

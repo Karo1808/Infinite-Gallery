@@ -2,15 +2,16 @@ import { FaFacebook, FaShare } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 import styles from "../styles/share-dropdown.module.css";
 import { useShare } from "react-facebook";
+import { useLocation } from "react-router-dom";
 
 interface Props {
   imageLink: string;
 }
 
 const ShareDropdown = ({ imageLink }: Props) => {
+  const location = useLocation();
   const { share } = useShare();
   const encodedURL = encodeURIComponent(imageLink);
-  console.log(imageLink);
   const handleFbShare = async () => {
     await share({
       display: "popup",
@@ -23,8 +24,8 @@ const ShareDropdown = ({ imageLink }: Props) => {
     try {
       await navigator.share({
         title: "Look at this amazing photo",
-        text: "Check out this website with beautiful photos like this one\nhttps://infinite-gallery-nqv7.vercel.app/",
-        url: imageLink,
+        text: "More photos like this on our website\n",
+        url: location.pathname,
       });
       console.log("Successfully shared");
     } catch (error) {

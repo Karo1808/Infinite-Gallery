@@ -1,6 +1,7 @@
 .dropdown {
   display: flex;
   flex-direction: column;
+  gap: 2rem;
   position: absolute;
   padding: 2rem 2rem;
   background-color: #f1f3f5;

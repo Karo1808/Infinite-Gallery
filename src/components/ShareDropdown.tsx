@@ -1,4 +1,5 @@
-import { FaTwitter } from "react-icons/fa";
+import { FaFacebook } from "react-icons/fa";
+import { FaXTwitter } from "react-icons/fa6";
 import styles from "../styles/share-dropdown.module.css";
 import { useShare } from "react-facebook";
 
@@ -21,17 +22,19 @@ const ShareDropdown = ({ imageLink }: Props) => {
   return (
     <div className={styles.dropdown}>
       <div className={styles.entry}>
-        <FaTwitter />
+        <FaXTwitter />
         <a
           href={`https://twitter.com/intent/tweet?text=Check%20out%20this%20image!&url=${encodedURL}`}
           target="_blank"
         >
-          Twitter
+          X
         </a>
       </div>
-      <a type="button" onClick={handleFbShare}>
-        Facebook
-      </a>
+      <div className={styles.entry}>
+        <FaFacebook />
+        <p onClick={handleFbShare}>Facebook</p>
+      </div>
+      {navigator.share && <div>test</div>}
     </div>
   );
 };

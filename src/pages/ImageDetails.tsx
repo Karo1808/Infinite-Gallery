@@ -45,7 +45,6 @@ const ImageDetails = () => {
               profileLink={currentPhoto.userProfileLink}
               type="image-details"
             />
-            d
             <div className={styles.button_container}>
               <ShareButton imageLink={currentPhoto.rawLink} />
               <DownloadButton

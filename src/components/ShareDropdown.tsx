@@ -60,7 +60,7 @@ const ShareDropdown = ({ imageLink }: Props) => {
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.25 }}
         style={{
-          top: typeof navigator.share === "function" ? "-370%" : "-280%",
+          top: typeof navigator.share === "function" ? "-430%" : "-320%",
         }}
       >
         <a
@@ -92,7 +92,7 @@ const ShareDropdown = ({ imageLink }: Props) => {
         transition={{ duration: 0.25 }}
         className={styles.triangle}
         style={{
-          top: typeof navigator.share === "function" ? "-56%" : "-44%",
+          top: typeof navigator.share === "function" ? "-77%" : "-53%",
         }}
       />
     </>

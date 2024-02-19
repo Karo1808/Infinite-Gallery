@@ -279,7 +279,7 @@ export const useArrowKeys = ({
   }, [params]);
 };
 
-export const useViewportInitalSizeAndResize = () => {
+export const useViewportInitialSizeAndResize = () => {
   const [viewportWidth, setViewportWidth] = useState(0);
   useEffect(() => {
     const updateViewportWidth = () => {

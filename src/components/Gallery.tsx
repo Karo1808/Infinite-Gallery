@@ -2,7 +2,7 @@ import {
   useInfiniteQueryImages,
   useInfiniteScroll,
   useUpdateColumnWidth,
-  useViewportInitalSizeAndResize,
+  useViewportInitialSizeAndResize,
 } from "../hooks";
 
 import { SpinnerCircular } from "spinners-react";
@@ -19,7 +19,7 @@ const Gallery = () => {
     useInfiniteQueryImages();
 
   const { columnWidth } = useUpdateColumnWidth(masonryWrapperRef);
-  const { viewportWidth } = useViewportInitalSizeAndResize();
+  const { viewportWidth } = useViewportInitialSizeAndResize();
 
   const { lastPhoto } = useInfiniteScroll({
     fetchData: fetchNextPage,

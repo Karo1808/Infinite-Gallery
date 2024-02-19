@@ -34,26 +34,28 @@ const ImageDetails = () => {
           <Image
             byId={!usernameParam}
             key={`${currentPhoto.id}3`}
-            imageType="details"
+            imageType="full"
             currentId={currentId || ""}
             user={usernameParam ? currentPhoto.usernameId : ""}
           />
-          <BottomBar>
-            <UserInfo
-              username={currentPhoto.username}
-              profilePhoto={currentPhoto.userProfileImage}
-              profileLink={currentPhoto.userProfileLink}
-              type="image-details"
-            />
-            <div className={styles.button_container}>
-              <ShareButton imageLink={currentPhoto.rawLink} />
-              <DownloadButton
-                downloadLink={currentPhoto.downloadLink}
-                type="full"
-                id={currentPhoto.id}
+          <div className={styles.bottom}>
+            <BottomBar>
+              <UserInfo
+                username={currentPhoto.username}
+                profilePhoto={currentPhoto.userProfileImage}
+                profileLink={currentPhoto.userProfileLink}
+                type="image-details"
               />
-            </div>
-          </BottomBar>
+              <div className={styles.button_container}>
+                <ShareButton imageLink={currentPhoto.rawLink} />
+                <DownloadButton
+                  downloadLink={currentPhoto.downloadLink}
+                  type="full"
+                  id={currentPhoto.id}
+                />
+              </div>
+            </BottomBar>
+          </div>
           <section className={styles.details}>
             <PhotoInfo
               description={currentPhoto.altDescription}

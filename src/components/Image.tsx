@@ -17,7 +17,7 @@ import {
   useInfiniteQueryImages,
   useInfinityQueryByUser,
   usePhotoById,
-  useViewportInitalSizeAndResize,
+  useViewportInitialSizeAndResize,
 } from "../hooks";
 
 import styles from "../styles/image.module.css";
@@ -52,7 +52,7 @@ const Image = ({ byId, columnWidth, imageType, currentId, user }: Props) => {
     : user
     ? photosByUsername?.find((photo) => photo.id === currentId)
     : photos?.find((photo) => photo.id === currentId);
-  const { viewportWidth } = useViewportInitalSizeAndResize();
+  const { viewportWidth } = useViewportInitialSizeAndResize();
   const query = searchParams.get("query");
 
   const handleClickImage = (e: SyntheticEvent, ref: RefObject<HTMLElement>) => {
@@ -129,7 +129,10 @@ const Image = ({ byId, columnWidth, imageType, currentId, user }: Props) => {
 
   return (
     <>
-      <div style={{ display: isImageLoaded ? "none" : "block" }}>
+      <div
+        className={styles.container}
+        style={{ display: isImageLoaded ? "none" : "block" }}
+      >
         <Blurhash
           hash={blurHash ?? "LEHV6nWB2yk8pyo0adR*.7kCMdnj"}
           width={

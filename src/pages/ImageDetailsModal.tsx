@@ -4,6 +4,7 @@ import {
   useInfiniteQueryImages,
   useInfinityQueryByUser,
   useModalClose,
+  useUpdateColumnWidth,
 } from "../hooks";
 import Image from "../components/Image";
 import UserInfo from "../components/UserInfo";
@@ -26,7 +27,6 @@ const ImageDetailsModal = () => {
   const [searchParams] = useSearchParams();
   const { isUser, setIsUser } = useIsUserContext();
   const scrollRef = useRef<HTMLElement | null>(null);
-
   const {
     photos: allPhotos,
     fetchNextPage,
@@ -44,6 +44,7 @@ const ImageDetailsModal = () => {
       search: searchParams.toString(),
     });
   };
+
   const modalRef = useModalClose({ handler: handleClose });
 
   const currentPhoto = photos?.find((photo) => photo.id === currentId);

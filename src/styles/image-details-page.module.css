@@ -17,10 +17,24 @@
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  width: 100%;
+}
+
+.bottom {
+  @media (min-width: 800px) {
+    & {
+      padding: 0 25%;
+    }
+  }
 }
 
 .details {
-  margin-top: 2rem;
+  padding: 0;
+  @media (min-width: 800px) {
+    & {
+      padding: 0 25%;
+    }
+  }
 }
 
 .footer {

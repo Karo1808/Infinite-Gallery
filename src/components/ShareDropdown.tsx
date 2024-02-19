@@ -12,7 +12,7 @@ const ShareDropdown = ({ imageLink }: Props) => {
   console.log(imageLink);
   const handleFbShare = async () => {
     console.log("facebook");
-    await share({ display: "popup", href: "http://www.facebook.com" });
+    await share({ display: "iframe", href: encodedURL });
   };
 
   return (

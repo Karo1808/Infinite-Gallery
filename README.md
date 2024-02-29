@@ -2,17 +2,15 @@
   <h1>Infinite Gallery</h1>  
 </div>
 
-[English](#english) | [Polski](#polski)
-
-#### English
+[![pl](https://img.shields.io/badge/lang-pl-red.svg)](https://github.com/Karo1808/infinite-gallery/blob/master/README.pl.md)
 
 ### Description
 
 Infinite Gallery is a web application featuring an infinite scroll gallery. It is built using Vite and React, leveraging the Unsplash API to fetch images dynamically.
 
-### Website link:
+### Demo
 
-https://infinite-gallery-nqv7.vercel.app/
+[Website link](https://infinite-gallery-nqv7.vercel.app/)
 
 ### Features
 
@@ -36,36 +34,31 @@ https://infinite-gallery-nqv7.vercel.app/
 - **Blurhash:** An image placeholder that utilizes a blurred version of the image to enhance the user experience.
 - **Unsplash API SDK:** An official SDK for integrating the Unsplash API into applications.
 
----
+### Installation
 
-#### Polski
+Clone the repository locally
 
-### Opis
+```bash
+git clone https://github.com/Karo1808/infinite-gallery.git
+```
 
-Infinite Gallery to aplikacja internetowa prezentująca nieskończoną galerię zdjęć. Została zbudowana przy użyciu Vite i React, wykorzystując API Unsplash do dynamicznego pobierania obrazów.
+Install the required dependencies
 
-### Link do strony internetowej:
+```bash
+npm install
+```
 
-https://infinite-gallery-nqv7.vercel.app/
+Create an .env.local file and add the following environment variables
 
-### Funkcje
+```bash
+VITE_UNSPLASH_ACCESS_KEY=
+VITE_UNSPLASH_ACCESS_KEY2=
 
-- **Nieskończone przewijanie:** Użytkownicy mogą przewijać galerię bez końca, dynamicznie ładując więcej obrazów w trakcie nawigacji.
-- **Funkcjonalność wyszukiwania:** Umożliwia użytkownikom wyszukiwanie konkretnych obrazów na podstawie słów kluczowych.
-- **Układ "masonry":** Obrazy są wyświetlane w wizualnie atrakcyjnym układzie "masonry", optymalizując przestrzeń i estetykę.
-- **Bezpośrednie linki:** Każdy obraz ma bezpośredni link do łatwego udostępniania lub dodawania do zakładek.
-- **Modale:** Szczegółowy podgląd obrazu jest ułatwiony dzięki modalom, pozwalając użytkownikom przeglądać obrazy w większym formacie.
-- **Przyciski udostępniania i pobierania:** Zapewnia użytkownikom opcję udostępniania obrazów lub pobierania ich bezpośrednio.
-- **Zastępowanie obrazów rozmytymi:** Wykorzystuje rozmazane zastępstwa obrazów, aby usprawnić ładowanie i dostarczyć użytkownikom informacji zwrotnej wizualnej.
-- **W pełni responsywna:** Aplikacja została zaprojektowana tak, aby dostosowywać się bezproblemowo do różnych rozmiarów ekranów i urządzeń.
+VITE_FACEBOOK_ID=
+```
 
-### Użyte technologie
+Run the website locally
 
-- **Vite:** Szybkie narzędzie do budowy nowoczesnych aplikacji jednostronicowych.
-- **React:** Biblioteka JavaScript do tworzenia interfejsów użytkownika.
-- **Typescript:** Nadzbiór języka JavaScript, dodający typowanie statyczne do języka.
-- **Moduły CSS:** Pozwala na stylowanie w ograniczonym zakresie, automatycznie generując unikalne nazwy klas.
-- **React Query:** Zapewnia narzędzia do zarządzania, buforowania i synchronizacji stanu serwera w aplikacjach React.
-- **React Router:** Biblioteka routingu dla aplikacji React, umożliwiająca nawigację między różnymi stronami.
-- **Blurhash:** Zastępczy obraz który wykorzystuje zamazaną wersje obrazu by usprawnić dozania użytkowanika
-- **Unsplash API SDK:** Oficjalne SDK do integracji z API Unsplash w aplikacjach.
+```bash
+npm run dev
+```

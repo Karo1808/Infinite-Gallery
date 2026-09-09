@@ -1,50 +1,31 @@
-import { RefObject, SyntheticEvent, useRef } from "react";
-import UserInfo from "./UserInfo";
-import DownloadButton from "./DownloadButton";
 import styles from "../styles/overlay.module.css";
+import { Photo } from "../types";
+import DownloadButton from "./DownloadButton";
+import UserInfo from "./UserInfo";
 
 interface Props {
-  username: string;
-  profilePhoto: string;
-  profileLink: string;
-  id: string;
-  downloadLink: string;
-  handleClick: (e: SyntheticEvent, ref: RefObject<HTMLElement>) => void;
+  photo: Photo;
+  openPhoto: () => void;
 }
 
-const ImageOverlay = ({
-  username,
-  profilePhoto,
-  profileLink,
-  id,
-  downloadLink,
-  handleClick,
-}: Props) => {
-  const userRef = useRef(null);
-  const imageRef = useRef(null);
-  return (
-    <>
-      <div
-        onClick={(e) => handleClick(e, imageRef)}
-        className={styles.overlay_background}
-        ref={imageRef}
+const ImageOverlay = ({ photo, openPhoto }: Props) => (
+  <>
+    <button
+      type="button"
+      onClick={openPhoto}
+      className={styles.overlay_background}
+      aria-label={`View ${photo.altDescription ?? `photo by ${photo.username}`}`}
+    />
+    <div className={styles.overlay_user}>
+      <UserInfo
+        username={photo.username}
+        profileLink={photo.userProfileLink}
+        profilePhoto={photo.userProfileImage}
+        type="overlay"
       />
-
-      <div
-        onClick={(e) => handleClick(e, userRef)}
-        className={styles.overlay_user}
-        ref={userRef}
-      >
-        <UserInfo
-          username={username}
-          profileLink={profileLink}
-          profilePhoto={profilePhoto}
-          type="overlay"
-        />
-        <DownloadButton id={id} downloadLink={downloadLink} type="overlay" />
-      </div>
-    </>
-  );
-};
+      <DownloadButton photo={photo} type="overlay" />
+    </div>
+  </>
+);
 
 export default ImageOverlay;

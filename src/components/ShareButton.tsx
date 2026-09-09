@@ -1,30 +1,33 @@
+import { useState } from "react";
 import { IoMdShare } from "react-icons/io";
 import styles from "../styles/share-button.module.css";
-import { useState } from "react";
 import ShareDropdown from "./ShareDropdown";
-import { FacebookProvider } from "react-facebook";
 
-interface Props {
-  imageLink: string;
-}
-
-const ShareButton = ({ imageLink }: Props) => {
-  const [isDropDownOpen, setIsDropDownOpen] = useState<boolean>(false);
-
-  const handleClick = () => {
-    setIsDropDownOpen(!isDropDownOpen);
-  };
+const ShareButton = () => {
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   return (
-    <FacebookProvider appId={import.meta.env.VITE_FACEBOOK_ID}>
-      <button onClick={handleClick} className={styles.share_button}>
-        <>
-          <IoMdShare className={styles.icon} size={18} />
-          <span>Share</span>
-        </>
-        {isDropDownOpen && <ShareDropdown imageLink={imageLink} />}
+    <div
+      className={styles.share_wrapper}
+      onKeyDown={(event) => {
+        if (event.key === "Escape" && isDropdownOpen) {
+          event.stopPropagation();
+          setIsDropdownOpen(false);
+        }
+      }}
+    >
+      <button
+        type="button"
+        onClick={() => setIsDropdownOpen((isOpen) => !isOpen)}
+        className={styles.share_button}
+        aria-expanded={isDropdownOpen}
+        aria-haspopup="menu"
+      >
+        <IoMdShare className={styles.icon} size={18} />
+        <span>Share</span>
       </button>
-    </FacebookProvider>
+      {isDropdownOpen && <ShareDropdown />}
+    </div>
   );
 };
 

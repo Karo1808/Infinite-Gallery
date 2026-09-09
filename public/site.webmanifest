@@ -1,0 +1,16 @@
+{
+  "name": "Infinite Gallery",
+  "short_name": "Gallery",
+  "description": "A responsive infinite photo gallery powered by Unsplash.",
+  "start_url": "/#/",
+  "display": "standalone",
+  "background_color": "#f8f9fa",
+  "theme_color": "#1c1d1e",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "48x48",
+      "type": "image/x-icon"
+    }
+  ]
+}

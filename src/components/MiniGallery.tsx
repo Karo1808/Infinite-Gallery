@@ -12,10 +12,17 @@ import Image from "./Image.tsx";
 
 import styles from "../styles/gallery.module.css";
 
-const MiniGallery = () => {
+const MiniGallery = ({ username }: { username: string }) => {
   const masonryWrapperRef = useRef<null | HTMLDivElement>(null);
-  const { photos, fetchNextPage, hasNextPage, isFetching, isFetchingNextPage } =
-    useInfinityQueryByUser();
+  const {
+    photos,
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+    isFetchingNextPage,
+    isPending,
+    isError,
+  } = useInfinityQueryByUser(username);
 
   const { columnWidth } = useUpdateColumnWidth(masonryWrapperRef, true);
 
@@ -32,22 +39,21 @@ const MiniGallery = () => {
         columnClassName={styles.masonry_column}
         breakpointCols={MINI_BREAKPOINT_COLUMN_OBJECT}
       >
-        {photos &&
-          photos.map((photo, index) => (
-            <div
-              key={photo.id}
-              ref={index > photos.length - 5 ? lastPhoto : null}
-            >
-              <Image
-                imageType="thumbnail"
-                columnWidth={columnWidth}
-                currentId={photo.id}
-                user={photo.usernameId}
-              />
-            </div>
-          ))}
+        {photos.map((photo, index) => (
+          <div
+            key={photo.id}
+            ref={index > photos.length - 5 ? lastPhoto : null}
+          >
+            <Image
+              photo={photo}
+              imageType="thumbnail"
+              columnWidth={columnWidth}
+              fromUserGallery
+            />
+          </div>
+        ))}
       </Masonry>
-      {isFetching && (
+      {(isPending || isFetchingNextPage) && (
         <div className={styles.loading_spinner}>
           <SpinnerCircular
             color="#ced4da"
@@ -57,7 +63,12 @@ const MiniGallery = () => {
           />
         </div>
       )}
-      {!isFetchingNextPage && hasNextPage && (
+      {isError && (
+        <div className={styles.status} role="alert">
+          <p>Unable to load more photos from this photographer.</p>
+        </div>
+      )}
+      {!isFetching && photos.length > 0 && !hasNextPage && (
         <div className={styles.no_more_images_wrapper}>
           <h2 className={styles.no_more_images}>No more images found</h2>
         </div>

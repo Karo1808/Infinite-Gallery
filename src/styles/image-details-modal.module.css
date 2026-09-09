@@ -34,10 +34,14 @@
   align-items: center;
 }
 
-.btn_modal_close {
+.modal_close {
   border: none;
   background-color: transparent;
   margin-right: 2rem;
+}
+
+.modal_close:hover {
+  cursor: pointer;
 }
 
 .modal_btn_direction {
@@ -50,6 +54,33 @@
   &:hover {
     cursor: pointer;
     color: #e9ecef;
+  }
+}
+
+.modal_btn_direction:disabled {
+  cursor: default;
+  opacity: 0.2;
+}
+
+.modal_status {
+  padding: 3rem;
+  border-radius: 10px;
+  background: #f8f9fa;
+  color: #495057;
+  font-size: 1.8rem;
+}
+
+@media (max-width: 900px) {
+  .modal_content {
+    width: calc(100% - 8rem);
+  }
+
+  .modal_btn_left {
+    left: 0.5rem;
+  }
+
+  .modal_btn_right {
+    right: 0.5rem;
   }
 }
 

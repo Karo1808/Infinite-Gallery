@@ -1,24 +1,21 @@
 import {
   FetchNextPageOptions,
-  InfiniteData,
-  InfiniteQueryObserverResult,
   useInfiniteQuery,
   useQuery,
 } from "@tanstack/react-query";
 import {
   calculateColumnWidth,
-  createAttributionUrl,
   fetchImageById,
   fetchImageByUsername,
   fetchImages,
   fetchImagesWithQuery,
+  formatPhoto,
+  getNextPhotoPage,
 } from "../utils";
-import { SRC_FULL_HEIGHT } from "../constants";
-import { Basic } from "unsplash-js/dist/methods/photos/types";
 import { RefObject, useCallback, useEffect, useRef, useState } from "react";
-import { useParams, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 
-export const useInfiniteQueryImages = () => {
+export const useInfiniteQueryImages = (enabled = true) => {
   const [searchParams] = useSearchParams();
   const searchParam = searchParams.get("query") ?? "";
   const {
@@ -28,42 +25,25 @@ export const useInfiniteQueryImages = () => {
     fetchPreviousPage,
     isFetching,
     isFetchingNextPage,
+    isPending,
+    isError,
+    error,
+    isFetchNextPageError,
   } = useInfiniteQuery({
-    queryKey: ["images", searchParam],
+    queryKey: ["gallery-images", searchParam],
     queryFn: searchParam
       ? ({ pageParam }: { pageParam: number | false }) =>
           fetchImagesWithQuery({ query: searchParam, pageParam })
       : fetchImages,
 
     initialPageParam: 1,
-    getNextPageParam: (lastPage) => lastPage && lastPage?.prevOffSet + 1,
+    getNextPageParam: getNextPhotoPage,
+    enabled,
   });
 
-  const photos = data?.pages
-    .reduce((acc, page) => {
-      if (page?.photos) {
-        acc.push(...page.photos.results);
-      }
-      return acc;
-    }, [] as Basic[])
-    .map((res) => ({
-      altDescription: res.alt_description,
-      blurHash: res.blur_hash,
-      height: res.height,
-      width: res.width,
-      id: res.id,
-      src: `${res.urls.raw}&w=0.25&format=auto&fm=webp`,
-      srcFull: `${res.urls.raw}&h=${SRC_FULL_HEIGHT}&fm=webp`,
-      username: res.user.name,
-      usernameId: res.user.username,
-      userProfileImage: res.user.profile_image.medium,
-      userProfileLink: createAttributionUrl(res.user.username),
-      downloadLink: res.urls.full,
-      location: res.user.location,
-      date: res.created_at,
-      srcMobile: `${res.urls.raw}&h=${1000}&fm=webp`,
-      rawLink: res.urls.raw,
-    }));
+  const photos =
+    data?.pages.flatMap((page) => page?.photos.results ?? []).map(formatPhoto) ??
+    [];
   return {
     photos,
     fetchNextPage,
@@ -71,51 +51,43 @@ export const useInfiniteQueryImages = () => {
     isFetching,
     fetchPreviousPage,
     isFetchingNextPage,
+    isPending,
+    isError,
+    error,
+    isFetchNextPageError,
   };
 };
 
-export const usePhotoById = ({ id }: { id: string }) => {
-  const [searchParams] = useSearchParams();
-  const username = searchParams.get("username") ?? "";
-  const { data, isFetching, isError } = useQuery({
+export const usePhotoById = ({
+  id,
+  enabled = true,
+}: {
+  id: string;
+  enabled?: boolean;
+}) => {
+  const { data, isFetching, isPending, isError, error } = useQuery({
     queryKey: ["image", id],
-    queryFn: async () => await fetchImageById({ id, username }),
+    queryFn: () => fetchImageById({ id }),
+    enabled: Boolean(id) && enabled,
   });
 
   const res = data?.photo;
 
-  if (!res) return {};
-
-  const photo = {
-    altDescription: res.alt_description,
-    blurHash: res.blur_hash,
-    height: res.height,
-    width: res.width,
-    id: res.id,
-    src: `${res.urls.raw}&w=0.25&format=auto&fm=webp`,
-    srcFull: `${res.urls.raw}&h=${SRC_FULL_HEIGHT}&fm=webp`,
-    username: res.user.name,
-    userProfileImage: res.user.profile_image.medium,
-    userProfileLink: createAttributionUrl(res.user.username),
-    usernameId: res.user.username,
-    srcMobile: `${res.urls.raw}&h=${1000}&fm=webp`,
-
-    downloadLink: res.urls.full,
-    location: res.user.location,
-    date: res.created_at,
-    rawLink: res.urls.raw,
-  };
-
   return {
-    photo,
+    photo: res ? formatPhoto(res) : undefined,
     isFetching,
+    isPending,
     isError,
+    error,
   };
 };
 
-export const useInfinityQueryByUser = () => {
+export const useInfinityQueryByUser = (
+  usernameOverride?: string,
+  enabled = true
+) => {
   const [searchParams] = useSearchParams();
-  const username = searchParams.get("username") || "";
+  const username = usernameOverride ?? searchParams.get("username") ?? "";
   const {
     data,
     fetchNextPage,
@@ -123,39 +95,23 @@ export const useInfinityQueryByUser = () => {
     fetchPreviousPage,
     isFetching,
     isFetchingNextPage,
+    isPending,
+    isError,
+    error,
+    isFetchNextPageError,
   } = useInfiniteQuery({
-    queryKey: ["images", username],
+    queryKey: ["user-images", username],
     queryFn: ({ pageParam }: { pageParam: number | false }) =>
       fetchImageByUsername({ username, pageParam }),
 
     initialPageParam: 1,
-    getNextPageParam: (lastPage) => lastPage && lastPage?.prevOffSet + 1,
+    getNextPageParam: getNextPhotoPage,
+    enabled: Boolean(username) && enabled,
   });
 
-  const photos = data?.pages
-    .reduce((acc, page) => {
-      if (page?.photos) {
-        acc.push(...page.photos.results);
-      }
-      return acc;
-    }, [] as Basic[])
-    .map((res) => ({
-      altDescription: res.alt_description,
-      blurHash: res.blur_hash,
-      height: res.height,
-      width: res.width,
-      id: res.id,
-      src: `${res.urls.raw}&w=0.25&format=auto&fm=webp`,
-      srcFull: `${res.urls.raw}&h=${SRC_FULL_HEIGHT}&fm=webp`,
-      username: res.user.name,
-      usernameId: res.user.username,
-      userProfileImage: res.user.profile_image.medium,
-      userProfileLink: createAttributionUrl(res.user.username),
-      downloadLink: res.urls.full,
-      location: res.user.location,
-      date: res.created_at,
-      rawLink: res.urls.raw,
-    }));
+  const photos =
+    data?.pages.flatMap((page) => page?.photos.results ?? []).map(formatPhoto) ??
+    [];
   return {
     photos,
     fetchNextPage,
@@ -163,6 +119,10 @@ export const useInfinityQueryByUser = () => {
     isFetching,
     fetchPreviousPage,
     isFetchingNextPage,
+    isPending,
+    isError,
+    error,
+    isFetchNextPageError,
   };
 };
 
@@ -179,50 +139,39 @@ export const useUpdateColumnWidth = (
         isMini
       );
       if (calculatedColumnWidth) setColumnWidth(calculatedColumnWidth);
-      console.log(isMini, calculatedColumnWidth);
     };
 
-    if (!columnWidth) updateColumnWidth();
+    updateColumnWidth();
     window.addEventListener("resize", updateColumnWidth);
 
     return () => {
       window.removeEventListener("resize", updateColumnWidth);
     };
-  }, []);
+  }, [isMini, ref]);
   return { columnWidth };
 };
 
 interface Params {
-  fetchData: (
-    options?: FetchNextPageOptions | undefined
-  ) => Promise<
-    InfiniteQueryObserverResult<
-      InfiniteData<
-        | { photos: { results: Basic[]; total: number }; prevOffSet: number }
-        | undefined,
-        unknown
-      >,
-      Error
-    >
-  >;
+  fetchData: (options?: FetchNextPageOptions) => unknown;
   hasMore: boolean;
   isLoading: boolean;
 }
 
-export const useInfiniteScroll = ({ fetchData, isLoading }: Params) => {
+export const useInfiniteScroll = ({ fetchData, hasMore, isLoading }: Params) => {
   const observer = useRef<null | IntersectionObserver>(null);
 
   const lastPhoto = useCallback((node: HTMLElement | null) => {
-    if (!node) return;
-    if (isLoading) return;
     if (observer.current) observer.current.disconnect();
+    if (!node || isLoading || !hasMore) return;
     observer.current = new IntersectionObserver((entries) => {
       if (entries[0].isIntersecting) {
         fetchData();
       }
     });
     observer.current.observe(node);
-  }, []);
+  }, [fetchData, hasMore, isLoading]);
+
+  useEffect(() => () => observer.current?.disconnect(), []);
   return { lastPhoto };
 };
 
@@ -247,7 +196,7 @@ export const useModalClose = ({ handler }: { handler: () => void }) => {
       document.removeEventListener("mousedown", handleClick);
       document.removeEventListener("keydown", handleEscape);
     };
-  }, [modalRef]);
+  }, [handler]);
   return modalRef;
 };
 
@@ -260,12 +209,13 @@ export const useArrowKeys = ({
   handleNextPage: () => void;
   handlePreviousPage: () => void;
 }) => {
-  const params = useParams();
   useEffect(() => {
     const handleLeftArrow = (e: KeyboardEvent) => {
+      if (e.target instanceof HTMLElement && e.target.closest("button, a, input")) return;
       if (e.key === "ArrowLeft") handlePreviousPage();
     };
     const handleRightArrow = (e: KeyboardEvent) => {
+      if (e.target instanceof HTMLElement && e.target.closest("button, a, input")) return;
       if (e.key === "ArrowRight") handleNextPage();
     };
 
@@ -276,11 +226,11 @@ export const useArrowKeys = ({
       document.removeEventListener("keydown", handleLeftArrow);
       document.removeEventListener("keydown", handleRightArrow);
     };
-  }, [params]);
+  }, [handleNextPage, handlePreviousPage]);
 };
 
 export const useViewportInitialSizeAndResize = () => {
-  const [viewportWidth, setViewportWidth] = useState(0);
+  const [viewportWidth, setViewportWidth] = useState(() => window.innerWidth);
   useEffect(() => {
     const updateViewportWidth = () => {
       setViewportWidth(window.innerWidth);

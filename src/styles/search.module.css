@@ -20,6 +20,10 @@
   }
 }
 
+.searchbar:focus-within {
+  outline: 3px solid #228be6;
+}
+
 .search_input {
   width: 90%;
   border: none;

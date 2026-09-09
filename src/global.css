@@ -12,8 +12,26 @@ html {
 }
 
 body {
-  height: 100vh;
+  min-height: 100vh;
   background-color: #f8f9fa;
+  color: #212529;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 .header {
@@ -51,6 +69,37 @@ body {
   font-family: "Montserrat";
 }
 
+.page-status {
+  min-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 3rem;
+  color: #495057;
+  text-align: center;
+  font-size: 1.6rem;
+}
+
+.page-status h1 {
+  font-family: "Montserrat", sans-serif;
+  font-size: 2.8rem;
+}
+
+.page-status a,
+.site-footer a {
+  color: #495057;
+  font-weight: 600;
+}
+
+.site-footer {
+  padding: 3rem 2rem;
+  color: #6c757d;
+  text-align: center;
+  font-size: 1.3rem;
+}
+
 @media (min-width: 0px) {
   .header {
     position: static;
@@ -70,26 +119,24 @@ body {
     margin-top: 12rem;
   }
 
-  .searchbar {
-    width: 60%;
-    margin-left: 10px;
-    margin-top: 0;
-  }
-
-  .image-details-page {
-    margin: 0 2rem;
-    margin-top: -10rem;
-  }
 }
 
 @media (min-width: 1400px) {
   .main {
     width: 70vw;
   }
-  .searchbar {
-    width: 50%;
-    margin-left: 0;
-    align-self: center;
-    margin-top: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }

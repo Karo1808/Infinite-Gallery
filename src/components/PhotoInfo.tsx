@@ -19,7 +19,7 @@ const PhotoInfo = ({ description, location, date }: Props) => {
     <section className={styles.container}>
       <div className={styles.desc}>
         <MdOutlineDescription />
-        <p>{description}</p>
+        <p>{description || "Untitled photo"}</p>
       </div>
       <div className={styles.desc}>
         <MdOutlineLocationOn />

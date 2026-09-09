@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#1c1d1e"/>
+  <rect x="70" y="70" width="1060" height="490" rx="28" fill="#252729" stroke="#495057"/>
+  <circle cx="170" cy="160" r="38" fill="none" stroke="#f8f9fa" stroke-width="10"/>
+  <circle cx="238" cy="160" r="38" fill="none" stroke="#f8f9fa" stroke-width="10"/>
+  <text x="150" y="325" fill="#f8f9fa" font-family="Montserrat, Arial, sans-serif" font-size="92" font-weight="600" letter-spacing="4">INFINITE</text>
+  <text x="150" y="425" fill="#adb5bd" font-family="Montserrat, Arial, sans-serif" font-size="92" font-weight="400" letter-spacing="4">GALLERY</text>
+  <text x="155" y="500" fill="#868e96" font-family="Arial, sans-serif" font-size="28">Responsive photo discovery powered by Unsplash</text>
+</svg>

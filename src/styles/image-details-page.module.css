@@ -61,3 +61,21 @@
   display: flex;
   gap: 2rem;
 }
+
+.status {
+  min-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  padding: 3rem;
+  text-align: center;
+  color: #495057;
+  font-size: 1.6rem;
+}
+
+.status h1 {
+  font-family: "Montserrat", sans-serif;
+  font-size: 2.6rem;
+}

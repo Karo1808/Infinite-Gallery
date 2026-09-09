@@ -10,7 +10,9 @@ interface Props {
 }
 
 const UserInfo = ({ username, profilePhoto, profileLink, type }: Props) => {
-  const [isPhotoLoading, setIsPhotoLoading] = useState<boolean>(true);
+  const [photoStatus, setPhotoStatus] = useState<"loading" | "loaded" | "error">(
+    "loading"
+  );
 
   return (
     <div
@@ -20,14 +22,14 @@ const UserInfo = ({ username, profilePhoto, profileLink, type }: Props) => {
           : styles.userinfo_container
       }
     >
-      <a href={`${profileLink}`} target="_blank">
-        {isPhotoLoading && (
+      <a href={profileLink} target="_blank" rel="noreferrer">
+        {photoStatus === "loading" && (
           <ProfilePhotoSkeleton
             type={type === "image-details" ? "topbar" : type}
           />
         )}
         <img
-          style={{ display: isPhotoLoading ? "none" : "block" }}
+          style={{ display: photoStatus === "loaded" ? "block" : "none" }}
           className={`${styles.userinfo_profile_photo} ${
             type === "image-details"
               ? styles.image_details_profile_photo
@@ -36,16 +38,23 @@ const UserInfo = ({ username, profilePhoto, profileLink, type }: Props) => {
               : styles.topbar_profile_photo
           }`}
           src={profilePhoto}
-          alt="profile photo"
-          onLoad={() => setIsPhotoLoading(false)}
+          alt={`${username}'s profile`}
+          onLoad={() => setPhotoStatus("loaded")}
+          onError={() => setPhotoStatus("error")}
         />
+        {photoStatus === "error" && (
+          <span className={styles.profile_fallback} aria-hidden="true">
+            {username.charAt(0).toUpperCase()}
+          </span>
+        )}
       </a>
       <a
         className={`${styles.userinfo_username} ${
           type === "overlay" ? styles.overlay_username : styles.topbar_username
         }`}
-        href={`${profileLink}`}
+        href={profileLink}
         target="_blank"
+        rel="noreferrer"
       >
         {username}
       </a>

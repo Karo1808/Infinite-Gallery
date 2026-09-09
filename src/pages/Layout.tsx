@@ -12,6 +12,16 @@ const Layout = () => {
         </Link>
       </header>
       <Outlet />
+      <footer className="site-footer">
+        Photos provided by{" "}
+        <a
+          href="https://unsplash.com/?utm_source=infinite-gallery&utm_medium=referral"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Unsplash
+        </a>
+      </footer>
     </>
   );
 };

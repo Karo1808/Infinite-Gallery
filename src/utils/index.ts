@@ -1,30 +1,32 @@
-import { APP_NAME, BASE_URL, GUTTER_SIZE } from "../constants";
-import { unpslashApi } from "../unsplash";
+import { APP_NAME, BASE_URL, GUTTER_SIZE, PHOTOS_PER_PAGE } from "../constants";
+import { hasUnsplashAccessKey, unpslashApi } from "../unsplash";
+import { Basic } from "unsplash-js/dist/methods/photos/types";
+import { Photo } from "../types";
+
+const assertUnsplashAccessKey = () => {
+  if (!hasUnsplashAccessKey) {
+    throw new Error(
+      "Unsplash is not configured. Add VITE_UNSPLASH_ACCESS_KEY to the environment."
+    );
+  }
+};
 
 export const fetchImages = async ({
   pageParam,
 }: {
   pageParam?: number | false;
 }) => {
-  try {
-    if (pageParam) {
-      const res = await unpslashApi.photos.list({
-        page: pageParam,
-        perPage: 15,
-      });
-      if (res.errors) {
-        throw new Error(`${res.errors[0]}`);
-      }
+  assertUnsplashAccessKey();
+  if (pageParam) {
+    const res = await unpslashApi.photos.list({
+      page: pageParam,
+      perPage: PHOTOS_PER_PAGE,
+    });
+    if (res.errors) {
+      throw new Error(res.errors[0]);
+    }
 
-      const photos = res.response;
-      return { photos, prevOffSet: pageParam };
-    }
-  } catch (error) {
-    if (error instanceof Error) {
-      throw new Error(
-        `An error occurred while fetching images, ${error.message}`
-      );
-    }
+    return { photos: res.response, page: pageParam };
   }
 };
 export const fetchImagesWithQuery = async ({
@@ -34,59 +36,78 @@ export const fetchImagesWithQuery = async ({
   pageParam?: number | false;
   query: string;
 }) => {
-  try {
-    if (!query) {
-      throw new Error("No search query was provided");
+  assertUnsplashAccessKey();
+  if (!query) {
+    throw new Error("No search query was provided");
+  }
+  if (pageParam) {
+    const res = await unpslashApi.search.getPhotos({
+      query,
+      page: pageParam,
+      perPage: PHOTOS_PER_PAGE,
+    });
+    if (res.errors) {
+      throw new Error(res.errors[0]);
     }
-    if (pageParam) {
-      const res = await unpslashApi.search.getPhotos({
-        query,
-        page: pageParam,
-        perPage: 15,
-      });
-      if (res.errors) {
-        throw new Error(`${res.errors[0]}`);
-      }
-      const photos = res.response;
 
-      return { photos, prevOffSet: pageParam };
-    }
-  } catch (error) {
-    if (error instanceof Error) {
-      throw new Error(
-        `An error occurred while fetching images by query: ${query}, ${error.message}`
-      );
-    }
+    return { photos: res.response, page: pageParam };
   }
 };
 
-export const fetchImageById = async ({
-  id,
-  username,
-}: {
-  id: string;
-  username: string;
-}) => {
-  try {
-    if (!id) return null;
-    if (username) return null;
-    {
-      const res = await unpslashApi.photos.get({
-        photoId: id,
-      });
-      if (res.errors) {
-        throw new Error(`${res.errors[0]}`);
-      }
-      const photo = res.response;
-      return { photo };
-    }
-  } catch (error) {
-    if (error instanceof Error) {
-      throw new Error(
-        `An error occurred while fetching image by ID, ${error.message}`
-      );
-    }
+export const fetchImageById = async ({ id }: { id: string }) => {
+  assertUnsplashAccessKey();
+  if (!id) return null;
+
+  const res = await unpslashApi.photos.get({ photoId: id });
+  if (res.errors) {
+    throw new Error(res.errors[0]);
   }
+
+  return { photo: res.response };
+};
+
+export const trackPhotoDownload = async ({
+  downloadLocation,
+  fallbackUrl,
+}: {
+  downloadLocation: string;
+  fallbackUrl: string;
+}) => {
+  assertUnsplashAccessKey();
+  const res = await unpslashApi.photos.trackDownload({ downloadLocation });
+  if (res.errors) {
+    throw new Error(res.errors[0]);
+  }
+
+  return res.response?.url ?? fallbackUrl;
+};
+
+export const formatPhoto = (res: Basic): Photo => ({
+  altDescription: res.alt_description,
+  blurHash: res.blur_hash,
+  height: res.height,
+  width: res.width,
+  id: res.id,
+  src: `${res.urls.raw}&w=720&fit=max&auto=format`,
+  srcFull: `${res.urls.raw}&h=600&fit=max&auto=format`,
+  srcMobile: `${res.urls.raw}&w=1200&fit=max&auto=format`,
+  username: res.user.name,
+  usernameId: res.user.username,
+  userProfileImage: res.user.profile_image.medium,
+  userProfileLink: createAttributionUrl(res.user.username),
+  downloadLink: res.urls.full,
+  downloadLocation: res.links.download_location,
+  location: res.user.location,
+  date: res.created_at,
+  rawLink: res.urls.raw,
+});
+
+export const getNextPhotoPage = (
+  page: { photos: { results: Basic[]; total: number }; page: number } | undefined
+) => {
+  if (!page || page.photos.results.length === 0) return undefined;
+  const loadedPhotoCount = page.page * PHOTOS_PER_PAGE;
+  return loadedPhotoCount < page.photos.total ? page.page + 1 : undefined;
 };
 
 export const fetchImageByUsername = async ({
@@ -96,28 +117,21 @@ export const fetchImageByUsername = async ({
   username: string;
   pageParam?: number | false;
 }) => {
-  try {
-    if (!username) {
-      throw new Error("No username  was provided");
+  assertUnsplashAccessKey();
+  if (!username) {
+    throw new Error("No username was provided");
+  }
+  if (pageParam) {
+    const res = await unpslashApi.users.getPhotos({
+      username,
+      page: pageParam,
+      perPage: PHOTOS_PER_PAGE,
+    });
+    if (res.errors) {
+      throw new Error(res.errors[0]);
     }
-    if (pageParam) {
-      const res = await unpslashApi.users.getPhotos({
-        username,
-        page: pageParam,
-        perPage: 15,
-      });
-      if (res.errors) {
-        throw new Error(`${res.errors[0]}`);
-      }
-      const photos = res.response;
-      return { photos, prevOffSet: pageParam };
-    }
-  } catch (error) {
-    if (error instanceof Error) {
-      throw new Error(
-        `An error occurred while fetching images by username: ${username}, ${error.message}`
-      );
-    }
+
+    return { photos: res.response, page: pageParam };
   }
 };
 
@@ -237,7 +251,11 @@ export const formatSearchParams = ({
   query: string | null;
   username?: string;
 }) => {
-  return `?${query ? `query=${query}&` : ""}username=${username}`;
+  const params = new URLSearchParams();
+  if (query) params.set("query", query);
+  if (username) params.set("username", username);
+  const value = params.toString();
+  return value ? `?${value}` : "";
 };
 
 export function shortenUrl(url: string) {

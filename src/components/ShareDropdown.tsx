@@ -1,101 +1,82 @@
+import { useState } from "react";
 import { FaFacebook, FaLink, FaShare } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 import styles from "../styles/share-dropdown.module.css";
-import { useShare } from "react-facebook";
-import { motion } from "framer-motion";
-import { useState } from "react";
 
-interface Props {
-  imageLink: string;
-}
-
-const ShareDropdown = ({ imageLink }: Props) => {
-  const [isCopied, setIsCopied] = useState<boolean>(false);
-  const url = window.location.href;
-  const { share } = useShare();
-  const encodedURL = encodeURIComponent(imageLink);
-  const handleFbShare = async () => {
-    await share({
-      display: "popup",
-      href: imageLink,
-      hashtag: "infinite-gallery",
-    });
-  };
+const ShareDropdown = () => {
+  const [copyStatus, setCopyStatus] = useState<"idle" | "copied" | "failed">(
+    "idle"
+  );
+  const pageUrl = window.location.href;
+  const encodedUrl = encodeURIComponent(pageUrl);
 
   const handleMobileShare = async () => {
     try {
       await navigator.share({
-        title: "Look at this amazing photo",
-        text: "More photos like this on our website\n",
-        url: url,
+        title: "Infinite Gallery photo",
+        text: "View this photo on Infinite Gallery.",
+        url: pageUrl,
       });
-      console.log("Successfully shared");
-    } catch (error) {
-      console.error("Error sharing:", error);
+    } catch {
+      // Closing the native share sheet is not an application error.
     }
   };
 
   const handleCopy = async () => {
-    const copyToClipboard = async () => {
-      try {
-        await navigator.clipboard.writeText(url);
-        setIsCopied(true);
-
-        setTimeout(() => {
-          setIsCopied(false);
-        }, 2000);
-      } catch (error: unknown) {
-        if (error instanceof Error)
-          throw new Error(`Unable to copy text to clipboard, ${error.message}`);
-      }
-    };
-    await copyToClipboard();
+    try {
+      await navigator.clipboard.writeText(pageUrl);
+      setCopyStatus("copied");
+      window.setTimeout(() => setCopyStatus("idle"), 2000);
+    } catch {
+      setCopyStatus("failed");
+    }
   };
 
   return (
-    <>
-      <motion.div
-        className={styles.dropdown}
-        initial={{ opacity: 0, scale: 0.5 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.25 }}
-        style={{
-          top: typeof navigator.share === "function" ? "-430%" : "-320%",
-        }}
+    <div className={styles.dropdown} aria-label="Share photo">
+      <a
+        href={`https://twitter.com/intent/tweet?text=View%20this%20photo%20on%20Infinite%20Gallery&url=${encodedUrl}`}
+        target="_blank"
+        rel="noreferrer"
+        className={styles.entry}
       >
-        <a
-          href={`https://twitter.com/intent/tweet?text=Check%20out%20this%20image!&url=${encodedURL}`}
-          target="_blank"
+        <FaXTwitter />
+        <span>X</span>
+      </a>
+      <a
+        href={`https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`}
+        target="_blank"
+        rel="noreferrer"
+        className={styles.entry}
+      >
+        <FaFacebook />
+        <span>Facebook</span>
+      </a>
+      {typeof navigator.share === "function" && (
+        <button
+          type="button"
+          onClick={handleMobileShare}
           className={styles.entry}
         >
-          <FaXTwitter />
-          <p>X</p>
-        </a>
-        <div onClick={handleFbShare} className={styles.entry}>
-          <FaFacebook />
-          <p>Facebook</p>
-        </div>
-        {typeof navigator.share === "function" && (
-          <div onClick={handleMobileShare} className={styles.entry}>
-            <FaShare />
-            <p>Share</p>
-          </div>
-        )}
-        <div onClick={handleCopy} className={styles.entry}>
-          <FaLink />
-          <p>{isCopied ? "Copied" : "Copy"}</p>
-        </div>
-      </motion.div>
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.25 }}
-        className={styles.triangle}
-        style={{
-          top: typeof navigator.share === "function" ? "-77%" : "-53%",
-        }}
-      />
-    </>
+          <FaShare />
+          <span>Share</span>
+        </button>
+      )}
+      <button
+        type="button"
+        onClick={handleCopy}
+        className={styles.entry}
+      >
+        <FaLink />
+        <span>
+          {copyStatus === "copied"
+            ? "Copied"
+            : copyStatus === "failed"
+              ? "Copy failed"
+              : "Copy link"}
+        </span>
+      </button>
+    </div>
   );
 };
 

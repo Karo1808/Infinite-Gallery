@@ -1,3 +1,7 @@
+.share_wrapper {
+  position: relative;
+}
+
 .share_button {
   background-color: #f1f3f5;
   border: 0;
@@ -12,9 +16,13 @@
   font-size: 1.6rem;
   font-family: "Montserrat, sans-serif";
   transition: all 0.2s;
-  position: relative;
   &:hover {
     cursor: pointer;
     filter: brightness(98%);
   }
+}
+
+.share_button:focus-visible {
+  outline: 3px solid #228be6;
+  outline-offset: 2px;
 }
